@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 | Time          | Topic                              | Links |
 |---------------|------------------------------------|-------|
-| 9:00 - 9:15 | Welcome                            |[Slides](https://uci-data-academy.github.io/slides/01a-welcome.html)|
+| 9:00 - 9:15 | Welcome                            |[Slides](https://HenryYang03.github.io/ics_summer_files/Welcome.html)|
 | 9:15 - 9:45 | Introduction to data science    |[Slides](https://uci-data-academy.github.io/slides/01b-intro-data-science.html)|
 | 10:00 - 10:45 | Describing data    |[Slides](https://uci-data-academy.github.io/slides/01c-describe-data.html)   |
 | 11:00 - 12:00 | Introduction to the capstone project |                [Slides](https://uci-data-academy.github.io/slides/2023_Intro_to_AD_Online.pdf)    |
