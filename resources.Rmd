@@ -1,0 +1,15 @@
+---
+title: "Resources"
+
+---
+
+<table class="table table-condensed table-striped text-left">
+
+
+<tr>
+  <td><a href="http://catalogue.uci.edu/donaldbrenschoolofinformationandcomputersciences/departmentofstatistics/datascience_bs/" target="_blank">Data Science Major at UC Irvine</a></td>
+  <td>This is one example of a data science major at the college level. </td>
+  
+ </tr>
+
+</table>

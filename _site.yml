@@ -18,6 +18,6 @@ navbar:
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github
-      href: https://github.com/UCI-Data-Academy/website
+      href: https://github.com/HenryYang03/ics_summer_website.git
 output:
   distill::distill_article

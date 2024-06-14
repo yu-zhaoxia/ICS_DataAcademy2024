@@ -1,0 +1,65 @@
+---
+title: "Modules"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+<button class="accordion">Before Starting the Program</button>
+<div class="panel"> 
+
+| Topic                              | Links |
+|------------------------------------|-------|
+| Download and Install R | [Link](https://mirror.las.iastate.edu/CRAN/)|
+| Download and Install RStudio| [Link](https://www.rstudio.com/products/rstudio/download/)|
+|Download packages |<a href="R-code/code-00-setup.R" download>File</a>|
+|Alzheimer's Disease | [Link](https://www.youtube.com/watch?v=LrcL3vJjN2g) |
+
+</div>
+
+
+
+
+<button class="accordion">Day 1 &#9679; Data Science -- Basics and Principles  </button>
+<div class="panel">
+
+| Time          | Topic                              | Links |
+|---------------|------------------------------------|-------|
+| 9:00 - 9:15 | Welcome                            |[Slides](https://uci-data-academy.github.io/slides/01a-welcome.html)|
+| 9:15 - 9:45 | Introduction to data science    |[Slides](https://uci-data-academy.github.io/slides/01b-intro-data-science.html)|
+| 10:00 - 10:45 | Describing data    |[Slides](https://uci-data-academy.github.io/slides/01c-describe-data.html)   |
+| 11:00 - 12:00 | Introduction to the capstone project |                [Slides](https://uci-data-academy.github.io/slides/2023_Intro_to_AD_Online.pdf)    |
+| 1:30 - 2:30 | Introduction to R |[Slides](https://uci-data-academy.github.io/slides/Lab-01a-intro-r-schetzsle.html) |
+| 2:45 - 3:30 | R packages |[Slides](https://uci-data-academy.github.io/slides/Lab-01b-R-packages.html) |
+</div>
+
+	
+	
+```{r}
+htmltools::tagList(
+  htmltools::tags$script(src = "https://d3js.org/d3.v4.min.js"),
+  htmltools::tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/dimple/2.3.0/dimple.latest.min.js")
+)
+```
+
+```{js, class.source = "jsvis1"}
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    /* Toggle between hiding and showing the active panel */
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+```
