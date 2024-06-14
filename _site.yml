@@ -11,10 +11,10 @@ navbar:
   right:
     - text: "Home"
       href: index.html
-    - text: "People"
-      href: people.html
-    - text: "Schedule"
-      href: schedule.html
+    - text: "Staff"
+      href: staff.html
+    - text: "Module"
+      href: modules.html
     - text: "Resources"
       href: resources.html
     - icon: fab fa-github
