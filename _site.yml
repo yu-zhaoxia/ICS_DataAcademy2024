@@ -3,11 +3,11 @@ title: "ICS Summer Camp"
 description: |
   ICS Summer Camp
 output_dir: "docs"
-search: false
+navbar:
   logo:
     # Uncomment the following lines if you have a logo
-    #image: img/ICS-SummerAcademy-Logo.png
-    #href: https://uci-data-academy.netlify.app/
+    # image: img/ICS-SummerAcademy-Logo.png
+    # href: https://uci-data-academy.netlify.app/
   right:
     - text: "Home"
       href: index.html
@@ -19,4 +19,5 @@ search: false
       href: resources.html
     - icon: fab fa-github
       href: https://github.com/UCI-Data-Academy/website
-output: distill::distill_article
+output:
+  distill::distill_article
