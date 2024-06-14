@@ -1,0 +1,22 @@
+name: "ics_summer_website"
+title: "ICS Summer Camp"
+description: |
+  ICS Summer Camp
+output_dir: "docs"
+search: false
+  logo:
+    # Uncomment the following lines if you have a logo
+    #image: img/ICS-SummerAcademy-Logo.png
+    #href: https://uci-data-academy.netlify.app/
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "People"
+      href: people.html
+    - text: "Schedule"
+      href: schedule.html
+    - text: "Resources"
+      href: resources.html
+    - icon: fab fa-github
+      href: https://github.com/UCI-Data-Academy/website
+output: distill::distill_article

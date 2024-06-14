@@ -1,0 +1,21 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About this site",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2024-06-14T01:45:08-07:00"
+    },
+    {
+      "path": "index.html",
+      "title": "ICS Summer Camp",
+      "description": "Welcome to the website. I hope you enjoy it!\n",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2024-06-14T01:45:09-07:00"
+    }
+  ],
+  "collections": []
+}
