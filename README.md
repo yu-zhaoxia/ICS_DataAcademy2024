@@ -1,1 +1,1 @@
-# ics_summer_website
+# ICS_DataAcademy
