@@ -1,5 +1,5 @@
 ---
-title: "ICS Summer Data Academy"
+title: "ICS Summer Data Academy 2024"
 site: distill::distill_website
 ---
 
