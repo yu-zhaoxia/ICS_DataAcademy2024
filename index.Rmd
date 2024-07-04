@@ -1,5 +1,5 @@
 ---
-title: "ICS Summer Camp"
+title: "ICS Summer Data Academy"
 site: distill::distill_website
 ---
 
@@ -8,16 +8,6 @@ site: distill::distill_website
 ```
 
 <!--comment-->
-This Three-week camp (sponsored by the School of ICS at UCI) will explore the foundations of data science. The students will learn about data science methods and concepts via hands on projects. In particular, they become familiar with methods associated with data collection, data processing, data summarization and visualization, and statistical modeling approaches for prediction. Moreover, statistical inference techniques for testing scientific hypotheses are discussed. Lastly, students learn about statistical thinking for decision making under uncertainty. Students will apply the concepts communicated through the lectures by analyzing real data, using the statistical programming language R. Through teamwork and interactive learning, students will become involved with the processes related to scientific investigation and inquiry, with applications in biology and medical sciences, among others. 
+This two-week camp (sponsored by the School of ICS at UCI) will explore the foundations of data science. The students will learn about data science methods and concepts via hands on projects. In particular, they become familiar with methods associated with data collection, data processing, data summarization and visualization, and statistical modeling approaches for prediction. Moreover, statistical inference techniques for testing scientific hypotheses are discussed. Lastly, students learn about statistical thinking for decision making under uncertainty. Students will apply the concepts communicated through the lectures by analyzing real data, using the statistical programming language R. Through teamwork and interactive learning, students will become involved with the processes related to scientific investigation and inquiry, with applications in biology and medical sciences, among others. 
 
-By the end of the program, students will work on a capstone project based on a real-life scientific problem and will present their findings to a broader audience. Through the Donald Bren School of Information and Computer Sciences, DATA students will:
-
-- Engage in hands-on analytics projects, involving real life scientific data; 
-
-- Learn how to formulate scientific questions and utilize statistical thought process to provide practical solutions to those problems; 
-
-- Interact and engage with university faculty and college students and visit research labs in the School’s three departments; 
-
-- Explore career pathways in data science and related fields; 
-
-- Work in teams while emphasizing the essential skills required for scientific research, including creativity, communication, collaboration, and critical thinking; Projects will emphasize Science, Technology, Engineering and Mathematics (STEM) concepts and be correlated with Common Core Standards and the Framework for Next Generation Science Standards.
+By the end of the program, students will work on a capstone project based on a real-life scientific problem and will present their findings to a broader audience. 
