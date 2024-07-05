@@ -43,38 +43,58 @@ editor: visual
 
 ## Assistant: Anatascio Ruiz
 
-+----------------------------------------------------+-----------------------------+
-| ![](images/clipboard-3155138006.png){width="90mm"} | -   junior computer science |
-|                                                    | -   plays guitar            |
-+----------------------------------------------------+-----------------------------+
+
+::: columns
+::: {.column width="50%"}
+![](images/clipboard-3155138006.png){width="90%"}
+:::
+
+::: {.column width="50%"}
+-   Senior studying Computer Science, specializing in Intelligent Systems.
+-   Enjoys learning and helping others succeed.
+-   Enjoys rock music and playing the drums!
+:::
+:::
 
 ## Assistant: Ananya Jajoo
 
-+--------------------------------------------------+-------------------------------------------------------------------------------+
-| ![](images/clipboard-625026682.png){width="306"} | -   rising senior majoring in Computer Science                                |
-|                                                  |                                                                               |
-|                                                  | -   fun fact - brushing my teeth was my stress-relief ritual a few years back |
-+--------------------------------------------------+-------------------------------------------------------------------------------+
+::: columns
+::: {.column width="50%"}
+![](images/clipboard-625026682.png){width="90%"}
+:::
+
+::: {.column width="50%"}
+-   Senior studying Computer Science, specializing in Intelligent Systems.
+-   Enjoys learning and helping others succeed.
+-   Enjoys rock music and playing the drums!
+:::
+:::
 
 ## Assistant: Grace Jong
 
-+--------------------------------------------------+---------------------------------------------------+
-| ![](images/clipboard-895517457.png){width="250"} | ![](images/clipboard-2623404319.png){width="266"} |
-+--------------------------------------------------+---------------------------------------------------+
-| ![](images/clipboard-1190430715.png)             | -   3rd Year Software Engineering Major           |
-|                                                  |                                                   |
-|                                                  | -   I has 3 cats                                  |
-|                                                  |                                                   |
-|                                                  | -   like painting and making spotify playlist     |
-+--------------------------------------------------+---------------------------------------------------+
++---------------------------------------------------+---------------------------------------------------+
+| ![](images/clipboard-895517457.png){width="250"}  | ![](images/clipboard-2623404319.png){width="266"} |
++---------------------------------------------------+---------------------------------------------------+
+| ![](images/clipboard-1190430715.png){width="293"} | -   3rd Year Software Engineering Major           |
+|                                                   |                                                   |
+|                                                   | -   I has 3 cats                                  |
+|                                                   |                                                   |
+|                                                   | -   like painting and making spotify playlist     |
++---------------------------------------------------+---------------------------------------------------+
 
 ## Assistant: Kenzo Lobo
 
-![](images/clipboard-3878409955.png){width="90mm"}
+::: columns
+::: {.column width="50%"}
+![](images/clipboard-3878409955.png){width="90%"}
+:::
 
--   senior studying Computer Science, specializing in Intelligent Systems.
--   enjoys learning and helping others succeed.
--   enjoys rock music and playing the drums!
+::: {.column width="50%"}
+-   Senior studying Computer Science, specializing in Intelligent Systems.
+-   Enjoys learning and helping others succeed.
+-   Enjoys rock music and playing the drums!
+:::
+:::
 
 ## You
 
@@ -88,14 +108,12 @@ editor: visual
 
 ## Attendance, Participation, and UCI Rules
 
-- **Attendance**:
-  - You are expected to be punctual for all sessions and activities.
-  - Notify a camp leader if you will be absent.
-
-- **Participation**:
-  - Engage actively in all activities and discussions.
-  - Respect others' ideas and contributions.
-
-- **UCI Rules**:
-  - Follow all UCI campus regulations.
-  - Maintain a safe and respectful environment.
+-   **Attendance**:
+    -   You are expected to be punctual for all sessions and activities.
+    -   Notify a camp leader if you will be absent.
+-   **Participation**:
+    -   Engage actively in all activities and discussions.
+    -   Respect others' ideas and contributions.
+-   **UCI Rules**:
+    -   Follow all UCI campus regulations.
+    -   Maintain a safe and respectful environment.
