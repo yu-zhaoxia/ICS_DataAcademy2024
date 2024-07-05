@@ -15,7 +15,7 @@ editor: visual
 
 ![](images/clipboard-1045273716.png)
 
-## What Does It Look Like?
+## How Does the Session Look Like?
 
 ![](images/clipboard-493202362.png)
 
@@ -25,4 +25,77 @@ editor: visual
 -   TA: Sara Tyo
 -   Undergraduate assistants: Anatascio Ruiz, Ananya Jajoo, Grace Jong, Kenzo Lobo
 
+## Instructor: Zhaoxia Yu
 
+-   Professor and vice chair of graduate studies of Statistics
+-   Joined UCI 17 years ago
+-   Develops statistical methods for various practical problems, promotes statistical rigor
+
+![](images/HalfMarathon2017.JPG){width="45%"} ![](images/kids2022.jpg){width="40%"}
+
+## TA: Sara Tyo
+
+![](images/clipboard-2457303755.png){width="490"}
+
+-   first year Statistics PhD student
+-   hobbies: bake and cook
+-   has two cats, Fig and Fizz, and many plants.
+
+## Assistant: Anatascio Ruiz
+
++----------------------------------------------------+-----------------------------+
+| ![](images/clipboard-3155138006.png){width="90mm"} | -   junior computer science |
+|                                                    | -   plays guitar            |
++----------------------------------------------------+-----------------------------+
+
+## Assistant: Ananya Jajoo
+
++--------------------------------------------------+-------------------------------------------------------------------------------+
+| ![](images/clipboard-625026682.png){width="306"} | -   rising senior majoring in Computer Science                                |
+|                                                  |                                                                               |
+|                                                  | -   fun fact - brushing my teeth was my stress-relief ritual a few years back |
++--------------------------------------------------+-------------------------------------------------------------------------------+
+
+## Assistant: Grace Jong
+
++--------------------------------------------------+---------------------------------------------------+
+| ![](images/clipboard-895517457.png){width="250"} | ![](images/clipboard-2623404319.png){width="266"} |
++--------------------------------------------------+---------------------------------------------------+
+| ![](images/clipboard-1190430715.png)             | -   3rd Year Software Engineering Major           |
+|                                                  |                                                   |
+|                                                  | -   I has 3 cats                                  |
+|                                                  |                                                   |
+|                                                  | -   like painting and making spotify playlist     |
++--------------------------------------------------+---------------------------------------------------+
+
+## Assistant: Kenzo Lobo
+
+![](images/clipboard-3878409955.png){width="90mm"}
+
+-   senior studying Computer Science, specializing in Intelligent Systems.
+-   enjoys learning and helping others succeed.
+-   enjoys rock music and playing the drums!
+
+## You
+
+-   Grade
+-   Location / school
+-   Things you would like to share:
+    -   Interests
+    -   Hobbies
+    -   Pets
+    -   Fun facts
+
+## Attendance, Participation, and UCI Rules
+
+- **Attendance**:
+  - You are expected to be punctual for all sessions and activities.
+  - Notify a camp leader if you will be absent.
+
+- **Participation**:
+  - Engage actively in all activities and discussions.
+  - Respect others' ideas and contributions.
+
+- **UCI Rules**:
+  - Follow all UCI campus regulations.
+  - Maintain a safe and respectful environment.
