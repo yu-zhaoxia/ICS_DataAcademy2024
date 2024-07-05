@@ -1,0 +1,28 @@
+---
+title: "Day1 Welcome to ICS Summer Academy - Data Analytics"
+author: 
+  - name: "Zhaoxia Yu"
+    affiliation: "Professor, Department of Statistics"
+    
+format:
+  revealjs: 
+    theme: simple
+    
+editor: visual
+---
+
+## Welcome To UCI ICS Summer Academy - Data Analytics 2024!
+
+![](images/clipboard-1045273716.png)
+
+## What Does It Look Like?
+
+![](images/clipboard-493202362.png)
+
+## Instruction Team
+
+-   Instructor: Zhaoxia Yu
+-   TA: Sara Tyo
+-   Undergraduate assistants: Anatascio Ruiz, Ananya Jajoo, Grace Jong, Kenzo Lobo
+
+
