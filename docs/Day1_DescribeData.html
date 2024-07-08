@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-07">
+  <meta name="dcterms.date" content="2024-07-08">
   <title>Day 1: Describe Data</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -402,7 +402,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-07</p>
+  <p class="date">2024-07-08</p>
 </section>
 <section>
 <section id="introduction" class="title-slide slide level1 center">
@@ -835,20 +835,41 @@ s  =  \sqrt{\frac{\sum_{i=1}^{n}(x_{i} - \bar{x})^{2}}{n-1}},
 <li><p>Data points beyond the whiskers are displayed as circles and are considered potential outliers.</p></li>
 </ul>
 </section>
-<section id="example-3" class="slide level2">
-<h2>Example</h2>
+<section id="example-left-hippocampus-volume" class="slide level2">
+<h2>Example: left hippocampus volume</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="co"># Create a boxplot of age</span></span>
 <span id="cb18-2"><a href=""></a><span class="fu">ggplot</span>(alzheimer_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> lhippo)) <span class="sc">+</span>  <span class="co"># x = "" for a single boxplot</span></span>
 <span id="cb18-3"><a href=""></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># Customizing boxplot appearance</span></span>
-<span id="cb18-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Left Hippo in Alzheimer's Dataset"</span>, <span class="at">y =</span> <span class="st">"lhippo"</span>) <span class="sc">+</span>  <span class="co"># Labels for title and y-axis</span></span>
+<span id="cb18-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Left Hippo in Alzheimer's Dataset"</span>, <span class="at">x=</span><span class="st">""</span>, <span class="at">y =</span> <span class="st">"lhippo"</span>) <span class="sc">+</span>  <span class="co"># Labels for title and y-axis</span></span>
 <span id="cb18-5"><a href=""></a>  <span class="fu">theme_minimal</span>()  <span class="co"># Applying a minimal theme (optional, adjust as needed)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="Day1_DescribeData_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><div class="quarto-auto-generated-content">
+<img data-src="Day1_DescribeData_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+<section id="provlem-solving-challenge" class="slide level2">
+<h2>Provlem Solving challenge</h2>
+<ul>
+<li><p>How to draw boxplots of left hippo volume by diagnosis groups</p></li>
+<li><p>How to draw boxplots of left hippo volume by by diagnosis and gender</p></li>
+<li><p>What is a violin plot and how to draw one?</p></li>
+</ul>
+</section>
+<section id="example-with-two-outliers" class="slide level2">
+<h2>Example: with two outliers</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="co">#generate data</span></span>
+<span id="cb19-2"><a href=""></a>x<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">100</span>) <span class="co">#100 data points from normal distribution with mean 0 and sd=1</span></span>
+<span id="cb19-3"><a href=""></a>x<span class="ot">=</span><span class="fu">c</span>(x, <span class="fl">9.9</span>, <span class="fl">9.8</span>)<span class="co">#add two outliers</span></span>
+<span id="cb19-4"><a href=""></a><span class="fu">boxplot</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="Day1_DescribeData_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>

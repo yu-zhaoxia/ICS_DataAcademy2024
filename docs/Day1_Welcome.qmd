@@ -15,11 +15,17 @@ format:
     
 editor: visual
 ---
+
 ```{r}
 ```
+
 ## Welcome To UCI ICS Summer Academy - Data Analytics 2024!
 
 ![](images/clipboard-1045273716.png)
+
+## 
+
+![](images/clipboard-2864675383.png){width="529"}
 
 ## How Does the Session Look Like?
 
@@ -55,8 +61,8 @@ editor: visual
 :::
 
 ::: {.column width="50%"}
-- Junior studying  computer science 
-- Fun fact: He plays the guitar
+-   Junior studying computer science
+-   Fun fact: He plays the guitar
 :::
 :::
 
@@ -68,8 +74,8 @@ editor: visual
 :::
 
 ::: {.column width="50%"}
-- A rising senior majoring in Computer Science
-- Fun Fact - Brushing her teeth was her stress-relief ritual a few years back!
+-   A rising senior majoring in Computer Science
+-   Fun Fact - Brushing her teeth was her stress-relief ritual a few years back!
 :::
 :::
 
