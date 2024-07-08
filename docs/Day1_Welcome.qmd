@@ -4,9 +4,13 @@ author:
   - name: "Zhaoxia Yu"
     affiliation: "Professor, Department of Statistics"
     
-format:
-  revealjs: 
-    theme: simple
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
     
 editor: visual
 ---
@@ -42,7 +46,6 @@ editor: visual
 -   has two cats, Fig and Fizz, and many plants.
 
 ## Assistant: Anatascio Ruiz
-
 
 ::: columns
 ::: {.column width="50%"}
