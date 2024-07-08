@@ -1,5 +1,5 @@
 ---
-title: "Day1 Welcome to ICS Summer Academy - Data Analytics"
+title: "Day 1: Welcome to ICS Summer Academy - Data Analytics"
 author: 
   - name: "Zhaoxia Yu"
     affiliation: "Professor, Department of Statistics"
