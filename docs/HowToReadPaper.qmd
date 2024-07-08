@@ -1,0 +1,73 @@
+---
+title: "How To Read Research Papers"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+---
+
+# How to read a research paper?
+
+<https://www.elsevier.com/connect/infographic-how-to-read-a-scientific-paper>
+
+# Main takeaways
+
+1.  **Strategic Reading:** Reading a scientific paper should not be a linear process (from beginning to end). Instead, it requires a strategic approach that goes beyond a surface-level understanding.
+
+2.  **Critical Mindset:** Adopt a critical mindset while reading. Challenge the findings and question your understanding to deepen your comprehension of the content.
+
+3.  **Fluid Navigation:** It's okay to navigate backwards and forwards through the paper. Scientific literature often requires revisiting sections to fully grasp complex ideas and information.
+
+# Main takeaways
+
+4.  **Note-taking:** Keeping notes is a crucial part of the reading process. Notes will help synthesize information, identify important points, and assist in your comprehension and recall of key findings.
+
+5.  **Multi-tab Browsing:** To comprehend the full depth of a scientific paper, often you'll need to have multiple tabs open in your browser for cross-referencing, fact-checking, and understanding contextual and background information.
+
+
+# Example
+Zhu, Jiangjiang, Danijel Djukovic, Lingli Deng, Haiwei Gu, Farhan Himmati, E. Gabriela Chiorean, and Daniel Raftery. 2014. “Colorectal Cancer Detection Using Targeted Serum Metabolic Profiling.” Journal of Proteome Research 13 (9): 4120–30. https://doi.org/10.1021/pr500494u. 
+
+
+# Step1: SKIM to find the big picture
+
+![](images/image-1054719093.png)
+
+#
+
+-   Based on the title, the article offers a screening method for colorectal cancer by using targeted serum metabolic profiling.
+
+-   The abstract told us that colorectal cancer imposes serious public health burden and the screening method introduced by the article has very satisfactory results. The main statistical method seems to be the partial least-squares discriminant analysis (PLS-DA)
+
+# Step2: RE-READ
+
+![](images/image-859473957.png)
+
+# 
+
+
+-   What problem is the study trying to solve? **A**: providing a new screening test for colorectal cancer because existing ones are not accurate, invasive, or expensive.
+
+-   Are the findings well supported by evidence? **A**: yes. The new approach (metabolic profiling + PLS-DA) has high sensitivity, good specificity, and excellent areas under the curve.
+
+-   Are the findings unique and supported by other work in the field? **A**:
+
+# 
+-   What was the sample size? Is it representative of the larger population? **A**: 66 CRC patients, 76 polyp patients, and 92 healthy controls. Patients were age- and gender-matched in each group. The sample is not a representative sample of the larger population.
+
+-   Is the study repeatable? **A**: not sure about scientifically. Since the data is available, we can check whether similar results can be obtained.
+
+-   What factors might affect the results? **A**: The authors detected 112 metabolisms from 158 targeted ones due to QC filtering. QC might be an issue.
+
+# Step3: INTREPRET
+
+![](images/image-1873608131.png)
+
+# Step4: SUMMARIZE
+
+![](images/image-469585550.png)

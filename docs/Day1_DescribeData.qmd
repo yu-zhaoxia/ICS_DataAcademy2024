@@ -31,7 +31,7 @@ format:
 
 ## Describe Data:  Impact
   - **Data Collection**: Ensures the quality and relevance of collected data.
-  - **Data Cleaning**: Helps identify and rectify issues in the data.
+  - **Data Cleaning**: Helps identify issues in the data.
   - **Data Analysis**: Informs the choice of analysis methods and models.
   - **Model Building**: Provides insights into feature selection and engineering.
   - **Decision Making**: Supports data-driven decisions by providing a clear understanding of the data.

@@ -10,6 +10,8 @@ format:
     progress: true
     controls: true
 ---
+```{r}
+```
 
 ## What is Data Science?
 
@@ -33,6 +35,26 @@ format:
   - **Exploratory Data Analysis**: Summarizing the main characteristics, often using visual methods.
   - **Modeling and Inference**: Involving at least one of the following: estimation, testing, prediction.
   - **Interpretation and Conclusion**: Translating data findings into actionable business or research insights.
+
+
+## Statistical Inference
+- To learn an entire population, we collect data.  
+
+- It's important to note that characteristics, relationships, and realities of the entire population are generally unknown.
+
+- Consequently, there is inherent uncertainty in our conclusions.
+
+- Probability serves as the fundamental tool in Statistics to quantify and manage this uncertainty.
+
+## Statistical Inference
+- Statistical inference is the process of using data to draw conclusions about the entire population.
+
+- This knowledge helps us make decisions related to the scientific problem that drove our study and data analysis.
+
+- In this program, we'll cover essential statistical inference methods and how to apply them to practical problems.
+
+- First, we'll focus on understanding and exploring (and describing) the data .
+
 
 
 ## Case Study 1: Poverty and Students' performance

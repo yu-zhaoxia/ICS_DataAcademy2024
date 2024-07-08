@@ -4,6 +4,7 @@ author:
   - name: "Zhaoxia Yu"
     affiliation: "Professor, Department of Statistics"
     
+date: "`r Sys.Date()`"
 format: 
   revealjs:
     theme: "sky"
@@ -14,7 +15,8 @@ format:
     
 editor: visual
 ---
-
+```{r}
+```
 ## Welcome To UCI ICS Summer Academy - Data Analytics 2024!
 
 ![](images/clipboard-1045273716.png)
@@ -53,9 +55,8 @@ editor: visual
 :::
 
 ::: {.column width="50%"}
--   Senior studying Computer Science, specializing in Intelligent Systems.
--   Enjoys learning and helping others succeed.
--   Enjoys rock music and playing the drums!
+- Junior studying  computer science 
+- Fun fact: He plays the guitar
 :::
 :::
 
@@ -67,9 +68,8 @@ editor: visual
 :::
 
 ::: {.column width="50%"}
--   Senior studying Computer Science, specializing in Intelligent Systems.
--   Enjoys learning and helping others succeed.
--   Enjoys rock music and playing the drums!
+- A rising senior majoring in Computer Science
+- Fun Fact - Brushing her teeth was her stress-relief ritual a few years back!
 :::
 :::
 

@@ -11,6 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
+  <meta name="dcterms.date" content="2024-07-07">
   <title>Day 1: Introduction to Data Science</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -336,7 +337,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">Invalid Date</p>
+  <p class="date">2024-07-07</p>
 </section>
 <section id="what-is-data-science" class="slide level2">
 <h2>What is Data Science?</h2>
@@ -370,6 +371,24 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <li><strong>Modeling and Inference</strong>: Involving at least one of the following: estimation, testing, prediction.</li>
 <li><strong>Interpretation and Conclusion</strong>: Translating data findings into actionable business or research insights.</li>
 </ul></li>
+</ul>
+</section>
+<section id="statistical-inference" class="slide level2">
+<h2>Statistical Inference</h2>
+<ul>
+<li><p>To learn an entire population, we collect data.</p></li>
+<li><p>It’s important to note that characteristics, relationships, and realities of the entire population are generally unknown.</p></li>
+<li><p>Consequently, there is inherent uncertainty in our conclusions.</p></li>
+<li><p>Probability serves as the fundamental tool in Statistics to quantify and manage this uncertainty.</p></li>
+</ul>
+</section>
+<section id="statistical-inference-1" class="slide level2">
+<h2>Statistical Inference</h2>
+<ul>
+<li><p>Statistical inference is the process of using data to draw conclusions about the entire population.</p></li>
+<li><p>This knowledge helps us make decisions related to the scientific problem that drove our study and data analysis.</p></li>
+<li><p>In this program, we’ll cover essential statistical inference methods and how to apply them to practical problems.</p></li>
+<li><p>First, we’ll focus on understanding and exploring (and describing) the data .</p></li>
 </ul>
 </section>
 <section id="case-study-1-poverty-and-students-performance" class="slide level2">
@@ -612,6 +631,82 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
         ]
       });
     </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
