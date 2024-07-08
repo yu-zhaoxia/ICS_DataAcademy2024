@@ -1,0 +1,55 @@
+---
+title: "Day 1: Introduction to Data Science"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+---
+
+## What is Data Science?
+
+- **Data Science** is an interdisciplinary field focused on extracting knowledge and insights from data.
+- It combines:
+  - **Statistics**: The science of collecting, analyzing, interpreting, and presenting empirical data.
+  - **Computer Science**: Algorithms, machine learning, data processing, and software engineering.
+  - **Domain Expertise**: Specific knowledge about the field from which the data is drawn.
+
+
+
+## Data Science Life Cycle
+- Data Science involves several key processes:
+  - **Define A Scientific Problem**
+  - **Data Collection**: Gathering data from various sources.
+  - **Data Cleaning/Reprocessing**: Preparing data for analysis by removing or correcting errors.
+
+
+##  Data Science Life Cycle
+- Data Science involves several key processes:
+  - **Exploratory Data Analysis**: Summarizing the main characteristics, often using visual methods.
+  - **Modeling and Inference**: Involving at least one of the following: estimation, testing, prediction.
+  - **Interpretation and Conclusion**: Translating data findings into actionable business or research insights.
+
+
+## Case Study 1: Poverty and Students' performance
+- Define the problem
+- Data source: California Department of Education Database
+  - Key variables: poverty, performance
+  - data cleaning
+- Exploratory analysis
+- Modeling and inference
+- Conclusion
+- This one of the several capstone projects for this session
+
+## case study 2: Cognitive Status and brain volume
+- A subset of data from the **Uniform Data Set** of National Alzheimer’s Coordinating Center (NACC)
+- Measurements of brain volume
+- Cognitive status: normal cognition (0), mild cognitive impairment due to AD (1), or dementia due to AD (2)
+- Other important information, such as age and gender
+- We will be using this data set to illustrate how to use different statistical methods to address questions in data science 
+
+

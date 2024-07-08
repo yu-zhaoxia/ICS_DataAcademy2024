@@ -108,10 +108,8 @@ editor: visual
 
 ## Attendance, Participation, and UCI Rules
 
--   **Attendance**:
+-   **Attendance and participation**:
     -   You are expected to be punctual for all sessions and activities.
-    -   Notify a camp leader if you will be absent.
--   **Participation**:
     -   Engage actively in all activities and discussions.
     -   Respect others' ideas and contributions.
 -   **UCI Rules**:
