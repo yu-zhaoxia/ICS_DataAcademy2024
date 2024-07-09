@@ -1,0 +1,349 @@
+---
+title: "Day 2: Tidyverse and R markdown"
+author: "Sara Tyo, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# R Markdown and Tidyverse
+
+# Part 1: R Markdown
+
+## R Markdown
+
+-   **R Markdown** is a file format for making dynamic documents with R.
+    An R Markdown document is written in markdown (an easy-to-write
+    plain text format) and contains chunks of embedded R code.
+
+-   **R Markdown** files are the source code for rich, reproducible
+    documents.
+
+### 
+
+![](images/rmdphoto.png){width="446"}
+
+## 
+
+**You can transform an R Markdown file in two ways:**
+
+1.  **knit:** You can knit the file. The rmarkdown package will call the
+    knitr package. knitr will run each chunk of R code in the document
+    and append the results of the code to the document next to the code
+    chunk.
+2.  **convert:** You can convert the file. The rmarkdown package will
+    use the pandoc program to transform the file into a new format.
+    -   For example, you can convert your .Rmd file into an HTML, PDF,
+        or Microsoft Word file.
+
+## 
+
+![](images/rmd-parts.png)
+
+## Add Chunk
+
+![](images/code-chunk.png)
+
+## Run the Current Chunk
+
+![](images/run-code.png)
+
+## Shortcuts
+
+|                            | Windows          | Mac              |
+|----------------------------|------------------|------------------|
+| add chunk                  | Ctrl + Alt + I   | Cmd + Option + I |
+| run the current chunk      | Ctrl + Alt + C   | Cmd + Option + C |
+| run current line/selection | Ctrl + Enter     | Cmd + Return     |
+| knit                       | Ctrl + Shift + K | Cmd + Shift + K  |
+
+## Knit
+
+![](images/knit.png)
+
+## Subset of Chunk Options
+
+![](images/chunk.png)
+
+## YAML
+
+-   YAML ("Yet Another Markup Language" or "YAML Ain't Markup Language,"
+    The metadata that tells R Markdown, pandoc, quarto, and other
+    software exactly how to process or display the document.
+
+## YAML
+
+-   title
+
+-   subtitle
+
+-   author
+
+-   date
+
+-   table of content
+
+> ```         
+> ---
+> title: "Title of Your Document"
+> subtitle: "Subtitle of Your Document"
+> author: "Your Name"
+> date: "`r Sys.Date()`"
+> output:
+>   html_document:
+>     toc: true
+>     toc_float: true
+> ---
+> ```
+
+## Inline Code
+
+To embed R code in a line of text, surround the code with a pair of
+backticks and the letter r, like this.
+
+-   Two plus two equals `r 2+2` .
+
+## Inline Code Example
+
+```{r}
+library(tidyverse)
+#| warning: false
+#| code-fold: true
+#| echo: true
+
+
+cyl_prcnt <- mtcars %>% 
+  count(cyl) %>% 
+  mutate(prcnt = n/sum(n)*100) %>%
+  filter(cyl == 4) %>%
+  select(prcnt)
+```
+
+-   `` `r cyl_prcnt` `` percent of cars in our dataset have 4 cylinders.
+
+-   34.375 percent of cars in our dataset have 4 cylinders.
+
+    -   [mtcars data
+        dictionary](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html)
+
+## Summary of our Tools
+
+-   **R** is a programming language used mainly for statistical
+    computing.
+
+-   **markdown** is a markup language for creating formatted text.
+
+-   **R Markdown** is a file format that can handle R and markdown (and
+    many other languages).
+
+-   **RStudio** is an integrated development environment (IDE).
+
+# Part 2: Tidyverse
+
+## Open Source
+
+We learnt Monday that any one around the world can create R packages.
+
+-   Good part: We are able to do pretty much anything R because someone
+    from around the world has developed the package and shared it.
+
+-   Bad part: The language can be inconsistent.
+
+Good news: We have tidyverse!
+
+## Tidyverse
+
+In short, tidyverse is a family of packages. From practical stand point,
+you can install many tidyverse packages at once (and you did this). By
+doing that you installed all the following packages.
+
+-   ggplot2
+
+-   dplyr
+
+-   tidyr
+
+-   readr
+
+-   purrr
+
+-   tibble
+
+-   stringr
+
+-   forcats
+
+## We can also load the tidyverse packages all at the same time.
+
+```         
+library(tidyverse)
+```
+
+-   'Tidyverse' library is a wrapper of all the individual libraries we
+    just listed.
+
+## The tidyverse style guide
+
+> canyoureadthissentence?
+
+Good coding style is like correct punctuation: you can manage without
+it, but it makes things easier to read.
+
+-   The most important thing about tidyverse style guide is that it
+    provides consistency, making code easier to write because you need
+    to make fewer decisions.
+
+## Common Practices
+
+### Naming Files
+
+-   Avoid using special characters in file names
+
+    > stick with numbers, letters, -, and \_.
+
+    | Good                | Bad          |
+    |---------------------|--------------|
+    | fit_models.R        | fit models.R |
+    | utility_functions.R | stuff.R      |
+
+## 
+
+### Readability
+
+-   Put a space after a comma, not before.
+
++-----------------+----------------+
+| Good            | Bad            |
++=================+================+
+| ```             | ```            |
+| a               | a              |
+| g               | g              |
+| e               | e <- c(6,9,15) |
+|  <- c(6, 9, 15) | ```            |
+| ```             |                |
++-----------------+----------------+
+
+-   Object names are all lower case, with words separated by an
+    underscore.
+
++---------------------------+-------------------+
+| Good                      | Bad               |
++===========================+===================+
+| ```                       | ```               |
+| my_name <- "Sara"         | Myname <- "Sara"  |
+| m                         | m                 |
+| y                         | y                 |
+| _                         | f                 |
+| favourite_food <- "pizza" | avfood <- "pizza" |
+| ```                       | ```               |
++---------------------------+-------------------+
+
+## 
+
+-   Before and after operators (e.g. \<-, =) leave spaces.
+
++------------------------+----------------------+
+| Good                   | Bad                  |
++========================+======================+
+| ```                    | ```                  |
+| d                      | d                    |
+| a                      | a                    |
+| t                      | t                    |
+| a.frame(age_kid = age) | a.frame(age_kid=Age) |
+| ```                    | ```                  |
++------------------------+----------------------+
+
+-   [Tidyverse style guide](https://style.tidyverse.org/)
+
+## The Pipe Operator
+
+The pipe operator looks like: `%>%`
+
+From the `magrittr` package, also available in `dplyr`, and is used for
+chaining operations together, making the code more readable and enabling
+a step-by-step data manipulation approach.
+
+## Why do we use the pipe Operator?
+
+> Three solutions to a single problem
+
+Consider, What is the average of 4, 8, 16 approximately?
+
+## Solution 1: Functions within Functions
+
+```         
+c(4, 8, 16)
+## [1]  4  8 16
+
+mean(c(4, 8, 16))
+## [1] 9.333333
+
+round(mean(c(4, 8, 16)))
+## [1] 9
+```
+
+> **Problem with writing functions within functions:** Things will get
+> messy and more difficult to read and debug as we deal with more
+> complex operations on data.
+
+## Solution 2: Creating Objects
+
+```         
+numbers <- c(4, 8, 16)
+numbers
+## [1]  4  8 16
+
+avg_number <- mean(numbers)
+avg_number
+## [1] 9.333333
+
+round(avg_number)
+## [1] 9
+```
+
+> **Problem with creating many objects:** We will end up with too many
+> objects in `Environment`.
+
+## Solution 3: The (forward) Pipe Operator %\>%
+
+### Shortcut: \[Ctrl (Command) + Shift + M\]
+
+```         
+c(4, 8, 16) %>% 
+  mean() %>% 
+  round()
+## [1] 9
+```
+
+-   Combine 4, 8, and 16 `and then`\
+    Take the mean `and then`\
+    Round the output
+
+-   The output of the first function is the first argument of the second
+    function.
+
+## 
+
+-   Do you recall composite functions such as 𝑓∘𝑔(𝑥)?
+
+-   Now we have 𝑓∘𝑔∘ℎ(𝑥) or `round(mean(c(4, 8, 16)))`
+
+> h(x) %\>%
+>
+> g() %\>%
+>
+> f()
+
+> c(4, 8, 16) %\>%
+>
+> mean() %\>%
+>
+> round()

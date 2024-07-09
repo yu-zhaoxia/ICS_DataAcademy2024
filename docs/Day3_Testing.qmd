@@ -16,14 +16,6 @@ format:
 ```{r}
 ```
 
-
-## Hypothesis
-- We covered estimation in Day 2. 
-- Today we will be introducing hypothesis. 
-- A **hypothesis** is a statement about one or multiple random variables; often a hypothesis is about a statement of parameters. 
-- Example: 
-
-
 ## Review of "Describe Data"
 
 -   We introduced and defined several summary statistics, such as mean, median, variance, and standard deviation.

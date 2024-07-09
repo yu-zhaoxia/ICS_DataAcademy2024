@@ -152,5 +152,23 @@ Estimate the volume of hippocampus for women between 40 and 50 years old
 #| echo: true
 #| code-fold: true
 alzheimer_data <- read.csv('data/alzheimer_data.csv')
+dim(alzheimer_data)
+alzheimer_subset =alzheimer_data[alzheimer_data$age<=50 & alzheimer_data$age>40 & alzheimer_data$female==1, ]
+dim(alzheimer_subset)
+hippo=alzheimer_subset$lhippo + alzheimer_subset$rhippo
+#estimate of mean
+mean(hippo)
+#standard error
+sd(hippo)/sqrt(length(hippo))
+#a 95% c.i. using z-critical value
+mean(hippo) - 2*sd(hippo)/sqrt(length(hippo))
+mean(hippo) + 2*sd(hippo)/sqrt(length(hippo))
+
+mean(hippo) - qnorm(0.975)*sd(hippo)/sqrt(length(hippo))
+mean(hippo) + qnorm(0.975)*sd(hippo)/sqrt(length(hippo))
+
+mean(hippo) - qt(0.975, df=length(hippo)-1)*sd(hippo)/sqrt(length(hippo))
+mean(hippo) + qt(0.975, df=length(hippo)-1)*sd(hippo)/sqrt(length(hippo))
+
 ```
 
