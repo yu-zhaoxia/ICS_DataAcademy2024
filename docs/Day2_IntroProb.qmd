@@ -1,0 +1,257 @@
+---
+title: "Day 2: Introduction to Probability"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+---
+
+# Basics of Probability
+
+```{r}
+```
+
+## Review of "Describe Data"
+
+-   We introduced and defined several summary statistics, such as mean, median, variance, and standard deviation.
+-   Suppose we are interested in the population mean, which is known.
+-   One approach is to use the sample mean as a guess for the population mean.
+-   To quantify the uncertainty in the process, we need to understand probability.
+
+# Terminologies
+
+## Experiment
+
+-   **Experiment**: Any process, real or hypothetical, in which the outcomes occur randomly but the set of the possible outcomes can be identified ahead of time.
+
+-   Example: roll a die twice.
+
+-   Example: flip a coin twice.
+
+## sample space and elements
+
+-   The possible outcomes is the called the **sample space** ($\mathbf S$).
+-   Example, roll a die twice: $\mathbf S=\{(1,1), (1,2), \cdots, (6,6)\}$, consisting of 36 **elements/outcomes**.
+-   Example, flip a coin twice: $\mathbf S = \{TT, TH, HT, HH\}$, consisting of 4 **elements/outcomes**.
+
+## Events
+
+-   An **event/set** is a subset of the sample space. For example, let $$A=\{\mbox{at least one head}\}=\{TH, HT, HH\}\subseteq \mathbf S$$.
+
+-   Two special events:
+
+    -   the sample space $\mathbf S$.
+    -   the empty space $\emptyset$.
+
+## Event/Set Operations
+
+-   The **complement** of $A$ is denoted by $A^c$. It is the set of outcomes in $\mathbf S$ but not in $A$.
+-   **Union**: the union of two events is the set of outcomes in either of the two events.
+-   **Intersection**: the intersection of two events is the set of outcomes in both of the two events.
+-   Example: flip a coin twice. Consider two events $$A=\{TT, TH\}, B=\{TH, HT, HH\}.$$ $$A^c=\{HT, HH\}, A\cup B=\mathbf S, A\cap B=\{TH\}.$$
+
+## Disjoint Events
+- Two events are called **disjoint** or **mutually exclusive** if they never occur together: if we know that one of them has occurred, we can conclude that the other event has not occurred. 
+
+- Disjoint events have no
+elements (outcomes) in common, and their intersection is the empty set ($\emptyset$).
+
+- Example, flip a coin twice,
+
+$$A=\{HH\}, B=\{TT, TH\}$$
+$A\cap B=\emptyset$. 
+
+
+# Probability
+
+## Probability
+
+-   Finally, we are ready to talk about probability. Probability is a function/measure, denoted by Pr(.) or P(.), that maps events to the interval \[0,1\].
+
+-   That is to say, it will assign a probability to an event between 0 and 1.
+
+-   Note,
+
+    -   $P(\mathbf S)=1$.
+    -   $P(\emptyset)=0$.
+    -   $P(A^c) = 1-P(A)$.
+
+## Probability: flip a Fair Coin Twice
+
+-   Recall that $\mathbf S=\{TT, TH, HT, HH\}$. Because the coin is **fair**, the four outcomes are equally likely, i.e., each has $1/4$ probability.
+
+-   Let $A=\{TT, TH\}, B=\{TH, HT, HH\}.$
+
+    -   **marginal** probabilities: $P(A)=\frac{1}{2}, P(B)=\frac{3}{4}$ .
+    -   **joint** probability: $P(A\cap B)= P(\{TH\})=\frac{1}{4}$.
+
+## Probability: flip a Fair Coin Twice
+
+-   The **conditional** probability of A given B is defined as $$P(A|B)=\frac{P(A\cap B)}{P(B)}$$
+    -   In the example, $P(A|B)=\frac{1/4}{3/4}=\frac{1}{3}$.
+-   Note, $P(A|B)$ and $P(B|A)$ are not the same thing.
+
+## Independent Events
+
+-   We say two events $A_1$ and$A_2$ are independent if $P(A_1\cap A_2)=P(A_1)P(A_2)$.
+-   Note, if $A_1$ and$A_2$ are independent, then
+    -   $P(A_1|A_2)=P(A_1)$ (suppose $P(A_2)>0$)
+    -   $P(A_2|A_1)=P(A_2)$ (suppose $P(A_1)>0$)
+
+# Random Variable
+
+## Random Variables
+
+-   A random variable is a variable.
+
+-   Instead of presenting mathematical definitions, we will go over several examples.
+
+-   A **random variable** $X$ is a function from outcomes to real values.
+
+-   We characterize the distribution of the random variable using **probability** statements.
+
+## Example 1: flip a fair coin
+
+::: {style="text-align: center;"}
+![](images/clipboard-4054542221.png){width="50%"}
+:::
+
+::: {style="font-size: 75%;"}
+-   Probability statements about $X$: $P(X=0)=\frac{1}{2}, P(X=1)=1-\frac{1}{2}=\frac{1}{2}$.
+
+-   We way that this $X$ follows a Bernoulli distribution with success probability 0.5.
+
+-   More general, we say $X\sim Bernoulli(p)$ if $P(X=1)=p, P(X=0)=1-p$, where $p\in[0,1]$ is a parameter.\
+:::
+
+
+## Example 2: Flip a Fair Coin Twice
+
+-   Let $Z$ denote the total number of heads.
+-   Clearly, $Z\in \{0, 1, 2\}$ and
+
+::: {style="font-size: 75%;"}
+$$P(Z=0)=P(Z=2)=\frac{1}{4}; P(Z=1)=P(\{HT, TH\})=\frac{1}{2}$$
+:::
+
+-   Knowing the probability for each possible value of $X$, we can determine its distribution. This distribution is called a **Binomial** distribution with 2 trials and a success probability of 0.5.
+
+-   Notation, $X\sim Binomial(2, 0.5)$
+
+-   **Generalization**: $Binomial(n, p)$ where $n$ is a positive integer and $p\in[0,1]$.
+
+## Example: Flip a Fair Coin Twice
+
+More than random variable can be defined from the same experiment:
+
+::: {style="text-align: center;"}
+![](images/clipboard-1017585093.png){width="90%"}
+:::
+
+## Example: Flip an unfair coin twice
+
+::: {style="text-align: center;"}
+![](images/clipboard-3740291664.png){width="90%"}
+:::
+
+# Discrete vs Continuous
+
+## Discrete Random Variables
+
+-   The examples we have seen are **discrete** random variables because each r.v. because the number of possible values for each r.v. is finite or countably infinite.
+    -   For a discrete r.v., once we have the probability at each possible value, we know the distribution.
+    -   The probability of at each possible value is also called **probability mass function**.
+
+## Continuous Random Variables
+
+::: {style="font-size: 85%;"}
+-   Consider the following experiment: You have a chocolate bar of length 5cm. If you randomly take a piece to eat.
+    -   Let $X$ denote the length of chocolate you can eat. It is a continuous r.v.
+    -   For a continuous distribution, we can use **probability density function (pdf)**.
+    -   Because a random piece is taken out, we expect $X$ is uniform (equally likely) on \[0,5\].
+    - Here, $X$ follows a uniform distribution on [0,5]
+:::
+
+
+## Continuous Uniform Distribution
+- Let $a$ and $b$ be two real numbers, so that $a<b$. The following the pdf of a __continuous uniform distribution__: 
+
+$$f(x) = \left\{ \begin{array}{l@{\quad}l}
+\frac{1}{b-a}  & a<x<b  \\
+0 & \mbox{otherwise} \\
+\end{array} \right.$$
+
+::: {style="text-align: center;"}
+![](images/clipboard-3405380815.png){width="40%"}
+:::
+
+## Probability Density Function (pdf)
+
+-   Pdf provides information about "relative likelihood".
+-   The area under the curve is 1.
+-   If the pdf of a r.v. is known, one can calculate many probability of interest
+    -   $P(X<a)$
+    -   $P(X>b)$
+    -   $P(X\in [a,b])$
+    -   $P(X<a \mbox{ or } X>b)$
+
+::: {style="text-align: center;"}
+![](images/clipboard-1640709243.png){width="80%"}
+:::
+
+# Normal Distribution
+
+## The Normal/Gaussian Distribution
+
+-   It is a continuous distribution.
+-   The probability density function is determined by two parameters, $\mu$ and $\sigma^2$.
+
+::: {style="text-align: center;"}
+![](images/clipboard-2918775400.png){width="70%"}
+:::
+
+## The Standard Normal Distribution
+
+- Notation: $N(0, 1)$
+- If $X\sim N(\mu, \sigma)$, we can standardize in the following way
+$$Z=\frac{X-\mu}{\sigma},$$
+where $Z\sim N(0,1)$.
+
+## The 68-95-99.7% rule
+
+- The 68--95--99.7% rule for normal distributions specifies that
+
+  + 68% of values fall within 1 standard deviation of the mean
+
+  + 95% of values fall within 2 standard deviations of the mean
+
+  + 99.7% of values fall within 3 standard deviations of the mean
+
+
+## Normal Distribution
+
+::: {style="text-align: center;"}
+![](images/clipboard-290214735.png)
+:::
+
+## Normal Distribution
+::: {style="text-align: center;"}
+![](images/clipboard-1441107742.png)
+:::
+
+## Normal Distribution
+::: {style="text-align: center;"}
+![](images/clipboard-3266206717.png)
+:::
+
+## Some practice
+- Suppose $Z\sim N(0,1)$. 
+-  $P(Z>1)=0.135+0.0235+0.0015=0.16$.
+-  $P(Z<1)=1-P(Z>1)=1-0.16=0.84$
+- $P(Z<-1)=0.135+0.0235+0.0015=0.16$.
+-  $P(-1 < Z < 1)=P(Z<1)-P(Z<-1)=0.68$

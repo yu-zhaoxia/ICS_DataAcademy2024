@@ -1,0 +1,51 @@
+---
+title: "Day 2: Read Data Into R"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+---
+
+## Read .txt
+```{r, out.width="100%", fig.align="center"}
+#| echo: true
+#| code-fold: true
+read.table("data/protein.txt")
+read.table("data/protein.txt", head=T)
+```
+
+## Read .csv Data from your computer
+```{r, out.width="100%", fig.align="center"}
+#| echo: true
+#| code-fold: true
+alzheimer_data <- read.csv('data/alzheimer_data.csv')
+#help(read.cvs)
+alzheimer_data <-readr::read_csv('data/alzheimer_data.csv') #faster, read_csv is from the readr library
+```
+
+## Read .csv Data from a link
+```{r, out.width="100%", fig.align="center"}
+#| echo: true
+#| code-fold: true
+read.table("https://raw.githubusercontent.com/yu-zhaoxia/ICS_DataAcademy2024/main/docs/data/Protein.txt", head=T)
+alzheimer_data = read.csv('https://raw.githubusercontent.com/yu-zhaoxia/ICS_DataAcademy2024/main/docs/data/alzheimer_data.csv')
+```
+
+## Read Excel Data
+```{r, out.width="100%", fig.align="center"}
+#| echo: true
+#| code-fold: true
+readxl::read_excel("data/spotify.xlsx")
+#help(read_excel)
+readxl::read_excel("data/spotify.xlsx", sheet=2)
+
+#it doesn't always work
+#readxl::read_excel("https://github.com/yu-zhaoxia/ICS_DataAcademy2024/raw/main/docs/data/spotify.xlsx")
+```
+
+
