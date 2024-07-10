@@ -1,0 +1,212 @@
+---
+title: "Day 3: Hypothesis Testing - Code Only"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+
+execute:
+  echo: true
+---
+
+# Load libraries
+```{r}
+#| code-fold: true
+#| 
+library(tidyverse)
+library(ggplot2)
+```
+
+
+## Read Data
+
+```{r}
+#| code-fold: true
+
+alzheimer_data <- read.csv('data/alzheimer_data.csv') %>% 
+  select(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) %>% 
+  mutate(diagnosis = as.factor(diagnosis), female = as.factor(female))
+
+
+alzheimer_healthy <- read.csv('data/alzheimer_data.csv') %>% 
+  select(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) %>% 
+  mutate(diagnosis = as.factor(diagnosis), female = as.factor(female)) %>% filter(diagnosis==0)
+```
+
+
+
+# Example 1: One Sample t-test
+
+## Example 1: visualization
+
+## Example 1: caluclate mean
+```{r}
+#| code-fold: true
+mean(alzheimer_healthy$lhippo)
+```
+
+## Example 1:  Calculate the test statistics
+
+```{r}
+#| code-fold: true
+n=length(alzheimer_healthy$lhippo)
+(mean(alzheimer_healthy$lhippo)-3)/ (sd(alzheimer_healthy$lhippo)/sqrt(n))
+```
+
+
+## Example 1: calculate p-value
+```{r}
+#| code-fold: true
+#probability of greater than 17.72495
+print("probability of greater than 17.72495")
+pt(17.72495, df=n-1, lower.tail=F)
+
+#probability of less than -17.72495
+print("probability of less than -17.72495")
+pt(-17.72495, df=n-1, lower.tail=T)
+
+#p-value
+print("p-value")
+pt(17.72495, df=n-1, lower.tail=F)+pt(-17.72495, df=n-1, lower.tail=T)
+```
+
+## Example 1: Use t.test
+
+We don’t have to the calculation manually. We can run a one-sample t-test using `t.test`
+
+```{r}
+#| code-fold: true
+
+#the default test is two-tailed/sided
+t.test(alzheimer_healthy$lhippo, mu=3)  
+```
+
+# EXAMPLE 1 L: LEFT-TAILED
+
+```{r}
+#| code-fold: true
+#use the CDF of t to compute p-value
+pt(17.72495, df=n-1, lower.tail=T)
+
+#use t-test
+t.test(alzheimer_healthy$lhippo, mu=3, alternative = "less")  
+```
+
+# EXAMPLE 1 R: RIGHT-TAILED
+
+```{r}
+#| code-fold: true
+#use the CDF of t to compute p-value
+pt(17.72495, df=n-1, lower.tail=F)
+#use t-test
+t.test(alzheimer_healthy$lhippo, mu=3, alternative = "greater")  
+```
+
+
+# Example 2: one-sample proportion z-test
+
+## Example 2: Visualization
+
+## Example 2: testing
+```{r}
+#| code-fold: true
+phat=mean(alzheimer_healthy$lhippo>3 )
+phat
+
+phat.se=sqrt(phat*(1-phat)/n)
+phat.se
+
+(phat-0.5)/phat.se
+
+#p-value
+pnorm((phat-0.5)/phat.se, lower.tail = F)
+```
+
+
+# EXAMPLE 3: Two-Sample t-test
+
+## Example 3: Visualization
+
+## Example 3: use t.test
+```{r}
+#| code-fold: true
+t.test(alzheimer_healthy$lhippo[alzheimer_healthy$female==0], alzheimer_healthy$lhippo[alzheimer_healthy$female==1])
+
+t.test(alzheimer_healthy$lhippo ~ alzheimer_healthy$female)
+```
+  
+  
+#  EXAMPLE 4: paired t-test
+
+## EXAMPLE 4: Visaulization 
+
+## Example 4: use t.test
+```{r}
+#| code-fold: true
+t.test(alzheimer_data$rhippo, alzheimer_data$lhippo, paired = T)
+
+#equivalently, 
+t.test(alzheimer_data$rhippo- alzheimer_data$lhippo)
+```
+
+# Example 5: chi-squared test
+
+## Example 5: visualization
+
+## Example 5: use chisq.test
+```{r}
+#| code-fold: true
+
+table(alzheimer_data$rhippo>alzheimer_data$lhippo,
+      alzheimer_data$female)
+
+chisq.test(table(alzheimer_data$rhippo>alzheimer_data$lhippo,
+      alzheimer_data$female))
+```
+
+
+# Example 6: Correlation
+
+## Example 6: Visualization
+```{r}
+#| code-fold: true
+#| fig-align: center
+
+alzheimer_healthy$hippo = (alzheimer_healthy$lhippo+alzheimer_healthy$rhippo)/2
+
+plot(alzheimer_healthy$age, alzheimer_healthy$hippo)
+```
+Discussion: is there a linear trend? are there regions of concerns? 
+
+
+## Example 6: cor.test
+```{r}
+#| code-fold: true
+
+cor.test(alzheimer_healthy$age, alzheimer_healthy$hippo)
+
+#alternatively, we can use linear regression
+summary(lm(alzheimer_healthy$hippo ~ alzheimer_healthy$age))
+```
+
+
+# Example 7: one-way ANOVA
+
+## Example 7: Visualizaiton
+
+## Example 7: aov
+```{r}
+#| code-fold: true
+
+
+summary(aov(alzheimer_data$lhippo ~ alzheimer_data$diagnosis))
+
+#equivalently
+summary(aov(lhippo ~ diagnosis, data=alzheimer_data))
+```
+

@@ -399,6 +399,7 @@ cor.test(alzheimer_healthy$age, alzheimer_healthy$hippo)
 summary(lm(alzheimer_healthy$hippo ~ alzheimer_healthy$age))
 ```
 
+# Example 7
 
 ## Example 7
 - **Research Question**: Does left hippocampus volume differ across diagnosis groups?
