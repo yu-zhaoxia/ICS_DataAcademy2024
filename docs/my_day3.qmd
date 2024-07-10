@@ -1,0 +1,111 @@
+---
+title: "My Day 3"
+author: Zhaoxia Yu
+format: revealjs
+editor: visual
+---
+
+```{r}
+#| echo: true
+#| code-fold: true
+library(ggplot2)
+library(tidyverse)
+```
+
+
+# Example 1
+
+## Read Data
+
+```{r}
+#| echo: true
+#| code-fold: true
+
+# read data
+alzheimer_data <- read.csv('data/alzheimer_data.csv') %>% 
+  select(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) %>% 
+  mutate(diagnosis = as.factor(diagnosis), female = as.factor(female))
+
+
+alzheimer_healthy <- read.csv('data/alzheimer_data.csv') %>% 
+  select(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) %>% 
+  mutate(diagnosis = as.factor(diagnosis), female = as.factor(female)) %>% filter(diagnosis==0)
+
+dim(alzheimer_data)
+dim(alzheimer_healthy)
+```
+
+## One-sample t-test
+
+```{r}
+#| echo: true
+#| code-fold: true
+t.test(alzheimer_healthy$lhippo, mu=3)
+
+```
+
+# Example 3
+
+## Two-sample t-test
+
+```{r}
+#| echo: true
+#| code-fold: true
+t.test(alzheimer_healthy$lhippo[alzheimer_healthy$female==0], alzheimer_healthy$lhippo[alzheimer_healthy$female==1])
+
+t.test(alzheimer_healthy$lhippo ~ alzheimer_healthy$female)
+
+```
+
+## Two-sample t-test results
+
+-   Results:
+
+-   Conclusion:
+
+
+# Example 4
+
+## Example 4
+- It is attempting to perform a two-sample t-test
+- However, one fundamental assumption in the two-sample problem is that the two samples should be independent, such as the female group vs the male group. 
+- Here we are looking at two features (left vs right hippocampus) of the same subjects. The correct test is 
+- **paired t-test**, which equivalent to perform a one-sample t-test using the differences
+
+
+## Example 4
+```{r}
+#| echo: true
+#| code-fold: true
+t.test(alzheimer_data$rhippo, alzheimer_data$lhippo, paired = T)
+t.test(alzheimer_data$rhippo- alzheimer_data$lhippo)
+```
+
+# Example 6
+
+## Visualization
+```{r}
+#| echo: true
+#| code-fold: true
+alzheimer_healthy$hippo = (alzheimer_healthy$lhippo+alzheimer_healthy$rhippo)/2
+plot(alzheimer_healthy$age, alzheimer_healthy$hippo); abline(0,1)
+```
+
+
+## 
+```{r}
+#| echo: true
+#| code-fold: true
+cor.test(alzheimer_healthy$age, alzheimer_healthy$hippo)
+```
+
+
+
+## 
+```{r}
+#| echo: true
+#| code-fold: true
+#alternatively, we can use linear regression
+summary(lm(alzheimer_healthy$hippo ~ alzheimer_healthy$age))
+```
+
