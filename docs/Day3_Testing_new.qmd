@@ -1,0 +1,448 @@
+---
+title: "Day 3: Hypothesis Testing"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+
+execute:
+  echo: true
+---
+
+# Introduction
+
+```{r}
+#| code-fold: true
+
+library(tidyverse)
+library(ggplot2)
+```
+
+## 
+
+::: {style="text-align: center;"}
+![](images/clipboard-1167207519.png){height="90%"}
+:::
+
+## Read Data
+
+```{r}
+#| code-fold: true
+
+alzheimer_data <- read.csv('data/alzheimer_data.csv') %>% 
+  select(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) %>% 
+  mutate(diagnosis = as.factor(diagnosis), female = as.factor(female))
+
+
+alzheimer_healthy <- read.csv('data/alzheimer_data.csv') %>% 
+  select(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) %>% 
+  mutate(diagnosis = as.factor(diagnosis), female = as.factor(female)) %>% filter(diagnosis==0)
+```
+
+## Hypothesis
+
+-   A **hypothesis** is a statement about one or more random variables or their associated parameters
+
+-   A Hypothesis a testable statement; we test it based on sample data.
+
+-   Research questions can often be formulated in to hypotheses. Examples
+
+    -   Are students who play musical instruments more likely to have higher GPAs than students who do not play musical instruments?
+
+    -   Do people who exercise regularly have lower blood pressure than those who do not exercise regularly?
+
+## TYPES OF HYPOTHESES:
+
+**Null Hypothesis** ($H_0$)
+
+-   **Definition**: A statement is often about no effect or no difference, or nothing of interest.
+
+-   **Purpose**: Serves as the default or starting assumption.
+
+**Alternative Hypothesis** ($H_a$) or $H_1$)
+
+-   **Definition**: A statement is often about an effect or a difference.
+
+-   **Purpose**: Represents what we are trying to find evidence for.
+
+## HYPOTHESIS TESTING
+
+-   To determine whether to reject the null hypothesis, we measure the empirical support provided by the observed data against the null hypothesis using some statistics.
+
+-   We use statistics, known as test statistics, to evaluate our hypotheses.
+
+-   A statistic is considered a **test statistic** if its sampling distribution under the null hypothesis is completely known (either exactly or approximately).
+
+-   The distribution of test statistics under the null hypothesis is referred to as the **null distribution**.
+
+# LIST OF QUESTIONS / EXAMPLES
+
+## A LIST OF QUESTIONS
+
+::: {style="font-size: 75%;"}
+-   Is the mean left hippocampus volume of healthy adults 3cm$^3$?
+
+-   Is the proportion of healthy adults with a \>3cm$^3$ right hippocampus 50%?
+
+-   Does healthy men and women have the same mean left hippocampus volume?
+
+-   Is human’s left hippocampus volume the same as the right hippocampus volume?
+
+-   Is having a greater right vs left hippocampus associated with gender?
+
+-   Is hippocampus volume correlated with age in healthy adults?
+
+-   Does left hippocampus volume differ across diagnosis groups?
+:::
+
+# Example 1
+
+## Example 1
+
+::: {style="font-size: 75%;"}
+-   **Research Question**: Is the mean left hippocampus volume of healthy adults greater than 3cm$^3$?
+
+-   **Null Hypothesis**: The mean left hippocampus volume of healthy adults is 3cm$^3$.
+
+-   **Alternative Hypothesis**: The mean left hippocampus volume of healthy adults is different from 3cm3
+
+$$H_0:μ=3 \mbox{ vs } H_1: μ\not=3$$
+
+-   Calculate the sample mean. What does the sample mean tell you? Should you reject $H_0$ based on the result?
+:::
+
+```{r}
+#| code-fold: true
+mean(alzheimer_healthy$lhippo)
+```
+
+## Example 1
+
+-   If the true distribution is $N(3,\sigma^2)$, we have $\bar X\sim N(3, \sigma^2/n)$. Further, $\frac{\bar X - 3}{\sigma/\sqrt{n}}\sim N(0,1)$
+
+-   Because $\sigma$ is unknown, we replace it with the $s$, the sample SD, leading to a test statistic $$T=\frac{\bar X - 3}{s/\sqrt{n}}\overset{H_0}\sim t_{n-1}$$
+
+-   The “$H_0$” above “\sim\$" indicates this is the null distribution of the test statistic $T$, i.e., the distribution when $H_0$ is true.
+
+## Example 1
+
+-   We say T is a statistic because it can be computed once we have data and its distribution is known under $H_0$.
+
+-   In this example, the null distribution is $t_{1534−1}$ , very similar to $N(0,1)$, only slightly more spread out.
+
+-   Calculate the test statistics
+
+```{r}
+#| code-fold: true
+n=length(alzheimer_healthy$lhippo)
+(mean(alzheimer_healthy$lhippo)-3)/ (sd(alzheimer_healthy$lhippo)/sqrt(n))
+```
+
+-   Is this value surprising if $H_0$ is true? Why?
+
+## Example 1
+
+-   The null distribution is used as the reference to examine when the observed test statistic is surprising, in the direction of $H_1$.
+
+-   The p-value is defined as probability of observing a value that is as extreme as or more so in the direction of $H_1$.
+
+-   In this example, $H_1: \mu\not=3$, i.e., both directions are considered extreme.
+
+::: {style="text-align: center;"}
+![](images/clipboard-888276776.png){width="40%"}
+:::
+
+## Step-by-Step for One-sample T-test
+
+```{r}
+#| code-fold: true
+#probability of greater than 17.72495
+print("probability of greater than 17.72495")
+pt(17.72495, df=n-1, lower.tail=F)
+
+#probability of less than -17.72495
+print("probability of less than -17.72495")
+pt(-17.72495, df=n-1, lower.tail=T)
+
+#p-value
+print("p-value")
+pt(17.72495, df=n-1, lower.tail=F)+pt(-17.72495, df=n-1, lower.tail=T)
+```
+
+## Use t.test
+
+We don’t have to the calculation manually. We can run a one-sample t-test using `t.test`
+
+```{r}
+#| code-fold: true
+
+#the default test is two-tailed/sided
+t.test(alzheimer_healthy$lhippo, mu=3)  
+```
+
+# EXAMPLE 1 L: LEFT-TAILED
+
+-   Suppose we consider $H_0: \mu=3 \mbox{ vs } H_1: \mu < 3$.
+-   Then p-value should be calculated to reflect the direction of $H_1$.
+
+::: {style="text-align: center;"}
+![](images/clipboard-1191121346.png){height="20%"}
+:::
+
+```{r}
+#| code-fold: true
+#use the CDF of t to compute p-value
+pt(17.72495, df=n-1, lower.tail=T)
+
+#use t-test
+t.test(alzheimer_healthy$lhippo, mu=3, alternative = "less")  
+```
+
+# EXAMPLE 1 R: RIGHT-TAILED
+
+-   Suppose we consider $H_0: \mu=3 \mbox{ vs } H_1: \mu>3$.
+
+-   Again, p-value should be calculated to reflect the direction of $H_1$.
+
+::: {style="text-align: center;"}
+![](images/clipboard-4027981191.png){width="30%"}
+:::
+
+```{r}
+#| code-fold: true
+#use the CDF of t to compute p-value
+pt(17.72495, df=n-1, lower.tail=F)
+#use t-test
+t.test(alzheimer_healthy$lhippo, mu=3, alternative = "greater")  
+```
+
+## EXAMPLE 1: SUMMARY
+
+We have presented **one-sample t-test**.
+
+::: {style="text-align: center;"}
+![](images/clipboard-2496702990.png){width="80%"}
+:::
+
+# Example 2
+
+## Example 2
+- **Research Question**: Is the proportion of healthy adults with a >3cm$^3$ right hippocampus 50%?
+
+- **Null Hypothesis**: The proportion of healthy adults with a >3cm$^3$
+ right hippocampus is 50%.
+
+- **Alternative Hypothesis**: The proportion of healthy adults with a >3cm$^3$ right hippocampus is greater than 50%.
+
+$$H_0: p=0.5 \mbox{ vs } p>0.5 $$
+
+- Method: **one-sample proportion z-test** (one-tailed/sided, right-tailed)
+
+
+## Example 2
+
+::: {style="font-size: 75%;"}
+- To construct a test statistic for one-sample proportion test, we 
+
+1. calculate the sample proportion, denoted by $\hat p$.
+
+2. calculate its standard error, which equals $\hat p (1-\hat p)/\sqrt{n}$ .
+
+3. obtain a standardized test statistics
+
+$$\frac{\hat p - p_0}{\sqrt{\hat p (1-\hat p)/n}}$$
+
+where $p_0$ is the hypothetical value specified in $H_0:p=p_0$.
+
+4. compare to the $N(0,1)$, which is the approximate null distribution of the test statistic.
+:::
+
+## Example 2
+```{r}
+#| code-fold: true
+phat=mean(alzheimer_healthy$lhippo>3 )
+phat
+
+phat.se=sqrt(phat*(1-phat)/n)
+phat.se
+
+(phat-0.5)/phat.se
+
+#p-value
+pnorm((phat-0.5)/phat.se, lower.tail = F)
+```
+
+
+# EXAMPLE 3
+
+## Example 3
+- **Research Question**: Does healthy men and women have the same mean left hippocampus volume?
+
+- **Null Hypothesis**: Healthy men and women have the same mean left hippocampus volume.
+
+- **Alternative Hypothesis**: Healthy men and women have different mean left hippocampus volume.
+
+$$H_0: \mu_f = \mu_m \mbox{ vs } H_1: \mu_f \not= \mu_m$$
+
+- Method: **two-sample t-test**, which compares the mean of two populations
+
+## Example 3
+- The way to construct a two-sample t-test statistic is similar to that for one-sample t-test.
+
+1. Calculate the difference in the sample means between two groups
+2. Calculate the standard error of the difference in sample means
+3. Standardize it to construct a test statistic
+4. Compare this two-sample t.test to the reference/null distribution, which is a t-distribution
+
+
+## EXAMPLE 3
+- One complication: whether to assume the two populations have the same variance
+  - The results of the two versions might be slightly different
+  - the default in R is unequal variance
+
+## EXAMPEL 3
+We will present the result of two-sided test. If desired, we can also perform one-sided tests.
+
+```{r}
+#| code-fold: true
+t.test(alzheimer_healthy$lhippo[alzheimer_healthy$female==0], alzheimer_healthy$lhippo[alzheimer_healthy$female==1])
+
+t.test(alzheimer_healthy$lhippo ~ alzheimer_healthy$female)
+```
+  
+  
+#  EXAMPLE 4
+## EXAMPLE 4
+- **Research Question**: Is human’s left hippocampus volume the same as the right hippocampus volume?
+
+- **Null Hypothesis**: Human’s left hippocampus volume is the same as the right hippocampus volume.
+
+- **Alternative Hypothesis**: Human’s left hippocampus volume is not the same as the right hippocampus volume.
+
+$$H_0: \mu_L = \mu_R \mbox{ vs } \mu_L \not= \mu_R$$
+
+- Method: **paired t-test**
+
+## Example 4
+- It is attempting to perform a two-sample t-test
+- However, one fundamental assumption in the two-sample problem is that the two samples should be independent, such as the female group vs the male group. 
+- Here we are looking at two features (left vs right hippocampus) of the same subjects. The correct test is 
+- **paired t-test**, which equivalent to perform a one-sample t-test using the differences
+
+
+## Example 4
+```{r}
+#| code-fold: true
+t.test(alzheimer_data$rhippo, alzheimer_data$lhippo, paired = T)
+
+#equivalently, 
+t.test(alzheimer_data$rhippo- alzheimer_data$lhippo)
+```
+
+# Example 5
+
+## Example 5
+
+- **Research Question**: Is having a greater right vs left hippocampus associated with gender in healthy adults?
+
+- This is category variable vs category variable problem
+
+- Method: **chi-squared test**
+
+```{r}
+#| code-fold: true
+
+table(alzheimer_data$rhippo>alzheimer_data$lhippo,
+      alzheimer_data$female)
+
+chisq.test(table(alzheimer_data$rhippo>alzheimer_data$lhippo,
+      alzheimer_data$female))
+```
+
+
+# Example 6
+
+## Example 6
+- **Research Question**: Is hippocampus volume correlated with age in healthy adults?
+
+- **Null Hypothesis**: hippocampus volume and age are not correlated.
+- **Alternative Hypothesis**: hippocampus volume and age are not correlated.
+
+$$H_0: \rho=0 \mbox{ vs } H_1: \rho\not=0$$
+
+- Method: correlation test, more general, linear regression.
+
+## Example 6: Visualization
+```{r}
+#| code-fold: true
+#| fig-align: center
+
+alzheimer_healthy$hippo = (alzheimer_healthy$lhippo+alzheimer_healthy$rhippo)/2
+
+plot(alzheimer_healthy$age, alzheimer_healthy$hippo)
+```
+Discussion: is there a linear trend? are there regions of concerns? 
+
+
+## Example 6
+```{r}
+#| code-fold: true
+
+cor.test(alzheimer_healthy$age, alzheimer_healthy$hippo)
+
+#alternatively, we can use linear regression
+summary(lm(alzheimer_healthy$hippo ~ alzheimer_healthy$age))
+```
+
+# Example 7
+
+## Example 7
+- **Research Question**: Does left hippocampus volume differ across diagnosis groups?
+
+- **Null Hypothesis**: 
+
+- **Alternative Hypothesis**:
+
+$$H_0: \mu_0=\mu_1=\mu_2 \mbox{ vs } H_1: \mbox{ at least two means are different}$$
+
+- Method: one-way analysis of variance (ANOVA), more generally, linear regression
+
+## Example 7
+```{r}
+#| code-fold: true
+
+
+summary(aov(alzheimer_data$lhippo ~ alzheimer_data$diagnosis))
+
+#equivalently
+summary(aov(lhippo ~ diagnosis, data=alzheimer_data))
+```
+
+## NONPARAMETRIC TESTS
+
+::: {style="font-size: 75%;"}
+- The tests we introduced might not work well for small sample sizes.
+
+- There are corresponding parametric methods, which are more robust. 
+ 
+1. one-sample t-test : signed rank test
+
+2. two-sample t-test : Mann-Whitney U test, also known as Wilcoxon rank sum test
+
+3. one-sample proportion test : binomial test
+
+4. paired t-test : signed rank test
+
+5. chi-squared test : Fisher’s exact test
+
+6. Pearson’s correlation : Spearman’s correlation
+
+7. one-way ANOVA : Kruskal-Wallis H test
+:::
+
+
