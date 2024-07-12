@@ -1,0 +1,57 @@
+---
+title: "Data Description: COVID Severity and single-cell RNA-sequencing"
+author: "Zhaoxia Yu"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    fig-align: center
+---
+
+
+## Background
+- This dataset was published in a recent article: 
+
+::: {style="font-size: 50%;"}
+chulte-Schrepping J., Reusch N., Paclik D., Baßler K., Schlickeiser S., Zhang B., Krämer B., Krammer T., Brumhard S., Bonaguro L., et al.: Severe covid-19 is marked by a dysregulated myeloid cell compartment. Cell 182(6), 1419–1440 (2020)
+:::
+
+- After filtering out cells with very low expression and subjects without any covariates, we retained 48,266 cells from 8 mild and 10 severe COVID-19 patients.
+
+- The objective of this project is to identify cell types or genes that are associated with covid-19 severity. **Three** types of data have been provided. You can choose any one or multiple of them. 
+
+## Cell type proportion
+- There are totally 23 distinct cell types identified in the mild or severe COVID-19 patients. 
+- The meaning of the data frame is as follows:
+  - donor: patient ID;
+  - cell_type: a specific cell type;
+  - prop: proportion of this cell type in this donor;
+  - age/sex/condition: the covariate information of this donor.
+
+## Mean gene expression of all cells
+- We calculated the mean gene expression across all cells for each patient.
+- Variable Names: 
+  - donor: patient ID;
+  - gene: a specific gene name;
+  - expr: mean expression value of this gene in this donor;
+  - age/sex/condition: the covariate information of this donor.
+
+## Mean gene expression cells from CD8+ T cells
+- Additionally, we focused on the cell type of interest, specifically CD8+ T - cells. Again, the mean gene expression levels are computed. 
+- Variable Names: 
+  - donor: patient ID;
+  - gene: a specific gene name;
+  - expr: mean expression value of this gene in this donor;
+  - age/sex/condition: the covariate information of this donor.
+
+## Data Wrangling
+- The data sets are relatively organized. 
+- The only problem is that all the data are in the long-formats. 
+- Cell propotion data: there are 23 cell types, which is not too bad.
+- Gene expression in all cells or in CD8+ T cells: the number of genes is large. You have to write a loop to analyze one gene at a time. 

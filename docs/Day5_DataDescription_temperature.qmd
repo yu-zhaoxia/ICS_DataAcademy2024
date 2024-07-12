@@ -1,0 +1,57 @@
+---
+title: "Project - Normal Body Temperature"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    fig-align: center
+---
+
+## Load Libraries
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
+
+## Background
+- The original study was published in 2020:
+
+- Protsiv, M., Ley, C., Lankester, J., Hastie, T. and Parsonnet, J., 2020. Decreasing human body temperature in the United States since the industrial revolution. Elife, 9, p.e49555.
+
+## Background
+- The article studied whether and how normal body temperature changed in the past 160 years. It examined three studies:
+  - Union Army Veterans of the Civil War (UAVCW) Data: measurement years 1860–1940
+  - National Health and Nutrition Examination Survey I: 1971–1975
+  - Stanford Translational Research Integrated Database Environment: 2007–2017
+
+## Your Project 
+
+- In your project, please focus on the UAVCW data. 
+
+- Based on the UAVCW data, please try to understand what factors were associated with normal body temperature between 1860 and 1940. 
+
+- Be sure to interpret your results in a scientific context. 
+
+- Conducting research on relevant literature is always a good idea.
+
+- Conclude your presentation with a discussion to (1) highlight your main findings and (2) state any limitations of your study. 
+
+## Read Data
+```{r}
+uavcw=read.csv('data4_temperature/veterans_processed.csv')
+dim(uavcw)
+par(mfrow=c(1,2))
+plot(unlist(lapply(split(uavcw$temp_C, uavcw$examyear), mean)))
+plot(temp_C ~ examyear, data=uavcw)
+
+#do some exploratory analysis
+#decide whether you would like to focus on a specific subset of data
+```
+

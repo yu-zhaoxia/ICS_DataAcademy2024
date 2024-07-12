@@ -1,0 +1,97 @@
+---
+title: "Project - Poverty and Students' Performance"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    fig-align: center
+---
+
+## Load Libraries
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
+
+## Background
+
+- Education is a key driver of social mobility.
+- In this project, you will study how students' performance is associated with poverty. 
+- The data is from California Department of Education
+- I have processed the data for 4th graders. Feel free to use it. If you would like to also study other grades, you need to wrangle the raw data to extract the part you need. 
+
+## Your Project
+
+- Goal: to investigate how socio-economic factors influence academic achievement.
+
+- Examine whether school type and size/enrollment should be considered. For example, 
+  - should very small schools behave differently and should be analyzed separately? 
+  - Many School Types are rare. Should you focus on the most frequent type, which is ``Elementary Schools (Public)``? 
+
+- Feel free to explore other factors/variables that are associated with performance. 
+
+## Data Source: Poverty
+
+Website: <https://www.cde.ca.gov/ds/ad/filessp.asp>
+
+Data Information: https://www.cde.ca.gov/ds/ad/fsspfrpm.asp
+
+Data File: frpm2223.xlsx:
+
+![](images/clipboard-1379949878.png)
+
+## Data Source: Students' Performance
+
+- California Assessment of Student Performance and Progress (CAASPP) Smarter Balanced Assessments 
+- Description
+<https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB?ps=true&lstTestYear=2023&lstTestType=B&lstCounty=00&lstDistrict=00000&lstFocus=a>
+- Data File: sb_ca2023_1_csv_v1.txt is a caret separated/delimited csv file
+- Information about the variables, such as Test ID, can be found here
+<https://caaspp-elpac.ets.org/caaspp/ResearchFileFormatSB?ps=true&lstTestYear=2023&lstTestType=B>
+
+
+
+# Data Cleaning 
+
+## Read Poverty Data
+
+```{r}
+#read the excel file
+frpm=readxl::read_xlsx('data2_poverty_performance/frpm2223.xlsx', skip = 1, .name_repair = function(x) gsub("\\s+", "_", x))
+
+#rename the variables
+colnames(frpm)=c("Academic.Year", "County.Code", "District.Code", "School.Code", "County.Name", "District.Name", "School.Name", "District.Type", "School.Type", "Educational.Option.Type", "NSLP.Provision.Status", "Charter.School", "Charter.School.Number", "Charter.Funding.Type",  "IRC", "Low.Grade", "High.Grade", "Enrollment", "Free.Meal.Count", "Percent.Eligible.Free",  "FRPM.Count", "Percent.Eligible.FRPM",  "Enrollment_(Ages_5-17)", "Free_Meal_Count_(Ages_5-17)", "Percent_(%)_Eligible_Free_(Ages_5-17)", "FRPM_Count_(Ages_5-17)",  "Percent_(%)_Eligible_FRPM_(Ages_5-17)", "CALPADS")
+
+
+frpm = frpm %>% filter(School.Code!="0000000") %>% filter(School.Code != "0000001")
+frpm$School.Code = as.numeric(frpm$School.Code)
+```
+
+## Read Student Performance Data
+- We only focus on 4th graders
+```{r}
+#read the caret delimited csv file
+g4perfor=read.csv("data2_poverty_performance/sb_ca2023_1_csv_v1.txt", sep="^", head=T, na.strings = c("*")) %>%
+  filter(Grade==4) %>% filter(School.Code>0) 
+
+g4perfor = g4perfor[, -c(1:2)] #delete two columns that won't be used
+
+g4perfor.ela = g4perfor %>% filter(Test.ID==1)
+g4perfor.math = g4perfor %>% filter(Test.ID==2)
+```
+
+## Merge the poverty and performance data
+```{r}
+g4.ela=merge(frpm, g4perfor.ela, by="School.Code")
+g4.math=merge(frpm, g4perfor.math, by="School.Code")
+```
+
+- These two data frames are ready to use

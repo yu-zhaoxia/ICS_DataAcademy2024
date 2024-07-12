@@ -1,0 +1,181 @@
+---
+title: "Data Description: Colorectal Cancer and Serum Metabolic Profiling"
+author: "Zhaoxia Yu"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    fig-align: center
+---
+
+
+## Background
+-   Colorectal cancer (CRC) is among the most common (2nd in women and 3rd in men) and deadly cancers worldwide. Our understanding of its molecular pathogenesis has grown significantly over the past two decades.
+
+-   Despite advances, there's a pressing need for robust biomarkers to improve CRC screening, surveillance, and therapy monitoring.
+
+-   It has been known that cancer patients often show altered / abnormal metabolism.
+
+## Background
+-   A study monitored 158 **targeted** metabolites from 25 potentially significant metabolic pathways in 234 serum samples. These samples were collected from three patient groups: 66 CRC patients, 76 polyp patients (polyp is a benign status), and 92 healthy controls:
+
+::: {style="font-size: 50%;"}
+Zhu, Jiangjiang, Danijel Djukovic, Lingli Deng, Haiwei Gu, Farhan Himmati, E. Gabriela Chiorean, and Daniel Raftery. 2014. “Colorectal Cancer Detection Using Targeted Serum Metabolic Profiling.” Journal of Proteome Research 13 (9): 4120–30. https://doi.org/10.1021/pr500494u.
+:::
+-   The sample sizes in this data are larger, as more data were collected. 
+
+# Data Exploration
+
+## Read data
+
+A useful website about reading data from excel
+
+<http://www.sthda.com/english/wiki/reading-data-from-excel-files-xls-xlsx-into-r>
+
+```{r}
+#| code-fold: true
+#| results: hide
+
+# Load the library 
+library("tidyr")
+library("ggplot2")
+crc <- readxl::read_excel("data1_CRC/CRC raw data_ updated with patient ID.xlsx", sheet = "Sheet1", na=c("NA", "-"))
+attributes(crc)
+crc <- as.data.frame(crc)
+```
+
+## Explore the Data
+
+1.  Examine the data dimension and names
+
+    ```{r}
+    #| code-fold: true
+    #| results: hide
+
+    dim(crc)
+    names(crc)
+    ```
+
+2.  Check the first column
+
+    ```{r}
+    #| code-fold: true
+
+    #column 1 is the Group indicator: C, H, or P
+    table(crc$Groups)
+    ```
+
+## Explore the Data
+3.  Check the second column
+
+    ```{r}
+    #| code-fold: true
+
+    #column 2 is the patient ID
+    crc$`Patient   ID` %>% unique %>% length
+    ```
+
+4.  Columns 3-115 are metabolism variables. We will check the first nine by drawing their histograms
+
+    ```{r}
+    #| code-fold: true
+
+    par(mfrow=c(3,3))
+    for(i in 1:9)
+      hist(crc[,2+i]) 
+
+    #change the range of i to draw other ones
+    j=7
+    par(mfrow=c(3,3))
+    for(i in (9*j-8):(9*j))
+      hist(log(crc[,2+i]), main=paste(i))
+
+    ```
+
+## Explore the Data
+
+5.  Characteristics of a metabolism
+
+    ```{r}
+    #| code-fold: true
+
+    #mean, SD, skewness, 
+    #stratified by group
+    ```
+
+## Explore the Data
+6.  Columns 116-124 (clinical variables)
+
+    ```{r}
+    names(crc[,116:124])
+    colnames(crc)[116:124]=c('age', 'gender', 'smoking', 'alcohol', 'diagnosis', 
+                           'stage', 'height', 'weight', 'bmi')
+
+    ```
+
+## Explore the Data
+7.  Examine missing data. What is the missing mechanism? Are the undetected values really undetected or missing values? What way makes more sense?
+
+    ```{r}
+    i=56; j=57
+    ggplot(crc, aes(x=log(crc[,i+2]), y=log(crc[,j+2]), color=Groups))+
+      geom_point()
+    ```
+
+## Explore the Data
+8.  Correlation
+
+    ```{r}
+      library(corrplot)#for visualizing the corr matrix of the iris data
+      tmp=crc[,3:115]
+      colnames(tmp)=1:113
+      corrplot(cor(tmp), method="color", order = c("hclust"))
+      cor_mat=cor(crc[,3:115])
+      diag(cor_mat)=0
+      mean(apply(abs(cor_mat), 1, max)>0.75)
+      
+    ```
+
+## Explore the Data
+9.  Univariate analysis
+
+    ```{r}
+    i=0
+    #run the following lines again and gain to examine each metabolite
+    i=i+1; print(i)
+    tmp.frame=data.frame(y=log(tmp[,i]), x=crc$Groups)
+    ggplot(tmp.frame, aes(x=x, y=y, col=x)) + geom_point()
+    summary(lm(log(tmp[,i])~crc$Groups))$coefficients
+
+    ```
+
+## Scientific Questions
+
+-   In the healthy population,
+
+    -   the metabolisms are associated with which clinical / demographic variables?
+
+-   Which metabolisms are different between
+
+    -   healthy and cancer subjects?
+
+    -   healthy and polyp subjects?
+
+    -   polyp and cancer subjects?
+
+    -   between the two subtypes of cancer?
+
+## Scientific Questions
+-   Do different group have the same metabolite correlation structure?
+
+-   Missing data treatment: should the "1"s be replaced by "NA"? If we do so, can we improve "the results"?
+
+-   Use nested CV to correct the bias in predictive accuracy
+
+

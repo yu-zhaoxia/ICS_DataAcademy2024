@@ -1,0 +1,525 @@
+---
+title: "Day 4: Hypothesis Testing - Code Only & Visualizations"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+
+execute:
+  echo: true
+---
+
+# Load libraries
+
+```{r}
+#| code-fold: true
+#| 
+library(tidyverse)
+library(ggplot2)
+```
+
+## Read Data
+
+```{r}
+#| code-fold: true
+
+alzheimer_data <- read.csv('data/alzheimer_data.csv') %>% 
+  select(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) %>% 
+  mutate(diagnosis = as.factor(diagnosis), 
+         female = as.factor(female))
+
+
+alzheimer_healthy <- read.csv('data/alzheimer_data.csv') %>% 
+  select(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) %>% 
+  mutate(diagnosis = as.factor(diagnosis),
+         female = as.factor(female)) %>% 
+  filter(diagnosis==0)
+```
+
+# Recall: 
+
+1.  Is the mean **left hippocampus volume** of healthy adults $3cm^3$?
+2.  Is the **proportion** of healthy adults with a \> $$3cm^3$$ **right hippocampus volume** 50%?
+3.  Do healthy men and women **\[gender\]** have the same mean left hippocampus volume?
+4.  Is a human's **left hippocampus** **volume** the same as the **right hippocampus volume**?
+
+# Recall:
+
+5.  Is having a **greater right vs left hippocampus** associated with **gender**?
+6.  Is **hippocampus volume** correlated with **age** in healthy adults?
+7.  Does **left hippocampus volume** differ across **diagnosis** groups?
+
+# Example 1: One Sample t-test
+
+-   Is the mean **left hippocampus volume** of healthy adults $3cm^3$?
+
+    -   **1 Numerical Variable: Boxplot/Violin Plot/Histogram**
+
+## Example 1: visualization -- boxplot
+
+```{r}
+#| code-fold: true
+ggplot(data= alzheimer_data,
+       mapping= aes(x= lhippo)) +
+  geom_boxplot() +
+  geom_vline(xintercept= 3, 
+             color= "red",
+             lty= 2)+
+  labs(
+    title="Boxplot of lhippo, vs 3",
+    x="volume ((cm^3))",
+    y="lhippo") +  
+  theme_minimal()
+```
+
+## Example 1: visualization-- violin plot
+
+```{r}
+#| code-fold: true
+
+ggplot(data= alzheimer_data,
+       mapping= aes(x= lhippo, y="")) +
+  geom_violin() +
+  geom_vline(xintercept= 3, 
+             color= "red",
+             lty= 2)+
+  geom_vline(xintercept= mean(alzheimer_data$lhippo), 
+             color= "black")+
+  labs(
+    title="Violin of lhippo vs 3",
+    x="volume (cm^3)",
+    y="lhippo") +  
+  theme_minimal()
+```
+
+```{r}
+#| code-fold: true
+
+ggplot(data= alzheimer_data,
+       mapping= aes(x= lhippo)) +
+  geom_histogram(bins = 30) +
+  labs(
+    title="Violin of lhippo, vs 3",
+    x="lhippo",
+    y="Count") +  
+  theme_minimal() 
+```
+
+## Example 1: calculate mean
+
+```{r}
+#| code-fold: true
+mean(alzheimer_healthy$lhippo)
+```
+
+## Example 1: Calculate the test statistics
+
+```{r}
+#| code-fold: true
+n=length(alzheimer_healthy$lhippo)
+(mean(alzheimer_healthy$lhippo)-3)/ (sd(alzheimer_healthy$lhippo)/sqrt(n))
+```
+
+## Example 1: Calculate P-value Manually
+
+-   probability of **greater than** 17.72495
+
+    ```{r}
+    #| code-fold: true
+    pt(17.72495, df=n-1, lower.tail=F)
+    ```
+
+-   probability of **less than** -17.72495
+
+    ```{r}
+    #| code-fold: true
+    pt(-17.72495, df=n-1, lower.tail=T)
+    ```
+
+```{=html}
+<!-- -->
+```
+-   p-value: **greater than** 17.72495 *OR* **less than** -17.72495
+
+    ```{r}
+    #| code-fold: true
+    pt(17.72495, df=n-1, lower.tail=F) + pt(-17.72495, df=n-1, lower.tail=T)
+    ```
+
+# Example 1: Use t.test 
+
+We don't have to the calculation manually. We can run a one-sample t-test using `t.test`
+
+```{r}
+#| code-fold: true
+
+#the default test is two-tailed/sided
+t.test(alzheimer_healthy$lhippo, mu=3)  
+```
+
+# Example 1: Left-Tailed
+
+-   Only interested in area **below** 17.72495
+
+```{r}
+#| code-fold: true
+#use the CDF of t to compute p-value
+pt(17.72495, df=n-1, lower.tail=T)
+
+#use t-test
+t.test(alzheimer_healthy$lhippo, mu=3, alternative = "less")  
+```
+
+# EXAMPLE 1: Right- Tailed
+
+-   Only interested in area **above** 17.72495
+
+```{r}
+#| code-fold: true
+#use the CDF of t to compute p-value
+pt(17.72495, df=n-1, lower.tail=F)
+#use t-test
+t.test(alzheimer_healthy$lhippo, mu=3, alternative = "greater")  
+```
+
+# Example 2: one-sample proportion z-test
+
+-   Is the **proportion** of healthy adults with a \> $3cm^3$ **right hippocampus volume** 50%?
+
+    -   Categorical: Table/Barplot
+
+## Example 2: Visualization
+
+
+## Example 2: testing
+
+```{r}
+#| code-fold: true
+phat=mean(alzheimer_healthy$lhippo>3)
+phat
+
+phat.se=sqrt(phat*(1-phat)/n)
+phat.se
+
+(phat-0.5)/phat.se
+
+#p-value
+pnorm((phat-0.5)/phat.se, lower.tail = F) # p value close to zero indicating this is extreeme value unlikely to have occurred under the null
+```
+
+# EXAMPLE 3: Two-Sample t-test
+
+1.  Do healthy men and women **\[gender\]** have the same mean **left hippocampus volume**?
+    -   Categorical (gender) and Numerical (Left Hippocampus) :
+
+        -   Side by Side Boxplot
+
+        -   Side by Side Violin
+
+        -   2 Histograms
+
+## Example 3: Visualization -- boxplot
+
+```{r}
+#| code-fold: true
+
+ggplot(data= alzheimer_healthy,
+       mapping= aes(x= female, 
+                    y=lhippo,
+                    fill=female)) +
+  geom_boxplot()+
+  labs(
+    title="Boxplot of lhippo by Gender",
+    x="Gender",
+    y="LHippo volume (cm^3)") +  
+  theme_minimal()
+```
+
+## Example 3: Visualization -- violin
+
+```{r}
+#| code-fold: true
+ggplot(data= alzheimer_healthy,
+       mapping= aes(x= female, 
+                    y=lhippo,
+                    fill=female)) +
+  geom_violin()+
+  labs(
+    title="Violin of lhippo by Gender",
+    x="Gender",
+    y="LHippo volume (cm^3)") +  
+  theme_minimal()
+```
+
+## Example 3: Visualization -- histogram
+
+```{r}
+#| code-fold: true
+ggplot(data= alzheimer_healthy,
+       mapping= aes(x=lhippo,
+                    fill=female)) +
+  geom_histogram(bins=35)+
+  labs(
+    title="Histogram of Lhippo by Gender",
+    x="LHippo volume (cm^3)",
+    y="Count") 
+```
+
+## Example 3: use t.test
+
+```{r}
+#| code-fold: true
+t.test(alzheimer_healthy$lhippo[alzheimer_healthy$female==0], alzheimer_healthy$lhippo[alzheimer_healthy$female==1])
+
+t.test(alzheimer_healthy$lhippo ~ alzheimer_healthy$female)
+```
+
+# Example 4: paired t-test
+
+-   Is a human's **left hippocampus** **volume** the same as the **right hippocampus volume**?
+
+    -    2 Numerical data:
+
+        -   Side by side boxplot
+
+        -   side by side violin plot
+
+        -   2 histograms
+
+# Example 4: 2 Group vs Paired Test
+
+-   Whats the difference:
+
+    -   Before we had Gender vs LHippo, no one gets to have both Female/Male Gender, thus we are **splitting Lhippo by gender**.
+
+        -   Comparing some number of men, to some number of women.
+
+-   Here we have Lhippo and right hippo, every person has both scores \[everyone has both sides of their own brain.\]
+
+    -   Comparing everyone's Lhippo, to everyone's Rhippo
+
+## Example 4: Visualization -- boxplots
+
+```{r}
+#| code-fold: true
+
+ggplot(data = alzheimer_data) +
+  geom_boxplot(aes(x = factor(1), y = rhippo), fill = "blue") +
+  geom_boxplot(aes(x = factor(2), y = lhippo), fill = "red") +
+  labs(
+    title = "Boxplot of rhippo vs lhippo",
+    x = "Hippocampus Region",
+    y = "Volume (cm^3)"
+  ) +
+  scale_x_discrete(labels = c("right", "left")) +  # Adjust x-axis labels
+  theme_minimal()
+```
+
+## Example 4: Visualization -- scatter plot
+
+```{r}
+#| code-fold: true
+
+ggplot(data = alzheimer_data) +
+  geom_point(aes(x = lhippo, y = rhippo)) +  labs(
+    title = "Boxplot of rhippo vs lhippo",
+    x = "Hippocampus Region",
+    y = "Volume (cm^3)"
+  ) +
+  geom_abline(intercept = 0, slope=1)+
+  scale_x_discrete(labels = c("right", "left")) +  # Adjust x-axis labels
+  theme_minimal()
+```
+
+## Example 4: Visualization -- histograms
+
+```{r}
+#| code-fold: true
+alzheimer_data$hippo.diff=alzheimer_data$rhippo - alzheimer_data$lhippo
+ggplot(data = alzheimer_data) +
+  geom_histogram(aes(x = hippo.diff, fill = "rhippo"), alpha = 0.6, bins = 40) +
+  geom_vline(xintercept = 0)+
+  labs(
+    title = "Histogram of right vs left Hippocampus",
+    x = "Volume (cm^3)",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+
+## Example 4: use t.test
+
+```{r}
+#| code-fold: true
+t.test(alzheimer_data$rhippo, alzheimer_data$lhippo, paired = T)
+
+#equivalently, 
+t.test(alzheimer_data$rhippo- alzheimer_data$lhippo)
+```
+
+# Example 5: chi-squared test
+
+-   Is having a **greater right vs left hippocampus** associated with **gender**?
+
+    -   2 Categorical: table, barplot
+
+## Example 5: visualization
+
+```{r}
+#| code-fold: true
+
+alzheimer_data$bigger_right <- as.factor(ifelse(alzheimer_data$rhippo > alzheimer_data$lhippo,"Right Bigger", "Left Bigger"))
+
+table_prop <- prop.table(table(alzheimer_data$female, alzheimer_data$bigger_right))
+rownames(table_prop) <- c("Male", "Female")
+print(table_prop)
+
+ggplot(data = alzheimer_data,
+       aes(x = female, fill = bigger_right)) +
+  geom_bar(position = "dodge") +
+  labs(
+    title = "Distribution of Gender by Diagnosis",
+    x = "Gender",
+    y = "Count"
+  )  +  
+  theme_minimal()
+```
+
+## Example 5: use chisq.test
+
+```{r}
+#| code-fold: true
+
+table(alzheimer_data$rhippo>alzheimer_data$lhippo,
+      alzheimer_data$female)
+
+chisq.test(table(alzheimer_data$rhippo>alzheimer_data$lhippo,
+      alzheimer_data$female))
+```
+
+# Example 6: Correlation
+
+-   Is **hippocampus volume \[average\]** correlated with **age** in healthy adults?
+    -   2 Numerical: Dot Plot, histogram, boxplot
+        -   **Since we are interested in correlation \[linear\] we will want to plot them in a scatter plot cloud.**
+
+## Example 6: Visualization
+
+```{r}
+#| code-fold: true
+#| fig-align: center
+
+alzheimer_healthy$hippo = (alzheimer_healthy$lhippo+alzheimer_healthy$rhippo)/2
+
+plot(alzheimer_healthy$age, alzheimer_healthy$hippo)
+
+ggplot(alzheimer_healthy, 
+       aes(x=age,y=hippo))+
+  geom_point()+
+  labs(
+    title="Scatterplot of Hippo vs Age: Healthy Adults",
+    x="Age (Years)",
+    y="Hippo (cm^3)") +  
+  theme_minimal()
+```
+
+Discussion: is there a linear trend? are there regions of concerns?
+
+## Example 6: cor.test
+
+```{r}
+#| code-fold: true
+
+cor.test(alzheimer_healthy$age, alzheimer_healthy$hippo)
+
+#alternatively, we can use linear regression
+summary(lm(alzheimer_healthy$hippo ~ alzheimer_healthy$age))
+```
+
+# Example 7: one-way ANOVA
+
+-   Does **left hippocampus volume** differ across **diagnosis\[\>2 categories\]** groups?
+
+    -   Does not look for any specific difference just if there's any
+
+        -   Numerical \[L-hippo\] and Categorical \[diagnosis\]
+
+            -   Size by side boxplot \[now 3\]
+
+            -   Side by side violin \[now 3\]
+
+            -   Histogram \[now 3\]
+
+## Example 7: Visualizaiton -- Boxplot
+
+```{r}
+#| code-fold: true
+
+ggplot(alzheimer_data,
+       aes(x=diagnosis,
+           y=lhippo,
+           fill=diagnosis))+
+  geom_boxplot()+
+  labs(
+    title="Boxplot of L-Hippo vs Diagnosis",
+    x="Diagnosis",
+    y="L-Hippo (cm^3)") +  
+  theme_minimal()
+```
+
+## Example 7: Visualizaiton -- Violin
+
+```{r}
+#| code-fold: true
+
+ggplot(alzheimer_data,
+       aes(x=diagnosis,
+           y=lhippo,
+           fill=diagnosis))+
+  geom_violin()+
+  labs(
+    title="Violin Plot of L-Hippo vs Diagnosis",
+    x="Diagnosis",
+    y="L-Hippo (cm^3)") +  
+  theme_minimal()
+```
+
+## Example 7: Histogram
+
+```{r}
+#| code-fold: true
+
+ggplot(data= alzheimer_data,
+       mapping= aes(x=lhippo,
+                    fill=diagnosis)) +
+  geom_histogram(bins=35)+
+  labs(
+    title="Histogram of Lhippo by Diagnosis",
+    x="LHippo volume (cm^3)",
+    y="Count")
+```
+
+## Example 7: aov test 
+
+```{r}
+#| code-fold: true
+
+summary(aov(alzheimer_data$lhippo ~ alzheimer_data$diagnosis))
+
+#equivalently
+summary(aov(lhippo ~ diagnosis, data=alzheimer_data))
+
+```
+
+## Example 7: aov post-hoc test
+
+```{r}
+#| code-fold: true
+model <- aov(lhippo ~ diagnosis, data = alzheimer_data)
+TukeyHSD(model)
+```
