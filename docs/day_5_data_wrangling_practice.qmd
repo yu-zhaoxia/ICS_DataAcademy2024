@@ -1,0 +1,409 @@
+---
+title: "Day 5: Data Wrangling Practice"
+author: "Sara Tyo, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    scrollable: true
+    theme: "simple"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    fig-align: center
+---
+
+# Data Wrangling
+
+## Load Libraries & Data
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+data(diamonds)
+```
+
+# dim, colnames, str
+
+```{r}
+#| code-fold: true
+
+```
+
+# glimpse, head, head(,10), slice
+
+```{r}
+#| code-fold: true
+
+```
+
+# summary
+
+```{r}
+#| code-fold: true
+
+```
+
+
+# subset by row with filter()
+
+- filter diamonds by (1) ideal cut, (2) price > 1000, (3) both, (4) or
+
+
+```{r}
+#| code-fold: true
+
+#?dplyr::filter
+```
+
+# filter for missing values using is.na(), or !(is.na) 
+
+```{r}
+children <- c(2,3,4,NA,1)
+
+ # == vs is.na()
+
+```
+
+# subset by column with select()
+
+- subset to have just cut, and color
+- reverse order
+- use 1:4 to select
+
+```{r}
+#| code-fold: true
+
+#?dplyr::select
+```
+
+# select helper functions 
+- (starts_with, ends_with, -, contains, everything, last_col, last_col offset)
+
+```{r}
+#| code-fold: true
+
+```
+
+# reorder rows with arrange
+
+- maybe want height in ascending/descending order
+- makes it easier to find outliers
+
+- numerical: sorts by size/number
+- categorical (alphabet) Goes A to B to C ... to Z
+- categorical factor: Goes by the storage, so by level
+
+# reorder rows with arrange()
+- just color, carat, both, three vars, descending, or descending -.
+```{r}
+#| code-fold: true
+
+
+```
+
+# add or modify columns with mutate()
+
+1. how heavy is each ring's rock
+-     need to know how many grams 1 carat is
+
+2. price per carat
+
+3. rename levels cut tolower
+
+4. 
+
+```{r}
+#| code-fold: true
+
+#?diamonds
+
+# 1. add grams
+
+# 2. add price per carat
+
+# 3. rename/alter columns using mutate [change toupper or tolower]
+levels(diamonds$cut)
+
+
+# 4. add expensive variable using logic
+summary(diamonds$price)
+quantile(diamonds$price,.90)
+
+
+```
+
+# slice, slice_max, slice_min, slice_sample
+
+```{r}
+#| code-fold: true
+
+# ?slice
+# ?slice_max
+
+# 1. slice top 10
+
+# 2. slice by max price [most expensive]
+
+# 3. slice by min price [least expensive]
+
+# 4. slice_sample, some rows (anywhere)
+```
+
+# rename, rename(, all_of(key))
+
+```{r}
+#| code-fold: true
+
+#?rename
+
+# 1. Rename a column name/label: New then old, maybe change cut to Cut
+
+
+# 2. Rename multiple columns using a key c(new = "old", new = "old")
+# key_1 <- c()
+# rename(diamonds,all_of(key_1))
+
+# 3. Rename multiple columns using a key where one var wasn't a part of original
+# key_2 <- c(dollars = "price", shade = "color", shiny = "Shiny")
+# rename(diamonds, all_of(key_2))
+# rename(diamonds, any_of(key_2))
+
+```
+
+
+# summarise or summarize
+
+- get total num color of F and mean(price)
+
+```{r}
+#| code-fold: true
+
+summarise(diamonds,
+          "F Color"= sum(color == "F"),
+          "mean_price"=mean(price,na.rm=T))
+```
+
+# grouped summaries with group_by() and summarize()
+
+# Avg Price and num_cut: Group_by cut
+
+```{r}
+#| code-fold: true
+
+```
+
+# Avg Price and num_color: Group_by  color
+
+```{r}
+#| code-fold: true
+
+```
+
+# Avg Price and num_cut_color: Group_by cut, color
+```{r}
+#| code-fold: true
+
+```
+
+# Avg Price and num_expensive: Group_By price > 1000
+ -  rename it to expensive
+ 
+```{r}
+#| code-fold: true
+
+```
+
+# Pivotting the data
+
+# pivot_wider()
+
+- make long dataset (id each 5 times, test 1- test 5, scores for each test)
+
+```{r}
+#| code-fold: true
+
+#?pivot_wider
+
+#long <- data.frame()
+
+# data
+# names from
+# values_from
+
+#wide <- pivot_wider()
+```
+
+# pivot_longer()
+
+- choose columns you want to combine
+- what is the new column name
+- what is the new column for their values
+
+```{r}
+#?pivot_longer
+
+#head(wide)
+
+# data
+# cols
+# names_to
+# values_to
+
+#long <- pivot_longer()
+```
+
+# Combine/Merge Data
+
+- wide 1 is some test score data for individuals 1:20
+- maybe we have another dataset with their sex, and height that we want to merge
+
+```{r}
+#| code-fold: true
+
+wide_2 <- data.frame() # id, sex, height
+
+#?merge
+
+#(x , y, by )
+
+# we can merge it with the long data [diff dimension] by the id
+
+# we can merge it with the wide data [same dimension] by the id
+```
+
+## merging by column but the column name is different in each
+
+- maybe instead of both having 'id' as label, maybe the 2nd had 'individual
+- 'individual', 'sex', 'age'
+
+```{r}
+#| code-fold: true
+
+wide_3 <- data.frame() # same as before but id is now "individual"
+
+#what happens when we run previous, just data, x, and y no by argument 
+```
+
+```{r}
+#| code-fold: true
+# now specify by for x, and by for y [x,y,by.x,by.y]
+```
+
+# write new dataset/dataframe and save it
+
+```{r}
+#| code-fold: true
+
+# ?write_csv
+# ?write_delim
+# ?write_excel_csv
+# ?write_excel
+
+#write_csv(x = cleaned_dataframe, file = "cleaned_dataframe.csv")
+#write_excel_csv(x = cleaned_dataframe, file ="cleaned_dataframe.csv")
+#read_csv(file = "cleaned_dataframe.csv")
+```
+
+
+# exporting ggplot images
+
+- explore if carat increase price increases 
+- color by the color of diamond
+- size by the carat size
+- alpha
+
+```{r}
+#| code-fold: true
+
+
+```
+
+# left join, right join, inner_join, full_join
+
+- venn- diagram
+
+```{r}
+#| code-fold: true
+
+employees <- data.frame(
+  EmployeeID = c(1, 2, 3),
+  Name = c("Alice", "Bob", "Charlie"),
+  DepartmentID = c(1, 2, NA)
+)
+
+departments <- data.frame(
+  DepartmentID = c(1, 2, 3),
+  DepartmentName = c("HR", "IT", "Finance")
+)
+glimpse(employees);glimpse(departments)
+```
+
+# left join
+```{r}
+#| code-fold: true
+#?left_join
+left_join(employees, departments, by = "DepartmentID")
+```
+
+# right_join
+```{r}
+#| code-fold: true
+
+#?right_join
+right_join(employees, departments, by = "DepartmentID")
+```
+
+# inner_join
+```{r}
+#| code-fold: true
+
+inner_join(employees, departments, by = "DepartmentID")
+```
+
+# full_join
+```{r}
+#| code-fold: true
+
+full_join(employees, departments, by = "DepartmentID")
+```
+
+
+# bind cols
+
+```{r}
+#| code-fold: true
+
+#?bind_cols
+#?bind_rows
+
+
+data_1 <- data.frame(
+  id= 1:10,
+  sex= c(rep("F", 5), rep("M", 5)),
+    x= rnorm(n=10))
+
+data_2 <- data.frame(
+  age = sample(size= 10, c(10, 20, 30, 40), replace=T),
+  y= rnorm(n= 10))
+
+bind_cols(data_1,data_2)
+```
+
+# bind_rows
+
+```{r}
+#| code-fold: true
+
+data_3 <- data.frame(
+  id= 1:10,
+  sex= c(rep("F", 5), rep("M", 5)))
+
+data_4 <- data.frame(
+  id= 11:20,
+  sex= c(rep("F", 5), rep("M", 5)))
+
+bind_rows(data_3,data_4)
+```

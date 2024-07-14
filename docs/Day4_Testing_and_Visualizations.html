@@ -10,8 +10,8 @@
 <link href="Day4_Testing_and_Visualizations_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.555">
 
-  <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-11">
+  <meta name="author" content="Zhaoxia Yu and Sara Tyo, Department of Statistics, University of California, Irvine">
+  <meta name="dcterms.date" content="2024-07-14">
   <title>Day 4: Hypothesis Testing - Code Only &amp; Visualizations</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -310,6 +310,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -397,12 +398,12 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Zhaoxia Yu, Department of Statistics, University of California, Irvine 
+Zhaoxia Yu and Sara Tyo, Department of Statistics, University of California, Irvine 
 </div>
 </div>
 </div>
 
-  <p class="date">2024-07-11</p>
+  <p class="date">2024-07-14</p>
 </section>
 <section>
 <section id="load-libraries" class="title-slide slide level1 center">
@@ -434,7 +435,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </details>
 </div>
 </section></section>
-<section id="recall" class="title-slide slide level1 center">
+<section id="recall" class="title-slide slide level1 center scrollable">
 <h1>Recall:</h1>
 <ol type="1">
 <li>Is the mean <strong>left hippocampus volume</strong> of healthy adults <span class="math inline">\(3cm^3\)</span>?</li>
@@ -444,7 +445,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </ol>
 </section>
 
-<section id="recall-1" class="title-slide slide level1 center">
+<section id="recall-1" class="title-slide slide level1 center scrollable">
 <h1>Recall:</h1>
 <ol start="5" type="1">
 <li>Is having a <strong>greater right vs left hippocampus</strong> associated with <strong>gender</strong>?</li>
@@ -739,7 +740,7 @@ mean of x
 </div>
 </section></section>
 <section>
-<section id="example-3-two-sample-t-test" class="title-slide slide level1 center">
+<section id="example-3-two-sample-t-test" class="title-slide slide level1 center scrollable">
 <h1>EXAMPLE 3: Two-Sample t-test</h1>
 <ol type="1">
 <li>Do healthy men and women <strong>[gender]</strong> have the same mean <strong>left hippocampus volume</strong>?

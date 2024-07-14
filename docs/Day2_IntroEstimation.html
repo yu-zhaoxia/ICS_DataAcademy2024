@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-09">
+  <meta name="dcterms.date" content="2024-07-14">
   <title>Day 2: Introduction to Estimation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -310,6 +310,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -402,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-09</p>
+  <p class="date">2024-07-14</p>
 </section>
 <section>
 <section id="introduction" class="title-slide slide level1 center">
@@ -537,8 +538,80 @@ s^{2}  =  \frac{\sum_{i=1}^{n}(x_{i} - \bar{x})^{2}}{n-1}.
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>alzheimer_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'data/alzheimer_data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>alzheimer_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'data/alzheimer_data.csv'</span>)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">dim</span>(alzheimer_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2700   57</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>alzheimer_subset <span class="ot">=</span>alzheimer_data[alzheimer_data<span class="sc">$</span>age<span class="sc">&lt;=</span><span class="dv">50</span> <span class="sc">&amp;</span> alzheimer_data<span class="sc">$</span>age<span class="sc">&gt;</span><span class="dv">40</span> <span class="sc">&amp;</span> alzheimer_data<span class="sc">$</span>female<span class="sc">==</span><span class="dv">1</span>, ]</span>
+<span id="cb3-2"><a href=""></a><span class="fu">dim</span>(alzheimer_subset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 70 57</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>hippo<span class="ot">=</span>alzheimer_subset<span class="sc">$</span>lhippo <span class="sc">+</span> alzheimer_subset<span class="sc">$</span>rhippo</span>
+<span id="cb5-2"><a href=""></a><span class="co">#estimate of mean</span></span>
+<span id="cb5-3"><a href=""></a><span class="fu">mean</span>(hippo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.470666</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co">#standard error</span></span>
+<span id="cb7-2"><a href=""></a><span class="fu">sd</span>(hippo)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(hippo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1023539</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co">#a 95% c.i. using z-critical value</span></span>
+<span id="cb9-2"><a href=""></a><span class="fu">mean</span>(hippo) <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(hippo)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(hippo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.265958</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">mean</span>(hippo) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(hippo)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(hippo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.675374</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">mean</span>(hippo) <span class="sc">-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)<span class="sc">*</span><span class="fu">sd</span>(hippo)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(hippo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.270056</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">mean</span>(hippo) <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)<span class="sc">*</span><span class="fu">sd</span>(hippo)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(hippo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.671276</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">mean</span>(hippo) <span class="sc">-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df=</span><span class="fu">length</span>(hippo)<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(hippo)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(hippo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.266475</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">mean</span>(hippo) <span class="sc">+</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df=</span><span class="fu">length</span>(hippo)<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(hippo)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(hippo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.674856</code></pre>
+</div>
 </div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">

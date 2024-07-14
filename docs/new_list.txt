@@ -1,0 +1,36 @@
+	ID	first	last	1st	2nd	3rd	4th	Project			
+1	2	Alvin	Chen	A	B	D	C	A	A:	6	1
+2	26	Pragnya	Ramkumar	A	C	B	D	A	B:	18	3
+3	16	Kaiwen	Yao	B	D	C	A	B	C:	5	1
+4	23	Mason	Neurauter	A	B	C	D	A	D:	6	1
+5	27	Prayag	Sameth	B	D	C	A	B			
+6	14	Jules Mykheal	Luarte de Small	A	B	C	D	A			
+7	5	Bryan	Chipahua	B	D	A	C	B			
+8	29	Reese	Zhong	D	C	B	A	D			
+9	35	Wei-Cheng	Tseng	A	C	D	B	A			
+10	8	David	Wong	C	B	A	D	C			
+11	18	Khushi	Jain	B	C	A	D	C	switched		
+12	25	Pablo	Silva Lizarraga	B	A	D	C	B			
+13	6	Ceidy	Hernandez	D	B	C	A	D			
+14	12	Jiwon	Chung	D	B	A	C	D			
+15	10	Hector	Jessen	B	A	D	C	B			
+16	7	Chloe	Goodman	B	D	C	A	B			
+17	33	Troy	Yeh	D	B	C	A	D			
+18	13	Joshua	Virgen	B	D	C	A	B			
+19	4	Avery	Seaman	B	C	D	A	B			
+20	34	Tyler	Nguyen	B	D	C	A	B			
+21	9	Evan	Oshima	D	A	C	B	D			
+22	19	Laura	Zimny	B	D	A	C	B			
+23	21	Mana	Golozari	B	D	C	A	B			
+24	11	Jason	Sun	A	C	B	D	A			
+25	20	Lauren	Sunkin	B	D	C	A	B			
+26	28	Quan	Ho	C	B	D	A	C			
+27	15	Junpyo	Hong	B	D	C	A	B			
+28	31	Samantha	Wang	A	C	B	D	C			
+29	22	Manusvath	Gurudath	B	D	C	A	B			
+30	32	Seher	Subedar	B	C	D	A	B			
+31	30	Sahana	Ananth	B	C	A	D	B			
+32	17	Kenneth	Coats	C	B	D	A	C			
+33	3	Anaika	Nagireddy	B	C	A	D	B			
+34	24	Maximilian	Woo	B	D	A	C	B			
+35	1	Alexander	Wong	D	B	C	A	D			

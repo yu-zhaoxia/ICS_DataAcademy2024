@@ -7,13 +7,15 @@ author:
 date: "`r Sys.Date()`"
 format: 
   revealjs:
+    scrollable: true
     theme: "sky"
     slideNumber: true
     transition: "fade"
     progress: true
     controls: true
-    
-editor: visual
+    code-fold: true
+    echo: true
+    fig-align: center
 ---
 
 ```{r}

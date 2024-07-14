@@ -4,6 +4,7 @@ author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
 date: "`r Sys.Date()`"
 format: 
   revealjs:
+    scrollable: true
     theme: "sky"
     slideNumber: true
     transition: "fade"
@@ -70,8 +71,8 @@ frpm=readxl::read_xlsx('data2_poverty_performance/frpm2223.xlsx', skip = 1, .nam
 #rename the variables
 colnames(frpm)=c("Academic.Year", "County.Code", "District.Code", "School.Code", "County.Name", "District.Name", "School.Name", "District.Type", "School.Type", "Educational.Option.Type", "NSLP.Provision.Status", "Charter.School", "Charter.School.Number", "Charter.Funding.Type",  "IRC", "Low.Grade", "High.Grade", "Enrollment", "Free.Meal.Count", "Percent.Eligible.Free",  "FRPM.Count", "Percent.Eligible.FRPM",  "Enrollment_(Ages_5-17)", "Free_Meal_Count_(Ages_5-17)", "Percent_(%)_Eligible_Free_(Ages_5-17)", "FRPM_Count_(Ages_5-17)",  "Percent_(%)_Eligible_FRPM_(Ages_5-17)", "CALPADS")
 
-
 frpm = frpm %>% filter(School.Code!="0000000") %>% filter(School.Code != "0000001")
+
 frpm$School.Code = as.numeric(frpm$School.Code)
 ```
 

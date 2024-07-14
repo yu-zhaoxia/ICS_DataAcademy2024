@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-11">
+  <meta name="dcterms.date" content="2024-07-14">
   <title>Project - Poverty and Students’ Performance</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -310,6 +310,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -402,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-11</p>
+  <p class="date">2024-07-14</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -467,8 +468,8 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <span id="cb2-4"><a href=""></a><span class="co">#rename the variables</span></span>
 <span id="cb2-5"><a href=""></a><span class="fu">colnames</span>(frpm)<span class="ot">=</span><span class="fu">c</span>(<span class="st">"Academic.Year"</span>, <span class="st">"County.Code"</span>, <span class="st">"District.Code"</span>, <span class="st">"School.Code"</span>, <span class="st">"County.Name"</span>, <span class="st">"District.Name"</span>, <span class="st">"School.Name"</span>, <span class="st">"District.Type"</span>, <span class="st">"School.Type"</span>, <span class="st">"Educational.Option.Type"</span>, <span class="st">"NSLP.Provision.Status"</span>, <span class="st">"Charter.School"</span>, <span class="st">"Charter.School.Number"</span>, <span class="st">"Charter.Funding.Type"</span>,  <span class="st">"IRC"</span>, <span class="st">"Low.Grade"</span>, <span class="st">"High.Grade"</span>, <span class="st">"Enrollment"</span>, <span class="st">"Free.Meal.Count"</span>, <span class="st">"Percent.Eligible.Free"</span>,  <span class="st">"FRPM.Count"</span>, <span class="st">"Percent.Eligible.FRPM"</span>,  <span class="st">"Enrollment_(Ages_5-17)"</span>, <span class="st">"Free_Meal_Count_(Ages_5-17)"</span>, <span class="st">"Percent_(%)_Eligible_Free_(Ages_5-17)"</span>, <span class="st">"FRPM_Count_(Ages_5-17)"</span>,  <span class="st">"Percent_(%)_Eligible_FRPM_(Ages_5-17)"</span>, <span class="st">"CALPADS"</span>)</span>
 <span id="cb2-6"><a href=""></a></span>
-<span id="cb2-7"><a href=""></a></span>
-<span id="cb2-8"><a href=""></a>frpm <span class="ot">=</span> frpm <span class="sc">%&gt;%</span> <span class="fu">filter</span>(School.Code<span class="sc">!=</span><span class="st">"0000000"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(School.Code <span class="sc">!=</span> <span class="st">"0000001"</span>)</span>
+<span id="cb2-7"><a href=""></a>frpm <span class="ot">=</span> frpm <span class="sc">%&gt;%</span> <span class="fu">filter</span>(School.Code<span class="sc">!=</span><span class="st">"0000000"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(School.Code <span class="sc">!=</span> <span class="st">"0000001"</span>)</span>
+<span id="cb2-8"><a href=""></a></span>
 <span id="cb2-9"><a href=""></a>frpm<span class="sc">$</span>School.Code <span class="ot">=</span> <span class="fu">as.numeric</span>(frpm<span class="sc">$</span>School.Code)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>

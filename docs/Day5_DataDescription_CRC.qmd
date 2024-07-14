@@ -4,6 +4,7 @@ author: "Zhaoxia Yu"
 date: "`r Sys.Date()`"
 format: 
   revealjs:
+    scrollable: true
     theme: "sky"
     slideNumber: true
     transition: "fade"

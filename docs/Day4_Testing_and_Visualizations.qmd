@@ -1,17 +1,17 @@
 ---
 title: "Day 4: Hypothesis Testing - Code Only & Visualizations"
-author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+author: "Zhaoxia Yu and Sara Tyo, Department of Statistics, University of California, Irvine"
 date: "`r Sys.Date()`"
 format: 
   revealjs:
+    scrollable: true
     theme: "sky"
     slideNumber: true
     transition: "fade"
     progress: true
     controls: true
-
-execute:
-  echo: true
+    echo: true
+    fig-align: center
 ---
 
 # Load libraries

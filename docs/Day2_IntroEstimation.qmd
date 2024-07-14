@@ -4,11 +4,15 @@ author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
 date: "`r Sys.Date()`"
 format: 
   revealjs:
+    scrollable: true
     theme: "sky"
     slideNumber: true
     transition: "fade"
     progress: true
     controls: true
+    code-fold: true
+    echo: true
+    fig-align: center
 ---
 
 ```{r}

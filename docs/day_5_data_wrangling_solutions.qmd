@@ -1,0 +1,454 @@
+---
+title: "Day 5: Data Wrangling --  Solutions"
+author: "Sara Tyo, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    scrollable: true
+    theme: "simple"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    fig-align: center
+---
+
+# Data Wrangling
+
+## Load Libraries & Data
+
+```{r}
+#| code-fold: true
+
+library(tidyverse)
+data(diamonds)
+```
+
+# dim, colnames, str
+
+```{r}
+#| code-fold: true
+
+dim(diamonds)
+colnames(diamonds)
+str(diamonds)
+```
+
+# glimpse, head, slice
+
+```{r}
+#| code-fold: true
+
+glimpse(diamonds)
+head(diamonds)
+head(diamonds,10)
+slice(diamonds,1:10)
+```
+
+# summary
+
+```{r}
+#| code-fold: true
+
+summary(diamonds)
+```
+
+
+# subset by row with filter()
+
+```{r}
+#| code-fold: true
+
+#?dplyr::filter
+
+filter(diamonds, cut == "Ideal")
+filter(diamonds, price > 10000)
+filter(diamonds, cut == "Ideal" , # and
+       price > 10000)
+
+filter(diamonds, cut == "Ideal" | # or
+       price > 10000)
+```
+
+# filter for missing values using is.na(), or !(is.na) Missing vs not Missing
+
+```{r}
+children <- c(2,3,4,NA,1)
+children == NA
+is.na(children)
+```
+
+# subset by column with select()
+
+```{r}
+#| code-fold: true
+
+#?dplyr::select
+
+select(diamonds, cut, color)
+select(diamonds, color, cut) # reverses order
+
+colnames(diamonds)
+select(diamonds, 1:4)
+```
+
+# select helper functions (starts_with, ends_with, -, contains, everything, last_col)
+
+```{r}
+#| code-fold: true
+
+select(diamonds, starts_with("c"))
+
+select(diamonds, ends_with("y"))
+
+select(diamonds, -price)
+
+select(diamonds, contains("c"))
+
+select(diamonds, everything())
+
+
+select(diamonds, last_col())
+select(diamonds, last_col(5)) # offset
+
+```
+
+# reorder rows with arrange
+
+- maybe want height in ascending/descending order
+- makes it easier to find outliers
+
+- numerical: sorts by size/number
+- categorical (alphabet) Goes A to B to C ... to Z
+- categorical factor: Goes by the storage, so by level
+
+# reorder rows with arrange()
+
+```{r}
+#| code-fold: true
+
+arrange(diamonds, color)
+arrange(diamonds,carat)
+arrange(diamonds, color, carat)
+arrange(diamonds,color,carat,clarity)
+
+arrange(diamonds,desc(carat))
+arrange(diamonds,-carat)
+```
+
+# add or modify columns with mutate()
+
+- how heavy is each ring's rock
+- need to know how many grams 1 carat is
+
+- 0.2g per carat
+
+- take carat and then multiply it 0.2, and then save it as new variable called carat_grams
+
+```{r}
+#| code-fold: true
+
+#?diamonds
+mutate(diamonds, 
+       "carat_grams" = 0.2 * carat)
+
+mutate(diamonds, 
+       "carat_grams" = 0.2 * carat,
+       "price_carat" = price/carat)
+
+# rename/alter columns
+levels(diamonds$cut)
+
+mutate(diamonds,
+       "cut"=tolower(cut),
+       "carat_grams" = 0.2 * carat,
+       "price_carat" = price/carat)
+
+# new variable using filter/logic
+summary(diamonds$price)
+quantile(diamonds$price,.90)
+
+mutate(diamonds,
+       "cut"=tolower(cut),
+       "carat_grams" = 0.2 * carat,
+       "price_carat" = price/carat,
+       "expensive"= as.factor(price >= 9800))
+```
+
+# slice, slice_max, slice_min, slice_sample
+
+```{r}
+#| code-fold: true
+
+# ?slice
+# ?slice_max
+slice(diamonds,1:10)
+
+slice_max(diamonds, order_by=price)
+slice_min(diamonds, order_by=price)
+slice_sample(diamonds,)
+```
+
+# rename, rename(, all_of(key))
+
+```{r}
+#| code-fold: true
+
+#?rename
+rename(diamonds, "Cut"="cut") # New then old
+
+#?tidyselect::all_of()
+key <- c(dollars = "price", shade = "color")
+rename(diamonds, all_of(key))
+```
+
+
+# Summarise
+
+```{r}
+#| code-fold: true
+
+summarise(diamonds,
+          "F Color"= sum(color == "F"),
+          "mean_price"=mean(price,na.rm=T))
+```
+
+# grouped summaries with group_by() and summarize()
+
+# Avg Price: Group_by cut
+
+```{r}
+#| code-fold: true
+
+diamonds %>% 
+  group_by(cut) %>% 
+  summarise("num_cut"= n(),
+            "avg_price"= mean(price))
+```
+
+# Avg Price: Group_by  color
+
+```{r}
+#| code-fold: true
+
+diamonds %>% 
+  group_by(color) %>% 
+  summarise("num_cut"= n(),
+            "avg_price"= mean(price))
+```
+
+# Avg Price: Group_by cut, color
+```{r}
+#| code-fold: true
+
+diamonds %>% 
+  group_by(cut, color) %>% 
+  summarise("num_cut_color"= n(),
+            "avg_price"= mean(price))
+```
+
+# Group_By price > 1000
+
+```{r}
+#| code-fold: true
+
+diamonds %>% 
+  group_by("expensive"= price > 1000) %>% 
+  summarise("count"=n(),
+            "avg_price"=mean(price))
+```
+
+# Pivotting the data
+
+# pivot_wider()
+
+- make long dataset (id each 5 times, test 1- test 5, scores for each test)
+
+```{r}
+#| code-fold: true
+
+#?pivot_wider
+
+long <- data.frame(
+  id = rep(1:20, each=5),
+  test= as.factor(rep(c("test_1", "test_2","test_3", "test_4", "test_5"), 5)),
+  score=rnorm(n=100,75,sd=25))
+
+# data
+# names from
+# values_from
+
+wide <- pivot_wider(long,
+            names_from=test,
+            values_from =score)
+```
+
+# pivot_longer()
+
+```{r}
+#?pivot_longer
+
+head(wide)
+
+# cols
+# names_to
+# values_to
+
+long <- pivot_longer(wide,
+             cols= starts_with("test"),
+             names_to = "test",
+             values_to= "score")
+```
+
+# Combine/Merge Data
+
+```{r}
+#| code-fold: true
+
+wide_2 <- data.frame(
+  id = 1:20,
+  female = as.factor(rbinom(n= 20, 1, p= 0.5)),
+  height = rnorm(n= 20, mean= 60, sd= 10)
+)
+
+#?merge
+
+merge(x= wide, y= wide_2, by="id")
+```
+
+```{r}
+#| code-fold: true
+
+wide_3 <- data.frame(
+  individual = 1:100,
+  female = as.factor(rbinom(n= 100, 1, p= 0.5)),
+  height = rnorm(n= 100, mean= 60, sd= 10)
+)
+
+bad <- merge(x= wide, y= wide_3)
+merge(x= wide, y= wide_3, by.x="id", by.y="individual")
+```
+
+# write new dataset/dataframe and save it
+
+```{r}
+#| code-fold: true
+#| 
+wide_4 <- merge(x= wide, y= wide_3, by.x="id", by.y="individual")
+
+# ?write_csv
+# ?write_delim
+# ?write_excel_csv
+# ?write_excel
+
+#write_csv(x = wide_4, file ="cleaned_student.csv")
+#write_excel_csv(x = wide_4, file ="cleaned_student.csv")
+#read_csv(file = "cleaned_student.csv")
+```
+
+# exporting ggplot images
+
+```{r}
+#| code-fold: true
+ggplot(diamonds,
+       mapping= aes(x= carat, 
+                    y= price, 
+                    alpha= 0.5,
+                    color= color,
+                    size= carat))+
+  geom_point()+
+  labs(
+    title= "Diamonds: Price vs Carat with Color and Carat Size",
+    x= "Carat",
+    y= "Price ($)"
+  )+
+  theme_bw()
+```
+
+# left join, right join, inner_join, full_join
+
+- venn- diagram
+
+```{r}
+#| code-fold: true
+
+employees <- data.frame(
+  EmployeeID = c(1, 2, 3),
+  Name = c("Alice", "Bob", "Charlie"),
+  DepartmentID = c(1, 2, NA)
+)
+
+departments <- data.frame(
+  DepartmentID = c(1, 2, 3),
+  DepartmentName = c("HR", "IT", "Finance")
+)
+glimpse(employees);glimpse(departments)
+```
+
+# left join
+```{r}
+#| code-fold: true
+#?left_join
+left_join(employees, departments, by = "DepartmentID")
+```
+
+# right_join
+```{r}
+#| code-fold: true
+
+#?right_join
+right_join(employees, departments, by = "DepartmentID")
+```
+
+# inner_join
+```{r}
+#| code-fold: true
+
+inner_join(employees, departments, by = "DepartmentID")
+```
+
+# full_join
+```{r}
+#| code-fold: true
+
+full_join(employees, departments, by = "DepartmentID")
+```
+
+# bind cols
+
+```{r}
+#| code-fold: true
+
+#?bind_cols
+#?bind_rows
+
+
+data_1 <- data.frame(
+  id= 1:10,
+  sex= c(rep("F", 5), rep("M", 5)),
+    x= rnorm(n=10))
+
+data_2 <- data.frame(
+  age = sample(size= 10, c(10, 20, 30, 40), replace=T),
+  y= rnorm(n= 10))
+
+bind_cols(data_1,data_2)
+```
+
+# bind_rows
+
+```{r}
+#| code-fold: true
+
+data_3 <- data.frame(
+  id= 1:10,
+  sex= c(rep("F", 5), rep("M", 5)))
+
+data_4 <- data.frame(
+  id= 11:20,
+  sex= c(rep("F", 5), rep("M", 5)))
+
+bind_rows(data_3,data_4)
+```

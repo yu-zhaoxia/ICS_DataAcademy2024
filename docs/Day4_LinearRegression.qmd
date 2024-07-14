@@ -4,6 +4,7 @@ author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
 date: "`r Sys.Date()`"
 format: 
   revealjs:
+    scrollable: true
     theme: "sky"
     slideNumber: true
     transition: "fade"

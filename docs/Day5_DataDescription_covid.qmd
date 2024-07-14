@@ -4,6 +4,7 @@ author: "Zhaoxia Yu"
 date: "`r Sys.Date()`"
 format: 
   revealjs:
+    scrollable: true
     theme: "sky"
     slideNumber: true
     transition: "fade"
@@ -14,6 +15,8 @@ format:
     fig-align: center
 ---
 
+```{r}
+```
 
 ## Background
 - This dataset was published in a recent article: 
