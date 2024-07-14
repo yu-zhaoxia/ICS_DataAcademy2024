@@ -26,6 +26,7 @@ library(tidyverse)
 ## Read Data and Create a Binary Variable
 
 ```{r}
+#| fig-align: center
 #read, select variables
 #remove impaired, and define new variables
 alzheimer_data <- read.csv('data/alzheimer_data.csv') %>% 
@@ -54,7 +55,7 @@ ggplot(data=alzheimer_data, aes(x=hippo, y=alzh)) +
 
 ## Predict Binary Responses (wrong way)
 
--   Now let us do predictions using linear regression
+-   Now let us do predictions using linear regression: ``alzh.lm``
 
 ```{r}
 #| fig-align: center
@@ -95,7 +96,7 @@ ggplot(alzheimer_data) +
 
 ## How to Model Binary Responses?
 
--   Let $Y_i$ denote the response variable of the $i$th subject. When there is not covarites $x's$, we use Bernoulli distribution $$Y_i \sim Bernoulli(\pi)$$
+-   Let $Y_i$ denote the response variable of the $i$th subject. When there is no explanatory variables ($x's$), we use Bernoulli distribution $$Y_i \sim Bernoulli(\pi)$$
     -   $P(Y_i=1)=\pi$.
     -   $P(Y_i=0)=1-\pi$.
     -   Here we use $\pi$ instead of $p$ to denote the success probability for better clarity.
@@ -110,7 +111,7 @@ ggplot(alzheimer_data) +
 
 -   $\pi(x_i)$ is the probability for $Y_i$ being 1, i.e.,
 
-$$\pi = E[Y_i].$$
+$$\pi_i=\pi(x_i) = E[Y_i].$$
 
 -   One issue with $\pi( x_i)=\beta_0 + \beta_1 x_i$ is that the range can be any real value.
 
@@ -132,7 +133,7 @@ $$odds=\frac{P(A)}{P(A^c)}=\frac{P(A)}{1-P(A)}.$$
 $$odds = \frac{P(Y=1)}{P(Y=0)}$$
 :::
 
--   The range of odds is $[0,\infty)$. Can you find transformation such as that the range is $(-\infty, \infty)$?
+-   The range of odds is $[0,\infty)$. Can you find a transformation such as that the range is $(-\infty, \infty)$?
 
 ## Log-Odds and Logit Transformation
 
@@ -146,7 +147,7 @@ $$logit(\pi_i)=log \left( \frac{\pi_i}{1-\pi_i}\right)= log \left(\frac{E[Y_i=1]
 #| fig-align: center
 p=seq(0.01, 0.99, 0.01)
 logit.p=log(p/(1-p))
-plot(p, logit.p, type="l", main="the logit function")
+plot(p, logit.p, type="l", xlab=expression(pi), main="the logit function")
 ```
 
 # Logistic Regression
@@ -162,7 +163,7 @@ $$log \left( \frac{\pi_i}{1-\pi_i}\right) = log \left(\frac{E[Y_i=1]}{E[Y_i=0]} 
 
 -   This is known as **logistic regression**.
 
-- Note: $\pi=\frac{e^{\beta_0 + \beta_1 x_i}}{1+e^{\beta_0 + \beta_1 x_i} }$.
+- Note: $\pi_i=\frac{e^{\beta_0 + \beta_1 x_i}}{1+e^{\beta_0 + \beta_1 x_i} }$.
 
 
 ## Compute the Estimates
@@ -252,7 +253,7 @@ summary(alzh.logistic) %>% coefficients()
 ```
 
 - The p-value is very small, about $9.0\times 10^{-66}$
-  - indicating reject the null hypothesis $H_0: \beta_1=0$
+  - indicating to reject the null hypothesis $H_0: \beta_1=0$
   - suggesting that AD is significantly associated with hippocampal volume. 
 
 ## Predicted Value vs Observed Values
@@ -279,9 +280,9 @@ plot(alzheimer_data$hippo, predict(alzh.logistic, type="response"),
 # With Multiple $X$'s
 - Similar to linear regression, we can include multiple explanatory variables. 
 
-- Connect $\pi_i$(i.e., $E[Y_i]$) to a linear function of the $\vec x_i$:      $$log\frac{\pi_i}{1-\pi_i} = \beta_0 + x_{i1} \times \beta_1+ … + x_{ip} \times \beta_p$$
+- Connect $\pi_i$(i.e., $E[Y_i]$) to a linear function of the $\vec x_i$:      $$log\frac{\pi_i}{1-\pi_i} = \beta_0 + \beta_1 \times x_{i1} + … + \beta_p \times x_{ip}$$
 
-- And $Y_i \sim Bernoulli (\pi)$. 
+- And $Y_i \sim Bernoulli (\pi_i)$. 
 
 ## Example
 ```{r}
@@ -294,9 +295,7 @@ summary(alzh.glm.multi)$coefficients
 ::: {style="font-size: 90%"}
 -   Consider the age variable. The estimated coefficient is 0.04015417.
     What information does it provide?
--   The estimated log-odds AD for subject $i$ is (or add a constant
-    \textcolor{red}{determined by study design}, see the slides about retrospective studies)
-    $$logit(\hat\pi_i) = \hat\beta_0 + \hat\beta_{age} age_i + \hat\beta_2 female_i + \hat\beta_3 educ_i$$
+-   The estimated log-odds AD for subject $i$ is     $$logit(\hat\pi_i) = \hat\beta_0 + \hat\beta_{age} age_i + \hat\beta_2 female_i + \hat\beta_3 educ_i$$
 -   Let $\tilde \pi_i$ denote estimated log-odds after one year
     $$logit(\tilde\pi_i) = \hat\beta_0 + \hat\beta_{age} (age_i+1) + \hat\beta_2 female_i + \hat\beta_3 educ_i$$
 :::
@@ -304,7 +303,7 @@ summary(alzh.glm.multi)$coefficients
 ## Interpretation
 
 -   The estimated change in log-odds
-    $$logit(\tilde\pi_i) - logit(\hat\pi_i)=log\frac{\tilde \pi_i}{1-\tilde \pi_i} -log \frac{\hat \pi_i}{1-\hat \pi_i}=0.018138$$
+    $$logit(\tilde\pi_i) - logit(\hat\pi_i)=log\frac{\tilde \pi_i}{1-\tilde \pi_i} -log \frac{\hat \pi_i}{1-\hat \pi_i}=0.040154178$$
 -   Take exponential of both sides, we have
     $$\frac{\frac{\tilde \pi_i}{1-\tilde \pi_i}}{\frac{\hat \pi_i}{1-\hat \pi_i}} = exp(0.04015417)$$
 

@@ -67,7 +67,7 @@ ggplot(alzheimer_healthy, aes(x=age, y=hippo)) +
   labs(x = "age", y="hippo volume", title="hippo volume vs age")
 ```
 
-- The relationship is roughly (negatively) linear except for age <40. 
+- The relationship is roughly (negatively) linear except for age <35. 
 
 ## Example: left vs right hippocampus
 ```{r}

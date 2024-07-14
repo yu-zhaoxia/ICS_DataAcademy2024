@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-13">
+  <meta name="dcterms.date" content="2024-07-14">
   <title>Day 6 - Logistic Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-13</p>
+  <p class="date">2024-07-14</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -417,7 +417,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </section>
 <section id="read-data-and-create-a-binary-variable" class="slide level2">
 <h2>Read Data and Create a Binary Variable</h2>
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co">#read, select variables</span></span>
@@ -441,7 +441,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </details>
 
 </div>
-<img data-src="Day6_LogisticrRegression_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<img data-src="Day6_LogisticrRegression_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section>
 <section id="motivation" class="title-slide slide level1 center">
 <h1>Motivation</h1>
@@ -466,7 +466,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <section id="predict-binary-responses-wrong-way" class="slide level2">
 <h2>Predict Binary Responses (wrong way)</h2>
 <ul>
-<li>Now let us do predictions using linear regression</li>
+<li>Now let us do predictions using linear regression: <code>alzh.lm</code></li>
 </ul>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
@@ -517,7 +517,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <section id="how-to-model-binary-responses-1" class="slide level2">
 <h2>How to Model Binary Responses?</h2>
 <ul>
-<li>Let <span class="math inline">\(Y_i\)</span> denote the response variable of the <span class="math inline">\(i\)</span>th subject. When there is not covarites <span class="math inline">\(x's\)</span>, we use Bernoulli distribution <span class="math display">\[Y_i \sim Bernoulli(\pi)\]</span>
+<li>Let <span class="math inline">\(Y_i\)</span> denote the response variable of the <span class="math inline">\(i\)</span>th subject. When there is no explanatory variables (<span class="math inline">\(x's\)</span>), we use Bernoulli distribution <span class="math display">\[Y_i \sim Bernoulli(\pi)\]</span>
 <ul>
 <li><span class="math inline">\(P(Y_i=1)=\pi\)</span>.</li>
 <li><span class="math inline">\(P(Y_i=0)=1-\pi\)</span>.</li>
@@ -537,7 +537,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <ul>
 <li><span class="math inline">\(\pi(x_i)\)</span> is the probability for <span class="math inline">\(Y_i\)</span> being 1, i.e.,</li>
 </ul>
-<p><span class="math display">\[\pi = E[Y_i].\]</span></p>
+<p><span class="math display">\[\pi_i=\pi(x_i) = E[Y_i].\]</span></p>
 <ul>
 <li><p>One issue with <span class="math inline">\(\pi( x_i)=\beta_0 + \beta_1 x_i\)</span> is that the range can be any real value.</p></li>
 <li><p>Because <span class="math inline">\(\pi(x_i)\)</span> is a probability, it is desirable to make sure that it is <span class="math inline">\(\in [0,1]\)</span>.</p></li>
@@ -559,7 +559,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <p><span class="math display">\[odds = \frac{P(Y=1)}{P(Y=0)}\]</span></p>
 </div>
 <ul>
-<li>The range of odds is <span class="math inline">\([0,\infty)\)</span>. Can you find transformation such as that the range is <span class="math inline">\((-\infty, \infty)\)</span>?</li>
+<li>The range of odds is <span class="math inline">\([0,\infty)\)</span>. Can you find a transformation such as that the range is <span class="math inline">\((-\infty, \infty)\)</span>?</li>
 </ul>
 </section>
 <section id="log-odds-and-logit-transformation" class="slide level2">
@@ -575,7 +575,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>p<span class="ot">=</span><span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="fl">0.01</span>)</span>
 <span id="cb7-2"><a href=""></a>logit.p<span class="ot">=</span><span class="fu">log</span>(p<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>p))</span>
-<span id="cb7-3"><a href=""></a><span class="fu">plot</span>(p, logit.p, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">main=</span><span class="st">"the logit function"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href=""></a><span class="fu">plot</span>(p, logit.p, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">xlab=</span><span class="fu">expression</span>(pi), <span class="at">main=</span><span class="st">"the logit function"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
@@ -596,7 +596,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <ul>
 <li><p>In addition, we also have the mechanism to model uncertainty: <span class="math inline">\(Y_i \sim Bernoulli(\pi_i(x_i))\)</span>.</p></li>
 <li><p>This is known as <strong>logistic regression</strong>.</p></li>
-<li><p>Note: <span class="math inline">\(\pi=\frac{e^{\beta_0 + \beta_1 x_i}}{1+e^{\beta_0 + \beta_1 x_i} }\)</span>.</p></li>
+<li><p>Note: <span class="math inline">\(\pi_i=\frac{e^{\beta_0 + \beta_1 x_i}}{1+e^{\beta_0 + \beta_1 x_i} }\)</span>.</p></li>
 </ul>
 </section>
 <section id="compute-the-estimates" class="slide level2">
@@ -680,7 +680,7 @@ hippo       -1.184699 0.06916233 -17.12926 8.979352e-66</code></pre>
 <section id="confidence-intervals" class="slide level2">
 <h2>Confidence intervals</h2>
 <ul>
-<li>The <code>conf</code> function in R can be used to find confidence intervals for log-odds.</li>
+<li>The <code>confint</code> function in R can be used to find confidence intervals for log-odds. The default uses the estimated standard error.</li>
 <li>We need to convert the results to odds</li>
 </ul>
 <div class="cell">
@@ -735,7 +735,7 @@ hippo       -1.184699 0.06916233 -17.12926 8.979352e-66</code></pre>
 <ul>
 <li>The p-value is very small, about <span class="math inline">\(9.0\times 10^{-66}\)</span>
 <ul>
-<li>indicating reject the null hypothesis <span class="math inline">\(H_0: \beta_1=0\)</span></li>
+<li>indicating to reject the null hypothesis <span class="math inline">\(H_0: \beta_1=0\)</span></li>
 <li>suggesting that AD is significantly associated with hippocampal volume.</li>
 </ul></li>
 </ul>
@@ -777,8 +777,8 @@ hippo       -1.184699 0.06916233 -17.12926 8.979352e-66</code></pre>
 <h1>With Multiple <span class="math inline">\(X\)</span>’s</h1>
 <ul>
 <li><p>Similar to linear regression, we can include multiple explanatory variables.</p></li>
-<li><p>Connect <span class="math inline">\(\pi_i\)</span>(i.e., <span class="math inline">\(E[Y_i]\)</span>) to a linear function of the <span class="math inline">\(\vec x_i\)</span>: <span class="math display">\[log\frac{\pi_i}{1-\pi_i} = \beta_0 + x_{i1} \times \beta_1+ … + x_{ip} \times \beta_p\]</span></p></li>
-<li><p>And <span class="math inline">\(Y_i \sim Bernoulli (\pi)\)</span>.</p></li>
+<li><p>Connect <span class="math inline">\(\pi_i\)</span>(i.e., <span class="math inline">\(E[Y_i]\)</span>) to a linear function of the <span class="math inline">\(\vec x_i\)</span>: <span class="math display">\[log\frac{\pi_i}{1-\pi_i} = \beta_0 + \beta_1 \times x_{i1} + … + \beta_p \times x_{ip}\]</span></p></li>
+<li><p>And <span class="math inline">\(Y_i \sim Bernoulli (\pi_i)\)</span>.</p></li>
 </ul>
 </section>
 <section id="example" class="slide level2">
@@ -803,7 +803,7 @@ educ        -0.08759757 0.015192451 -5.765862 8.124175e-09</code></pre>
 <div style="font-size: 90%">
 <ul>
 <li>Consider the age variable. The estimated coefficient is 0.04015417. What information does it provide?</li>
-<li>The estimated log-odds AD for subject <span class="math inline">\(i\)</span> is (or add a constant , see the slides about retrospective studies) <span class="math display">\[logit(\hat\pi_i) = \hat\beta_0 + \hat\beta_{age} age_i + \hat\beta_2 female_i + \hat\beta_3 educ_i\]</span></li>
+<li>The estimated log-odds AD for subject <span class="math inline">\(i\)</span> is <span class="math display">\[logit(\hat\pi_i) = \hat\beta_0 + \hat\beta_{age} age_i + \hat\beta_2 female_i + \hat\beta_3 educ_i\]</span></li>
 <li>Let <span class="math inline">\(\tilde \pi_i\)</span> denote estimated log-odds after one year <span class="math display">\[logit(\tilde\pi_i) = \hat\beta_0 + \hat\beta_{age} (age_i+1) + \hat\beta_2 female_i + \hat\beta_3 educ_i\]</span></li>
 </ul>
 </div>
@@ -811,7 +811,7 @@ educ        -0.08759757 0.015192451 -5.765862 8.124175e-09</code></pre>
 <section id="interpretation-1" class="slide level2">
 <h2>Interpretation</h2>
 <ul>
-<li>The estimated change in log-odds <span class="math display">\[logit(\tilde\pi_i) - logit(\hat\pi_i)=log\frac{\tilde \pi_i}{1-\tilde \pi_i} -log \frac{\hat \pi_i}{1-\hat \pi_i}=0.018138\]</span></li>
+<li>The estimated change in log-odds <span class="math display">\[logit(\tilde\pi_i) - logit(\hat\pi_i)=log\frac{\tilde \pi_i}{1-\tilde \pi_i} -log \frac{\hat \pi_i}{1-\hat \pi_i}=0.040154178\]</span></li>
 <li>Take exponential of both sides, we have <span class="math display">\[\frac{\frac{\tilde \pi_i}{1-\tilde \pi_i}}{\frac{\hat \pi_i}{1-\hat \pi_i}} = exp(0.04015417)\]</span></li>
 </ul>
 </section>
