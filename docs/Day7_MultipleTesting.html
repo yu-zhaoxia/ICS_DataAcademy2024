@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="Day6_LogisticRegression_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Day6_LogisticRegression_files/libs/quarto-html/tabby.min.js"></script>
-<script src="Day6_LogisticRegression_files/libs/quarto-html/popper.min.js"></script>
-<script src="Day6_LogisticRegression_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="Day6_LogisticRegression_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Day6_LogisticRegression_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="Day6_LogisticRegression_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="Day6_LogisticRegression_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="Day7_MultipleTesting_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Day7_MultipleTesting_files/libs/quarto-html/tabby.min.js"></script>
+<script src="Day7_MultipleTesting_files/libs/quarto-html/popper.min.js"></script>
+<script src="Day7_MultipleTesting_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="Day7_MultipleTesting_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Day7_MultipleTesting_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="Day7_MultipleTesting_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="Day7_MultipleTesting_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
   <meta name="dcterms.date" content="2024-07-15">
-  <title>Day 6 - Logistic Regression</title>
+  <title>Day 7 - Multiple Testing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="Day6_LogisticRegression_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="Day6_LogisticRegression_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="Day7_MultipleTesting_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="Day7_MultipleTesting_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -96,11 +96,11 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="Day6_LogisticRegression_files/libs/revealjs/dist/theme/quarto.css">
-  <link href="Day6_LogisticRegression_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="Day6_LogisticRegression_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="Day6_LogisticRegression_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="Day6_LogisticRegression_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="Day7_MultipleTesting_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="Day7_MultipleTesting_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="Day7_MultipleTesting_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="Day7_MultipleTesting_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="Day7_MultipleTesting_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -393,7 +393,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Day 6 - Logistic Regression</h1>
+  <h1 class="title">Day 7 - Multiple Testing</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -411,481 +411,340 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href=""></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href=""></a><span class="fu">library</span>(googlesheets4) <span class="co"># the package to read google sheets</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
-<section id="read-data-and-create-a-binary-variable" class="slide level2">
-<h2>Read Data and Create a Binary Variable</h2>
-<div class="cell" data-layout-align="center">
+<section id="definitions-fp-fn-tp-tn" class="slide level2">
+<h2>Definitions: FP, FN, TP, TN</h2>
+<ul>
+<li>Consider <span class="math inline">\(H_0 \mbox{ vs } H_1\)</span></li>
+</ul>
+<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co">#read, select variables</span></span>
-<span id="cb2-2"><a href=""></a><span class="co">#remove impaired, and define new variables</span></span>
-<span id="cb2-3"><a href=""></a>alzheimer_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'data/alzheimer_data.csv'</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-4"><a href=""></a>  <span class="fu">select</span>(id, diagnosis, age, educ, female, height, weight, lhippo, rhippo) <span class="sc">%&gt;%</span></span>
-<span id="cb2-5"><a href=""></a>  <span class="fu">filter</span>(diagnosis<span class="sc">!=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-6"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">alzh=</span>(diagnosis<span class="sc">&gt;</span><span class="dv">0</span>)<span class="sc">*</span><span class="dv">1</span>, <span class="at">female =</span> <span class="fu">as.factor</span>(female), <span class="at">hippo=</span>lhippo<span class="sc">+</span>rhippo) </span>
-<span id="cb2-7"><a href=""></a></span>
-<span id="cb2-8"><a href=""></a><span class="fu">table</span>(alzheimer_data<span class="sc">$</span>alzh)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Define the table with row and column labels</span></span>
+<span id="cb2-2"><a href=""></a>confusion_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="st">"True Positive (TP)"</span>, <span class="st">"False Positive (FP)"</span>, </span>
+<span id="cb2-3"><a href=""></a>                             <span class="st">"False Negative (FN)"</span>, <span class="st">"True Negative (TN)"</span>),</span>
+<span id="cb2-4"><a href=""></a>                           <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-5"><a href=""></a>                           <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="st">"Truth"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Positive"</span>, <span class="st">"Negative"</span>),</span>
+<span id="cb2-6"><a href=""></a>                                           <span class="st">"Tested"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Positive"</span>, <span class="st">"Negative"</span>)))</span>
+<span id="cb2-7"><a href=""></a>confusion_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-   0    1 
-1534  553 </code></pre>
+<pre><code>          Tested
+Truth      Positive              Negative             
+  Positive "True Positive (TP)"  "False Positive (FP)"
+  Negative "False Negative (FN)" "True Negative (TN)" </code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">ggplot</span>(<span class="at">data=</span>alzheimer_data, <span class="fu">aes</span>(<span class="at">x=</span>alzh)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href=""></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Convert to a data frame for better printing</span></span>
+<span id="cb4-2"><a href=""></a><span class="co">#confusion_matrix_df &lt;- as.data.frame(confusion_matrix)</span></span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a><span class="co"># Print the table</span></span>
+<span id="cb4-5"><a href=""></a><span class="co">#knitr::kable(confusion_matrix_df, caption = "Test Results", col.names = c("Tested Positive", "Tested Negative"))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-
 </div>
-<img data-src="Day6_LogisticRegression_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+</section>
 <section>
-<section id="motivation" class="title-slide slide level1 center">
-<h1>Motivation</h1>
+<section id="example-1" class="title-slide slide level1 center">
+<h1>Example 1</h1>
 
 </section>
-<section id="alzheimer-vs-hippocampal-volume" class="slide level2">
-<h2>alzheimer vs hippocampal volume</h2>
+<section id="example-1-an-in-calls-experiment" class="slide level2 scrollable">
+<h2>Example 1: An In-Calls Experiment</h2>
+<p>We demonstrate the issue of multiple testing in an experiment.</p>
+<ul>
+<li>Set up: There are 35 students in the Data Analytics session.</li>
+</ul>
+<ol type="1">
+<li>Simulate 1000 genes for each student.</li>
+<li>Each student enters a number between 1 and 100 as your trait to the following <a href="https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing">google sheet</a>:</li>
+</ol>
+<ul>
+<li>How many genes do you expect to be associated with the trait?</li>
+</ul>
+</section>
+<section id="experiment-one-steps" class="slide level2">
+<h2>Experiment One: Steps</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb5-2"><a href=""></a><span class="co">#simulate 1000 genes</span></span>
+<span id="cb5-3"><a href=""></a>X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">35</span><span class="sc">*</span><span class="dv">1000</span>), <span class="dv">35</span>, <span class="dv">1000</span>)</span>
+<span id="cb5-4"><a href=""></a><span class="fu">colnames</span>(X) <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"g"</span>, <span class="at">sep=</span><span class="st">""</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>)</span>
+<span id="cb5-5"><a href=""></a></span>
+<span id="cb5-6"><a href=""></a><span class="co">#simulate </span></span>
+<span id="cb5-7"><a href=""></a><span class="co">#mydata=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")</span></span>
+<span id="cb5-8"><a href=""></a><span class="co">#y=mydata$randnumber_day7[1:35]</span></span>
+<span id="cb5-9"><a href=""></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">35</span>)</span>
+<span id="cb5-10"><a href=""></a></span>
+<span id="cb5-11"><a href=""></a>cor.test.p<span class="ot">=</span><span class="cf">function</span>(x,y){</span>
+<span id="cb5-12"><a href=""></a>  <span class="fu">return</span>(<span class="fu">cor.test</span>(x,y)<span class="sc">$</span>p.value)</span>
+<span id="cb5-13"><a href=""></a>}</span>
+<span id="cb5-14"><a href=""></a>exp1.pvalues<span class="ot">=</span><span class="fu">apply</span>(X, <span class="dv">2</span>, cor.test.p, <span class="at">y=</span>y);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="experiment-one-histogram-of-p-values" class="slide level2">
+<h2>Experiment One: histogram of p-values</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">ggplot</span>(<span class="at">data=</span>alzheimer_data, <span class="fu">aes</span>(<span class="at">x=</span>hippo, <span class="at">y=</span>alzh)) <span class="sc">+</span></span>
-<span id="cb5-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb5-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"alzh vs hippo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">hist</span>(exp1.pvalues, <span class="at">xlab=</span><span class="st">"p-values, all H_0 are true"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="Day6_LogisticRegression_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><ul>
-<li>Any comments?</li>
+<img data-src="Day7_MultipleTesting_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="distribution-of-the-p-values" class="slide level2">
+<h2>Distribution of the p-values</h2>
+<!-- 
+when All $H_0$ Are True
+- In Experiment 1, the response variable $y$ is **independently** simulated of $X$. No gene is related to the response variable, i.e., all $H_0$ are true.   
+-   In theory, when all $H_0$ are true, the distribution of p-values should follow a uniform distribution.
+-   The histrogram is very close to uniform.
+-->
+</section>
+<section id="experiment-one-number-of-significant-genes-at-level-0.05" class="slide level2">
+<h2>Experiment One: Number of Significant Genes at level 0.05</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">print</span>(<span class="st">"the number of genes with p&lt;0.05 is"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "the number of genes with p&lt;0.05 is"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">sum</span>(exp1.pvalues<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 59</code></pre>
+</div>
+</div>
+</section>
+<section id="experiment-one-false-positives" class="slide level2">
+<h2>Experiment One: False Positives</h2>
+<ul>
+<li>In the experiment, the trait (Y) is simulated <strong>independently</strong> from genes. <!--
+-   There is no gene is correlated with the trait.
+-   But we "detected" significant genes.
+-   Why? When all $H_0$ are true, the p-values follow a **uniform** distribution on [0,1]. Just by chance, around 5% of genes will have p-values less than 0.05. 
+-   This is known as multiple testing.
+--></li>
 </ul>
 </section>
-<section id="predict-binary-responses-wrong-way" class="slide level2">
-<h2>Predict Binary Responses (wrong way)</h2>
+<section id="handling-multiple-testings" class="slide level2 scrollable">
+<h2>Handling Multiple Testings:</h2>
 <ul>
-<li>Now let us do predictions using linear regression: <code>alzh.lm</code></li>
+<li>Broadly speaking, there are two types of methods to address this multiple testing issue</li>
 </ul>
+<ol type="1">
+<li><p>Control the family-wise error rate, which is defined as the probability of at least one false positive: <span class="math inline">\(Pr(FP&gt;0).\)</span> A common method is Bonferroni’s correction.</p></li>
+<li><p>Control the false discovery rate, which is defined as the probability false positives among the claimed positives, i.e.,<span class="math inline">\(\frac{FP}{FP+TP}.\)</span></p></li>
+</ol>
+</section>
+<section id="control-family-wise-erro-rate-fwer" class="slide level2 scrollable">
+<h2>Control Family-wise Erro Rate (FWER)</h2>
+<ol type="1">
+<li>Control the family-wise error rate. The goal is to control the probability of <span class="math inline">\(\ge\)</span> one false positive at a desired level.</li>
+</ol>
+<ul>
+<li>One simple and popular method is Bonferroni’s correction.</li>
+<li>This can be done by using a more stringent threshold. If the desired family-wise error rate is <span class="math inline">\(\alpha\)</span> (e.g., 0.05), use <span class="math inline">\(\alpha/M\)</span> as the threshold for each test. Here <span class="math inline">\(M\)</span> is the number of tests.</li>
+<li>This is equivalent to calculate the adjusted p-values:</li>
+</ul>
+<p><span class="math display">\[p.adjusted=min(1, p.original *M)\]</span> - This approach can be conservative when <span class="math inline">\(M\)</span> is large.</p>
+</section>
+<section id="handling-multiple-testings-family-wise-error-rate" class="slide level2">
+<h2>Handling Multiple Testings: Family-wise Error Rate</h2>
+<ul>
+<li>Using the Bonferroni correction, the number of significant genes is at FWER <span class="math inline">\(0.05\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>exp1.pvalues.bonf <span class="ot">=</span> <span class="fu">p.adjust</span>(exp1.pvalues, <span class="at">method=</span><span class="st">"bonferroni"</span>)</span>
+<span id="cb11-2"><a href=""></a><span class="fu">sum</span>(exp1.pvalues.bonf<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+<section id="original-vs-bonferroni-adjusted-p-values" class="slide level2">
+<h2>Original vs Bonferroni Adjusted p-values</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>alzh.lm<span class="ot">=</span><span class="fu">lm</span>(alzh <span class="sc">~</span> hippo, <span class="at">data=</span>alzheimer_data)</span>
-<span id="cb6-2"><a href=""></a><span class="co">#add lm.pred variable</span></span>
-<span id="cb6-3"><a href=""></a>alzheimer_data<span class="sc">$</span>lm.pred<span class="ot">=</span><span class="fu">predict</span>(alzh.lm)</span>
-<span id="cb6-4"><a href=""></a><span class="co">#add red flags</span></span>
-<span id="cb6-5"><a href=""></a>alzheimer_data<span class="sc">$</span>lm.pred.red <span class="ot">=</span> alzheimer_data<span class="sc">$</span>lm.pred</span>
-<span id="cb6-6"><a href=""></a>alzheimer_data<span class="sc">$</span>lm.pred.red[alzheimer_data<span class="sc">$</span>lm.pred<span class="sc">&lt;</span><span class="dv">1</span> <span class="sc">&amp;</span></span>
-<span id="cb6-7"><a href=""></a>                             alzheimer_data<span class="sc">$</span>lm.pred<span class="sc">&gt;</span><span class="dv">0</span>]<span class="ot">=</span><span class="cn">NA</span></span>
-<span id="cb6-8"><a href=""></a><span class="fu">ggplot</span>(alzheimer_data) <span class="sc">+</span></span>
-<span id="cb6-9"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>alzh, <span class="at">y=</span>lm.pred)) <span class="sc">+</span></span>
-<span id="cb6-10"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>alzh, <span class="at">y=</span>lm.pred.red), <span class="at">col=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb6-11"><a href=""></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">col=</span><span class="st">'red'</span>) <span class="sc">+</span></span>
-<span id="cb6-12"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"true alzh"</span>, <span class="at">y=</span><span class="st">"predicted by lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">plot</span>(exp1.pvalues, exp1.pvalues.bonf,</span>
+<span id="cb13-2"><a href=""></a>     <span class="at">xlab=</span><span class="st">"orignal p-values"</span>, <span class="at">ylab=</span><span class="st">"Bonferroni Adjusted"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="Day6_LogisticRegression_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><ul>
-<li>Is <code>alzh.lm</code> a good model?</li>
+<img data-src="Day7_MultipleTesting_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="handling-multiple-testings-false-discovery-rate" class="slide level2 scrollable">
+<h2>Handling Multiple Testings: False Discovery Rate</h2>
+<ol start="2" type="1">
+<li>Control the false discovery rate (FDR).</li>
+</ol>
+<ul>
+<li><p>FDR = FP / (FP + TP)</p></li>
+<li><p>There are a variety of methods for FDR. Controlling FDR is less conservative than controlling FWER.</p></li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>exp1.pvalues.fdr <span class="ot">=</span> <span class="fu">p.adjust</span>(exp1.pvalues, <span class="at">method=</span><span class="st">"fdr"</span>)</span>
+<span id="cb14-2"><a href=""></a><span class="fu">sum</span>(exp1.pvalues.fdr<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
 </section>
-<section id="binary-response-variables" class="slide level2">
-<h2>Binary Response Variables</h2>
-<ul>
-<li><p>Recall that <code>alzh</code> is a binary variable.</p></li>
-<li><p>We tries linear regression: <code>alzh</code> <span class="math inline">\(\sim\)</span> <code>hippo</code></p>
-<ul>
-<li>It does not fit well: the difference between fitted and observed is large for most data points.</li>
-<li>The predicted/ values for the binary response variable <code>alzh</code> can be greater than 1 or less than 0.</li>
-</ul></li>
-</ul>
-</section>
-<section id="how-to-model-binary-responses" class="slide level2">
-<h2>How to Model Binary Responses?</h2>
-<ul>
-<li><p>Linear regression is not good choice for a binary response variable.</p></li>
-<li><p>When the response variable is binary, such as <code>alzh</code>, how should we model it using one or multiple covarites?</p></li>
-<li><p>Recall that a Bernoulli distribution can be used to characterize the behavior of a binary random variable.</p></li>
+<section id="original-vs-fdr-adjusted-p-values" class="slide level2">
+<h2>Original vs FDR Adjusted p-values</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">plot</span>(exp1.pvalues, exp1.pvalues.fdr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="Day7_MultipleTesting_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><ul>
+<li>Both approaches seem to work well when all <span class="math inline">\(H_0\)</span> are true.</li>
 </ul>
 </section></section>
 <section>
-<section id="bernoulli-distribution-and-log-odds" class="title-slide slide level1 center">
-<h1>Bernoulli Distribution and Log-Odds</h1>
+<section id="example-2" class="title-slide slide level1 center">
+<h1>Example 2</h1>
 
 </section>
-<section id="how-to-model-binary-responses-1" class="slide level2">
-<h2>How to Model Binary Responses?</h2>
+<section id="example-2-not-all-h_0-are-true" class="slide level2">
+<h2>Example 2: not all <span class="math inline">\(H_0\)</span> are true</h2>
 <ul>
-<li>Let <span class="math inline">\(Y_i\)</span> denote the response variable of the <span class="math inline">\(i\)</span>th subject. When there is no explanatory variables (<span class="math inline">\(x's\)</span>), we use Bernoulli distribution <span class="math display">\[Y_i \sim Bernoulli(\pi)\]</span>
-<ul>
-<li><span class="math inline">\(P(Y_i=1)=\pi\)</span>.</li>
-<li><span class="math inline">\(P(Y_i=0)=1-\pi\)</span>.</li>
-<li>Here we use <span class="math inline">\(\pi\)</span> instead of <span class="math inline">\(p\)</span> to denote the success probability for better clarity.</li>
-</ul></li>
+<li><p>Consider another situation when 80% of the <span class="math inline">\(H_0\)</span> are true and 20% are not true.</p></li>
+<li><p>For simplicity, we make the first 200 genes correlated with a response variable <span class="math inline">\(y\)</span>.</p></li>
 </ul>
 </section>
-<section id="how-to-model-binary-responses-2" class="slide level2">
-<h2>How to Model Binary Responses?</h2>
-<ul>
-<li><p>When there is one explanatory variable, denoted by <span class="math inline">\(x_i\)</span> for subject <span class="math inline">\(i\)</span>, it is reasonable to assume that the <code>success</code> probability is a <strong>function</strong> of <span class="math inline">\(x_i\)</span>, i.e., <span class="math display">\[Y_i \sim Bernoulli (\pi(x_i))\]</span></p></li>
-<li><p>How do we define <span class="math inline">\(\pi(x_i)\)</span>? Does the following linear function work? <span class="math display">\[\pi(x_i)=\beta_0 + \beta_1 x_i\]</span></p></li>
-</ul>
-</section>
-<section id="the-successful-probability-pix_i" class="slide level2">
-<h2>The Successful Probability <span class="math inline">\(\pi(x_i)\)</span></h2>
-<ul>
-<li><span class="math inline">\(\pi(x_i)\)</span> is the probability for <span class="math inline">\(Y_i\)</span> being 1, i.e.,</li>
-</ul>
-<p><span class="math display">\[\pi_i=\pi(x_i) = E[Y_i].\]</span></p>
-<ul>
-<li><p>One issue with <span class="math inline">\(\pi( x_i)=\beta_0 + \beta_1 x_i\)</span> is that the range can be any real value.</p></li>
-<li><p>Because <span class="math inline">\(\pi(x_i)\)</span> is a probability, it is desirable to make sure that it is <span class="math inline">\(\in [0,1]\)</span>.</p></li>
-<li><p>How?</p></li>
-</ul>
-</section>
-<section id="odds" class="slide level2">
-<h2>Odds</h2>
-<ul>
-<li>In statistics, odds quantifies of the relative probabilities of an event and its complement</li>
-</ul>
-<div style="font-size: 50%">
-<p><span class="math display">\[odds=\frac{P(A)}{P(A^c)}=\frac{P(A)}{1-P(A)}.\]</span></p>
-</div>
-<ul>
-<li>For a binary variable <span class="math inline">\(Y\)</span>, the odds is</li>
-</ul>
-<div style="font-size: 50%">
-<p><span class="math display">\[odds = \frac{P(Y=1)}{P(Y=0)}\]</span></p>
-</div>
-<ul>
-<li>The range of odds is <span class="math inline">\([0,\infty)\)</span>. Can you find a transformation such as that the range is <span class="math inline">\((-\infty, \infty)\)</span>?</li>
-</ul>
-</section>
-<section id="log-odds-and-logit-transformation" class="slide level2">
-<h2>Log-Odds and Logit Transformation</h2>
-<div style="font-size: 75%">
-<ul>
-<li><span class="math inline">\(log \left( \frac{\pi_i}{1-\pi_i}\right)\)</span> is called the <strong>logit</strong> function, i.e.,</li>
-</ul>
-<p><span class="math display">\[logit(\pi_i)=log \left( \frac{\pi_i}{1-\pi_i}\right)= log \left(\frac{E[Y_i=1]}{E[Y_i=0]} \right).\]</span></p>
-</div>
-<div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>p<span class="ot">=</span><span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="fl">0.01</span>)</span>
-<span id="cb7-2"><a href=""></a>logit.p<span class="ot">=</span><span class="fu">log</span>(p<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>p))</span>
-<span id="cb7-3"><a href=""></a><span class="fu">plot</span>(p, logit.p, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">xlab=</span><span class="fu">expression</span>(pi), <span class="at">main=</span><span class="st">"the logit function"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-
-</div>
-<img data-src="Day6_LogisticRegression_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section></section>
-<section>
-<section id="logistic-regression" class="title-slide slide level1 center">
-<h1>Logistic Regression</h1>
-
-</section>
-<section id="logistic-regression-1" class="slide level2">
-<h2>Logistic Regression</h2>
-<ul>
-<li>Now we have found a reasonable way to connect <span class="math inline">\(\pi\)</span> to <span class="math inline">\(x_i\)</span></li>
-</ul>
-<div style="font-size: 75%">
-<p><span class="math display">\[log \left( \frac{\pi_i}{1-\pi_i}\right) = log \left(\frac{E[Y_i=1]}{E[Y_i=0]} \right)= \beta_0 + \beta_1 x_i\]</span></p>
-</div>
-<ul>
-<li><p>In addition, we also have the mechanism to model uncertainty: <span class="math inline">\(Y_i \sim Bernoulli(\pi_i(x_i))\)</span>.</p></li>
-<li><p>This is known as <strong>logistic regression</strong>.</p></li>
-<li><p>Note: <span class="math inline">\(\pi_i=\frac{e^{\beta_0 + \beta_1 x_i}}{1+e^{\beta_0 + \beta_1 x_i} }\)</span>.</p></li>
-</ul>
-</section>
-<section id="compute-the-estimates" class="slide level2">
-<h2>Compute the Estimates</h2>
-<ul>
-<li><p>For a linear regression model, we have closed-form solutions.</p></li>
-<li><p>This is not true for a logistic regression.</p></li>
-<li><p>Estimation of is typically conducted by maximizing the corresponding likelihood function.</p></li>
-<li><p><span class="math inline">\(\hat\beta_0\)</span> and <span class="math inline">\(\hat\beta_1\)</span> have to be obtained using numerical algorithms. How?</p></li>
-</ul>
-<div style="font-size: 85%; color: lightgray">
-<ul>
-<li>Iteratively re-weighted least squares (IRLS): the default method used by R</li>
-<li>The Newton-Raphson algorithm</li>
-</ul>
+<section id="example-2-simulate-data-and-compute-p-values" class="slide level2">
+<h2>Example 2: Simulate Data and compute p-values</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co">#For simplicity, we make the first 200 genes correlated with y</span></span>
+<span id="cb17-2"><a href=""></a>X[,<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>] <span class="ot">=</span> y <span class="sc">+</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">35</span><span class="sc">*</span><span class="dv">200</span>, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="fl">1.2</span>), <span class="dv">35</span>, <span class="dv">200</span>)</span>
+<span id="cb17-3"><a href=""></a></span>
+<span id="cb17-4"><a href=""></a>exp2.pvalues<span class="ot">=</span><span class="fu">apply</span>(X, <span class="dv">2</span>, cor.test.p, <span class="at">y=</span>y);</span>
+<span id="cb17-5"><a href=""></a>exp2.pvalues.bonf <span class="ot">=</span> <span class="fu">p.adjust</span>(exp2.pvalues, <span class="at">method=</span><span class="st">"bonferroni"</span>)</span>
+<span id="cb17-6"><a href=""></a>exp2.pvalues.fdr <span class="ot">=</span> <span class="fu">p.adjust</span>(exp2.pvalues, <span class="at">method=</span><span class="st">"fdr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="logistic-regression-in-r" class="slide level2">
-<h2>Logistic Regression in R</h2>
+<section id="example-2-results" class="slide level2">
+<h2>Example 2: Results</h2>
+<div style="font-size: 75%;">
+<ul>
+<li>The number of detected genes without adjusting for multiple testing (individual threshold 0.05)</li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>alzh.logistic<span class="ot">=</span><span class="fu">glm</span>(alzh <span class="sc">~</span> hippo, <span class="at">family=</span><span class="st">"binomial"</span>, <span class="at">data=</span>alzheimer_data)</span>
-<span id="cb8-2"><a href=""></a><span class="fu">summary</span>(alzh.logistic) <span class="sc">%&gt;%</span> <span class="fu">coefficients</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">sum</span>(exp2.pvalues<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>             Estimate Std. Error   z value     Pr(&gt;|z|)
-(Intercept)  6.093409 0.41017858  14.85550 6.408616e-50
-hippo       -1.184699 0.06916233 -17.12926 8.979352e-66</code></pre>
+<pre><code>[1] 248</code></pre>
 </div>
 </div>
 <ul>
-<li><p>Note, <code>glm</code> stands for generalized linear models, which include linear regression and logistic regression as special situations.</p></li>
-<li><p><span class="math inline">\(\hat\beta_0=6.093409, \hat\beta_1=-1.184699\)</span>.</p></li>
-<li><p>How should we interpret these values?</p></li>
+<li>The number of detected genes when using Bonferroni (0.05)</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">sum</span>(exp2.pvalues.bonf<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 75</code></pre>
+</div>
+</div>
+<ul>
+<li>The number of detected genes using FDR (0.05)</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">sum</span>(exp2.pvalues.fdr<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 203</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="example-2-true-vs-tested-results---no-adjustment" class="slide level2">
+<h2>Example 2: True vs Tested Results - No adjustment</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="co">#confusion matrix for no adjustment / correction</span></span>
+<span id="cb24-2"><a href=""></a>true.status<span class="ot">=</span><span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"TRUE"</span>, <span class="st">"FALSE"</span>), <span class="fu">c</span>(<span class="dv">200</span>,<span class="dv">800</span>))</span>
+<span id="cb24-3"><a href=""></a>test.status<span class="ot">=</span><span class="fu">factor</span>(exp2.pvalues<span class="sc">&lt;</span><span class="fl">0.05</span>)</span>
+<span id="cb24-4"><a href=""></a><span class="fu">table</span>(true.status, test.status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>           test.status
+true.status FALSE TRUE
+      FALSE   750   50
+      TRUE      2  198</code></pre>
+</div>
+</div>
+</section>
+<section id="example-2-true-vs-tested-results---bonferroni" class="slide level2">
+<h2>Example 2: True vs Tested Results - Bonferroni</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="co">#confusion matrix for Bonferroni corrected</span></span>
+<span id="cb26-2"><a href=""></a>true.status<span class="ot">=</span><span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"TRUE"</span>, <span class="st">"FALSE"</span>), <span class="fu">c</span>(<span class="dv">200</span>,<span class="dv">800</span>))</span>
+<span id="cb26-3"><a href=""></a>test.status<span class="ot">=</span><span class="fu">factor</span>(exp2.pvalues.bonf<span class="sc">&lt;</span><span class="fl">0.05</span>)</span>
+<span id="cb26-4"><a href=""></a><span class="fu">table</span>(true.status, test.status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>           test.status
+true.status FALSE TRUE
+      FALSE   800    0
+      TRUE    125   75</code></pre>
+</div>
+</div>
+</section>
+<section id="example-2-true-vs-tested-results---fdr" class="slide level2">
+<h2>Example 2: True vs Tested Results - FDR</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="co">#confusion matrix for FDR</span></span>
+<span id="cb28-2"><a href=""></a>true.status<span class="ot">=</span><span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"TRUE"</span>, <span class="st">"FALSE"</span>), <span class="fu">c</span>(<span class="dv">200</span>,<span class="dv">800</span>))</span>
+<span id="cb28-3"><a href=""></a>test.status<span class="ot">=</span><span class="fu">factor</span>(exp2.pvalues.fdr<span class="sc">&lt;</span><span class="fl">0.05</span>)</span>
+<span id="cb28-4"><a href=""></a><span class="fu">table</span>(true.status, test.status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>           test.status
+true.status FALSE TRUE
+      FALSE   788   12
+      TRUE      9  191</code></pre>
+</div>
+</div>
+<ul>
+<li>By allowing a percentage of false positives among the detected, FDR can detect more; in other words, FDR is less conservative than Bonferroni.</li>
+</ul>
+</section>
+<section id="fdr" class="slide level2">
+<h2>FDR</h2>
+<ul>
+<li>Note, when using FDR, 0.05 is not always the preferred threshold for adjusted p-values.</li>
+<li>0.1 is often used; 0.2 has been used as well</li>
 </ul>
 </section></section>
 <section>
-<section id="interpretation" class="title-slide slide level1 center">
-<h1>Interpretation</h1>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion</h1>
 
 </section>
-<section id="interpret-results" class="slide level2">
-<h2>Interpret Results</h2>
-<div style="font-size: 85%">
+<section id="take-home-messages" class="slide level2">
+<h2>Take Home Messages</h2>
 <ul>
-<li>Consider <span class="math inline">\(x_i=x_0\)</span>, the log-odds of AD is</li>
+<li>One needs to think about the issue of multiple testing when conducting multiple tests.</li>
+<li>When the number of tests is not too large, Bonferroni works well. - When the number of tests is large, FDR is more widely used.</li>
+<li>The function <code>p.adjust</code> in R offers several options to compute adjusted p-values.</li>
 </ul>
-<p><span class="math display">\[logit(\hat\pi_i) = \hat\beta_0 + \hat\beta_1 x_0\]</span></p>
-<ul>
-<li>If we increase the explanatory by one unit, the log-odds becomes</li>
-</ul>
-<p><span class="math display">\[logit(\tilde \pi_i) = \hat\beta_0 + \hat\beta_1 x_0 + \hat\beta_1\]</span></p>
-<ul>
-<li>Therefore, <span class="math inline">\(logit(\tilde \pi_i)-logit(\hat \pi_i)=\hat\beta_1=-1.184699\)</span>.</li>
-</ul>
-</div>
-</section>
-<section id="interpret-results-1" class="slide level2">
-<h2>Interpret Results</h2>
-<ul>
-<li><p>We have obtained the change in log-odds associated with one-unit increase in <span class="math inline">\(x\)</span>.</p></li>
-<li><p>How can we convert it to changes in odds, which is more well understandable?</p></li>
-<li><p>By the definition of <code>logit</code>, we have</p></li>
-</ul>
-<div style="font-size: 85%">
-<p><span class="math display">\[logit(\tilde\pi_i) - logit(\hat\pi_i)=log\frac{\tilde \pi_i}{1-\tilde \pi_i} -log \frac{\hat \pi_i}{1-\hat \pi_i}=log \frac{\frac{\tilde \pi_i}{1-\tilde \pi_i}}{\frac{\hat \pi_i}{1-\hat \pi_i}}=-1.184699\]</span></p>
-</div>
-</section>
-<section id="interpret-results-2" class="slide level2">
-<h2>Interpret Results</h2>
-<ul>
-<li>Taking the exponent on both sides of the equation,</li>
-</ul>
-<p><span class="math display">\[\frac{\frac{\tilde \pi_i}{1-\tilde \pi_i}}{\frac{\hat \pi_i}{1-\hat \pi_i}}=exp(-1.184699)=0.3058\]</span></p>
-<ul>
-<li>The new odds is 30.58% of the odds.</li>
-<li>In other words, if the hippocampal value increases by 1cc, the odds of AD decreased by 1-30.58%=69.42%.</li>
-</ul>
-</section>
-<section id="confidence-intervals" class="slide level2">
-<h2>Confidence intervals</h2>
-<ul>
-<li>The <code>confint</code> function in R can be used to find confidence intervals for log-odds. The default uses the estimated standard error.</li>
-<li>We need to convert the results to odds</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">confint.default</span>(alzh.logistic)[<span class="dv">2</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>    2.5 %    97.5 % 
--1.320255 -1.049144 </code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">exp</span>(<span class="fu">confint.default</span>(alzh.logistic)[<span class="dv">2</span>,])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>    2.5 %    97.5 % 
-0.2670672 0.3502375 </code></pre>
-</div>
-</div>
-</section>
-<section id="confidence-intervals-1" class="slide level2">
-<h2>Confidence intervals</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="fu">confint.default</span>(alzh.logistic))[<span class="dv">2</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>    2.5 %    97.5 % 
-0.7329328 0.6497625 </code></pre>
-</div>
-</div>
-<ul>
-<li><p>Recall that the estimated decrease of AD associated with one-unit increase of hippocampal volume is 69.42%.</p></li>
-<li><p>A 95% confidence interval is [64.98%, 73.29%].</p></li>
-</ul>
-</section>
-<section id="p-value" class="slide level2">
-<h2>P-value</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">summary</span>(alzh.logistic) <span class="sc">%&gt;%</span> <span class="fu">coefficients</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>             Estimate Std. Error   z value     Pr(&gt;|z|)
-(Intercept)  6.093409 0.41017858  14.85550 6.408616e-50
-hippo       -1.184699 0.06916233 -17.12926 8.979352e-66</code></pre>
-</div>
-</div>
-<ul>
-<li>The p-value is very small, about <span class="math inline">\(9.0\times 10^{-66}\)</span>
-<ul>
-<li>indicating to reject the null hypothesis <span class="math inline">\(H_0: \beta_1=0\)</span></li>
-<li>suggesting that AD is significantly associated with hippocampal volume.</li>
-</ul></li>
-</ul>
-</section>
-<section id="predicted-value-vs-observed-values" class="slide level2">
-<h2>Predicted Value vs Observed Values</h2>
-<ul>
-<li>Note, when using <code>predict</code>, it is necessary to specify the correct type of prediction.
-<ul>
-<li>The default is on the scale of the linear predictors (log-odds).</li>
-<li>The <code>response</code> type gives predicted probability.</li>
-</ul></li>
-</ul>
-</section>
-<section id="predicted-value-vs-observed-values-1" class="slide level2">
-<h2>Predicted Value vs Observed Values</h2>
-<div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">plot</span>(alzheimer_data<span class="sc">$</span>alzh, <span class="fu">predict</span>(alzh.logistic, <span class="at">type=</span><span class="st">"response"</span>),</span>
-<span id="cb18-2"><a href=""></a>     <span class="at">xlab=</span><span class="st">"observed alzh"</span>, <span class="at">ylab=</span><span class="st">"predicted alzh"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-
-</div>
-<img data-src="Day6_LogisticRegression_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="x-vs-observed-values" class="slide level2">
-<h2><span class="math inline">\(X\)</span> vs Observed Values</h2>
-<div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">plot</span>(alzheimer_data<span class="sc">$</span>hippo, <span class="fu">predict</span>(alzh.logistic, <span class="at">type=</span><span class="st">"response"</span>),</span>
-<span id="cb19-2"><a href=""></a>     <span class="at">xlab=</span><span class="st">"hippo volume"</span>, <span class="at">ylab=</span><span class="st">"predicted alzh"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-
-</div>
-<img data-src="Day6_LogisticRegression_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section></section>
-<section>
-<section id="with-multiple-xs" class="title-slide slide level1 center">
-<h1>With Multiple <span class="math inline">\(X\)</span>’s</h1>
-<ul>
-<li><p>Similar to linear regression, we can include multiple explanatory variables.</p></li>
-<li><p>Connect <span class="math inline">\(\pi_i\)</span>(i.e., <span class="math inline">\(E[Y_i]\)</span>) to a linear function of the <span class="math inline">\(\vec x_i\)</span>: <span class="math display">\[log\frac{\pi_i}{1-\pi_i} = \beta_0 + \beta_1 \times x_{i1} + … + \beta_p \times x_{ip}\]</span></p></li>
-<li><p>And <span class="math inline">\(Y_i \sim Bernoulli (\pi_i)\)</span>.</p></li>
-</ul>
-</section>
-<section id="example" class="slide level2">
-<h2>Example</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>alzh.glm.multi <span class="ot">=</span> <span class="fu">glm</span>(alzh <span class="sc">~</span> age <span class="sc">+</span> female <span class="sc">+</span> educ, <span class="at">family=</span>binomial, <span class="at">data=</span>alzheimer_data)</span>
-<span id="cb20-2"><a href=""></a><span class="fu">summary</span>(alzh.glm.multi)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>               Estimate  Std. Error   z value     Pr(&gt;|z|)
-(Intercept) -2.02463880 0.455844285 -4.441514 8.932811e-06
-age          0.04015417 0.005001781  8.027974 9.909571e-16
-female1     -0.87341587 0.105761683 -8.258339 1.477131e-16
-educ        -0.08759757 0.015192451 -5.765862 8.124175e-09</code></pre>
-</div>
-</div>
-</section>
-<section id="example-interpretation" class="slide level2">
-<h2>Example: Interpretation</h2>
-<div style="font-size: 90%">
-<ul>
-<li>Consider the age variable. The estimated coefficient is 0.04015417. What information does it provide?</li>
-<li>The estimated log-odds AD for subject <span class="math inline">\(i\)</span> is <span class="math display">\[logit(\hat\pi_i) = \hat\beta_0 + \hat\beta_{age} age_i + \hat\beta_2 female_i + \hat\beta_3 educ_i\]</span></li>
-<li>Let <span class="math inline">\(\tilde \pi_i\)</span> denote estimated log-odds after one year <span class="math display">\[logit(\tilde\pi_i) = \hat\beta_0 + \hat\beta_{age} (age_i+1) + \hat\beta_2 female_i + \hat\beta_3 educ_i\]</span></li>
-</ul>
-</div>
-</section>
-<section id="interpretation-1" class="slide level2">
-<h2>Interpretation</h2>
-<ul>
-<li>The estimated change in log-odds <span class="math display">\[logit(\tilde\pi_i) - logit(\hat\pi_i)=log\frac{\tilde \pi_i}{1-\tilde \pi_i} -log \frac{\hat \pi_i}{1-\hat \pi_i}=0.040154178\]</span></li>
-<li>Take exponential of both sides, we have <span class="math display">\[\frac{\frac{\tilde \pi_i}{1-\tilde \pi_i}}{\frac{\hat \pi_i}{1-\hat \pi_i}} = exp(0.04015417)=104.1\%\]</span></li>
-<li>The new odds is 104.1% of the old odds, i.e., the odds of AD increase 104.1% -1 = 4.1% with one year increase in age.</li>
-</ul>
-</section>
-<section id="interpretate-coefficients" class="slide level2">
-<h2>Interpretate Coefficients</h2>
-<ul>
-<li><p>The odds of AD in one year later is <span class="math inline">\(exp(0.04015417)=\)</span> of the current odds.</p></li>
-<li><p>When holding gender and education fixed, the estimated increase in odds of AD in a year is <span class="math inline">\(e^{0.04015417}-1=4.097\%\)</span></p></li>
-<li><p>A 95% confidence interval is [3.08%, 5.12%].</p></li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">confint.default</span>(alzh.glm.multi)[<span class="dv">2</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>     2.5 %     97.5 % 
-0.03035086 0.04995748 </code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">exp</span>(<span class="fu">confint.default</span>(alzh.glm.multi)[<span class="dv">2</span>,])<span class="sc">-</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>     2.5 %     97.5 % 
-0.03081614 0.05122640 </code></pre>
-</div>
-</div>
-</section>
-<section id="interpretate-coefficients-1" class="slide level2">
-<h2>Interpretate Coefficients</h2>
-<ul>
-<li>What if we are interested in the increase in odds of AD in ten years (everything else is fixed)?</li>
-<li>The estimated increase in odds of AD in 10 years is <span class="math display">\[e^{10*0.04015417}-1=49.4\%\]</span></li>
-<li>A <span class="math inline">\(95\%\)</span> C.I. for 10-year increase in odds: [35.5%, 64.8%].</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="dv">10</span><span class="sc">*</span><span class="fu">confint.default</span>(alzh.glm.multi)[<span class="dv">2</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>    2.5 %    97.5 % 
-0.3035086 0.4995748 </code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">exp</span>(<span class="dv">10</span><span class="sc">*</span><span class="fu">confint.default</span>(alzh.glm.multi)[<span class="dv">2</span>,])<span class="sc">-</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>    2.5 %    97.5 % 
-0.3546032 0.6480204 </code></pre>
-</div>
-</div>
-</section>
-<section id="significance-and-p-value" class="slide level2">
-<h2>Significance and P-value</h2>
-<ul>
-<li>Lastly, let’s take a look at significance.</li>
-<li>All the three explanatory variables are significant.</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="fu">summary</span>(alzh.glm.multi)<span class="sc">$</span>coefficients[<span class="sc">-</span><span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>           Estimate  Std. Error   z value     Pr(&gt;|z|)
-age      0.04015417 0.005001781  8.027974 9.909571e-16
-female1 -0.87341587 0.105761683 -8.258339 1.477131e-16
-educ    -0.08759757 0.015192451 -5.765862 8.124175e-09</code></pre>
-</div>
-</div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
@@ -896,19 +755,19 @@ educ    -0.08759757 0.015192451 -5.765862 8.124175e-09</code></pre>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="Day6_LogisticRegression_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="Day6_LogisticRegression_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="Day7_MultipleTesting_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

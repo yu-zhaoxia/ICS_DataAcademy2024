@@ -1,0 +1,79 @@
+---
+title: "Day 8 - A Gentle Intro To Small n Big P"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    scrollable: true
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    R.options:
+      fig-align: center
+---
+
+## Load Libraries
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
+
+## Experiment: I can predict your number
+- Please enter a number between 1 and 100 (inclusively).
+- Please use this link: [google sheet](https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing)
+- I claim that I can use a model to predict the numbers you entered perfectly!
+
+
+## Definitions
+```{r}
+#| eval: false
+X=matrix(rnorm(35*34), 35, 34)
+colnames(X) = paste("V", sep="", 1:34)
+#y=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")$randnumber_day8
+y=rnorm(40)
+
+#split the data into training and testing
+#training: students 1:35 
+#testing: students 36-40
+data.training=data.frame(y=y[1:35], X=X[1:35,])
+data.testing=data.frame(y=y[-c(1:35)], X=X[-c(1:35), ])
+
+#fit a model using the training model and predict for the training data
+par(mfrow=c(1,2))
+obj.lm=lm(y~ ., data=data.training)
+plot(data.training$y, predict(obj.lm), xlab="observed", ylab="predicted",
+     main="predict the training data")
+abline(0,1)
+
+#predict the testing data
+plot(data.testing$y, predict(obj.lm, new=data.testing[,-1]), 
+     xlab="observed", ylab="predicted",
+     main="predict the testing data")
+abline(0,1)
+```
+
+## Overfitting
+- In this experiment, $n=35$ and $p=35$ (including the intercept). 
+- When $n\le p$, we can obtain a "perfect" model for the data.
+- But this model has poor generalizabition, i.e., it is not able to predict well for new data. 
+
+## How to avoid overfitting
+
+::: {style="font-size: 75%; color: lightgray"}
+- There are many methods, for example
+  - regularization: introduce a penalty term to reduce model complexity. E.g.,
+    - penalize the magnitudes of coefficients such as L$^1$ (LASSO) and L$^2$ (ridge) penalty
+    - penalize the number of non-zero coefficients
+  - use simpler models
+  - variable selection
+  - randomly select features to build many models and then ensemble the models
+- Cross validation is a useful technique
+
+Check the following link if you would like to learn more:
+[Example](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/#google_vignette)
+:::

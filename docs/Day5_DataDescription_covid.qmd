@@ -56,5 +56,16 @@ chulte-Schrepping J., Reusch N., Paclik D., Baßler K., Schlickeiser S., Zhang B
 ## Data Wrangling
 - The data sets are relatively organized. 
 - The only problem is that all the data are in the long-formats. 
-- Cell propotion data: there are 23 cell types, which is not too bad.
+- Cell proportion data: there are 23 cell types, which is not too bad.
 - Gene expression in all cells or in CD8+ T cells: the number of genes is large. You have to write a loop to analyze one gene at a time. 
+
+## Read Data and Convert it to Wide Format
+```{r}
+#| code-fold: false
+#Method 1
+cell_type_long=read.csv("data3_covid/cell_type_prop.csv", head=T)
+cell_type=pivot_wider(cell_type_long, names_from =cell_type, values_from = prop)
+
+#Method 2
+cell_type = read.csv("data3_covid/cell_type_prop.csv", head=T) %>% pivot_wider(names_from =cell_type, values_from = prop)
+```

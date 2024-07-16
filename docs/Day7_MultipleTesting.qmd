@@ -1,0 +1,244 @@
+---
+title: "Day 7 - Multiple Testing"
+author: "Zhaoxia Yu, Department of Statistics, University of California, Irvine"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    scrollable: true
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    R.options:
+      fig-align: center
+---
+
+## Load Libraries
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(googlesheets4) # the package to read google sheets
+```
+
+## Definitions: FP, FN, TP, TN
+- Consider $H_0 \mbox{ vs } H_1$
+```{r}
+# Define the table with row and column labels
+confusion_matrix <- matrix(c("True Positive (TP)", "False Positive (FP)", 
+                             "False Negative (FN)", "True Negative (TN)"),
+                           nrow = 2, byrow = TRUE,
+                           dimnames = list("Truth" = c("Positive", "Negative"),
+                                           "Tested" = c("Positive", "Negative")))
+confusion_matrix
+# Convert to a data frame for better printing
+#confusion_matrix_df <- as.data.frame(confusion_matrix)
+
+# Print the table
+#knitr::kable(confusion_matrix_df, caption = "Test Results", col.names = c("Tested Positive", "Tested Negative"))
+```
+
+
+
+# Example 1
+## Example 1: An In-Calls Experiment
+
+We demonstrate the issue of multiple testing in an experiment.
+
+-   Set up: There are 35 students in the Data Analytics session. 
+  1. Simulate 1000 genes for each student. 
+  2. Each student enters a number between 1 and 100 as your trait to the following [google sheet](https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing):
+
+- How many genes do you expect to be associated with the trait?
+  
+  
+## Experiment One: Steps
+```{r}
+#| code-fold: false
+set.seed(7)
+#simulate 1000 genes
+X=matrix(rnorm(35*1000), 35, 1000)
+colnames(X) = paste("g", sep="", 1:1000)
+
+#simulate 
+#mydata=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")
+#y=mydata$randnumber_day7[1:35]
+y=rnorm(35)
+
+cor.test.p=function(x,y){
+  return(cor.test(x,y)$p.value)
+}
+exp1.pvalues=apply(X, 2, cor.test.p, y=y);
+```
+
+## Experiment One: histogram of p-values
+
+```{r}
+#| fig-align: center
+hist(exp1.pvalues, xlab="p-values, all H_0 are true")
+```
+
+## Distribution of the p-values 
+
+<!-- 
+when All $H_0$ Are True
+- In Experiment 1, the response variable $y$ is **independently** simulated of $X$. No gene is related to the response variable, i.e., all $H_0$ are true.   
+-   In theory, when all $H_0$ are true, the distribution of p-values should follow a uniform distribution.
+-   The histrogram is very close to uniform.
+-->
+
+## Experiment One: Number of Significant Genes at level 0.05
+
+```{r}
+#| code-fold: false
+print("the number of genes with p<0.05 is")
+sum(exp1.pvalues<0.05)
+```
+
+## Experiment One: False Positives
+
+-   In the experiment, the trait (Y) is simulated **independently** from genes.
+<!--
+-   There is no gene is correlated with the trait.
+-   But we "detected" significant genes.
+-   Why? When all $H_0$ are true, the p-values follow a **uniform** distribution on [0,1]. Just by chance, around 5% of genes will have p-values less than 0.05. 
+-   This is known as multiple testing.
+-->
+
+## Handling Multiple Testings: 
+-   Broadly speaking, there are two types of methods to address this multiple testing issue
+
+1. Control the family-wise error rate, which is defined as the probability of at least one false positive: $Pr(FP>0).$ A common method is Bonferroni's correction.
+  
+2. Control the false discovery rate, which is defined as the probability false positives among the claimed positives, i.e.,$\frac{FP}{FP+TP}.$
+
+## Control Family-wise Erro Rate (FWER)
+
+
+1.  Control the family-wise error rate. The goal is to control the probability of $\ge$ one false positive at a desired level. 
+
+-   One simple and popular method is Bonferroni's correction.
+-   This can be done by using a more stringent threshold. If the desired family-wise error rate is $\alpha$ (e.g., 0.05), use $\alpha/M$ as the threshold for each test. Here $M$ is the number of tests.
+-   This is equivalent to calculate the adjusted p-values:
+
+$$p.adjusted=min(1, p.original *M)$$ - This approach can be conservative when $M$ is large.
+
+## Handling Multiple Testings: Family-wise Error Rate
+
+- Using the Bonferroni correction, the number of significant genes is at FWER $0.05$:
+
+```{r}
+#| code-fold: false
+exp1.pvalues.bonf = p.adjust(exp1.pvalues, method="bonferroni")
+sum(exp1.pvalues.bonf<0.05)
+```
+
+## Original vs Bonferroni Adjusted p-values
+```{r}
+#| fig-align: center
+#| 
+plot(exp1.pvalues, exp1.pvalues.bonf,
+     xlab="orignal p-values", ylab="Bonferroni Adjusted")
+```
+
+## Handling Multiple Testings: False Discovery Rate
+
+2.  Control the false discovery rate (FDR).
+
+- FDR = FP / (FP + TP)
+
+- There are a variety of methods for FDR. Controlling FDR is less conservative than controlling FWER. 
+
+```{r}
+#| code-fold: false
+exp1.pvalues.fdr = p.adjust(exp1.pvalues, method="fdr")
+sum(exp1.pvalues.fdr<0.05)
+```
+
+## Original vs FDR Adjusted p-values
+```{r}
+plot(exp1.pvalues, exp1.pvalues.fdr)
+```
+-   Both approaches seem to work well when all $H_0$ are true.
+
+# Example 2
+
+## Example 2: not all $H_0$ are true
+
+- Consider another situation when 80% of the $H_0$ are true and 20% are not true.
+
+- For simplicity, we make the first 200 genes correlated with a response variable $y$.
+
+## Example 2: Simulate Data and compute p-values
+```{r}
+#| code-fold: false
+#For simplicity, we make the first 200 genes correlated with y
+X[,1:200] = y + matrix(rnorm(35*200, mean=0, sd=1.2), 35, 200)
+
+exp2.pvalues=apply(X, 2, cor.test.p, y=y);
+exp2.pvalues.bonf = p.adjust(exp2.pvalues, method="bonferroni")
+exp2.pvalues.fdr = p.adjust(exp2.pvalues, method="fdr")
+```
+
+## Example 2: Results
+
+::: {style="font-size: 75%;"}
+
+- The number of detected genes without adjusting for multiple testing (individual threshold 0.05)
+```{r}
+sum(exp2.pvalues<0.05)
+```
+
+- The number of detected genes when using Bonferroni (0.05)
+```{r}
+sum(exp2.pvalues.bonf<0.05)
+```
+
+- The number of detected genes using FDR (0.05)
+```{r}
+sum(exp2.pvalues.fdr<0.05)
+```
+:::
+
+
+## Example 2: True vs Tested Results - No adjustment
+```{r}
+#confusion matrix for no adjustment / correction
+true.status=rep(c("TRUE", "FALSE"), c(200,800))
+test.status=factor(exp2.pvalues<0.05)
+table(true.status, test.status)
+```
+
+
+## Example 2: True vs Tested Results - Bonferroni
+```{r}
+#confusion matrix for Bonferroni corrected
+true.status=rep(c("TRUE", "FALSE"), c(200,800))
+test.status=factor(exp2.pvalues.bonf<0.05)
+table(true.status, test.status)
+```
+
+## Example 2: True vs Tested Results - FDR
+
+```{r}
+#confusion matrix for FDR
+true.status=rep(c("TRUE", "FALSE"), c(200,800))
+test.status=factor(exp2.pvalues.fdr<0.05)
+table(true.status, test.status)
+```
+
+- By allowing a percentage of false positives among the detected, FDR can detect more; in other words, FDR is less conservative than Bonferroni. 
+
+
+## FDR
+- Note, when using FDR, 0.05 is not always the preferred threshold for adjusted p-values. 
+- 0.1 is often used; 0.2 has been used as well
+
+# Conclusion 
+## Take Home Messages
+- One needs to think about the issue of multiple testing when conducting multiple tests.
+- When the number of tests is not too large, Bonferroni works well. - When the number of tests is large, FDR is more widely used. 
+- The function ``p.adjust`` in R offers several options to compute adjusted p-values. 
