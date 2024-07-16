@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-15">
+  <meta name="dcterms.date" content="2024-07-16">
   <title>Day 7 - Multiple Testing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-15</p>
+  <p class="date">2024-07-16</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -425,8 +425,8 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Define the table with row and column labels</span></span>
-<span id="cb2-2"><a href=""></a>confusion_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="st">"True Positive (TP)"</span>, <span class="st">"False Positive (FP)"</span>, </span>
-<span id="cb2-3"><a href=""></a>                             <span class="st">"False Negative (FN)"</span>, <span class="st">"True Negative (TN)"</span>),</span>
+<span id="cb2-2"><a href=""></a>confusion_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="st">"True Positive (TP)"</span>, <span class="st">"False Negative (FN)"</span>, </span>
+<span id="cb2-3"><a href=""></a>                             <span class="st">"False Positive (FP)"</span>, <span class="st">"True Negative (TN)"</span>),</span>
 <span id="cb2-4"><a href=""></a>                           <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb2-5"><a href=""></a>                           <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="st">"Truth"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Positive"</span>, <span class="st">"Negative"</span>),</span>
 <span id="cb2-6"><a href=""></a>                                           <span class="st">"Tested"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Positive"</span>, <span class="st">"Negative"</span>)))</span>
@@ -435,8 +435,8 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <div class="cell-output cell-output-stdout">
 <pre><code>          Tested
 Truth      Positive              Negative             
-  Positive "True Positive (TP)"  "False Positive (FP)"
-  Negative "False Negative (FN)" "True Negative (TN)" </code></pre>
+  Positive "True Positive (TP)"  "False Negative (FN)"
+  Negative "False Positive (FP)" "True Negative (TN)" </code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
@@ -476,9 +476,9 @@ Truth      Positive              Negative
 <span id="cb5-4"><a href=""></a><span class="fu">colnames</span>(X) <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"g"</span>, <span class="at">sep=</span><span class="st">""</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>)</span>
 <span id="cb5-5"><a href=""></a></span>
 <span id="cb5-6"><a href=""></a><span class="co">#simulate </span></span>
-<span id="cb5-7"><a href=""></a><span class="co">#mydata=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")</span></span>
-<span id="cb5-8"><a href=""></a><span class="co">#y=mydata$randnumber_day7[1:35]</span></span>
-<span id="cb5-9"><a href=""></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">35</span>)</span>
+<span id="cb5-7"><a href=""></a>mydata<span class="ot">=</span><span class="fu">read_sheet</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing"</span>)</span>
+<span id="cb5-8"><a href=""></a>y<span class="ot">=</span>mydata<span class="sc">$</span>randnumber_day7[<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>]</span>
+<span id="cb5-9"><a href=""></a><span class="co">#y=rnorm(35)</span></span>
 <span id="cb5-10"><a href=""></a></span>
 <span id="cb5-11"><a href=""></a>cor.test.p<span class="ot">=</span><span class="cf">function</span>(x,y){</span>
 <span id="cb5-12"><a href=""></a>  <span class="fu">return</span>(<span class="fu">cor.test</span>(x,y)<span class="sc">$</span>p.value)</span>
@@ -496,14 +496,14 @@ Truth      Positive              Negative
 
 </div>
 <img data-src="Day7_MultipleTesting_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="distribution-of-the-p-values" class="slide level2">
-<h2>Distribution of the p-values</h2>
-<!-- 
-when All $H_0$ Are True
-- In Experiment 1, the response variable $y$ is **independently** simulated of $X$. No gene is related to the response variable, i.e., all $H_0$ are true.   
--   In theory, when all $H_0$ are true, the distribution of p-values should follow a uniform distribution.
--   The histrogram is very close to uniform.
--->
+<section id="distribution-of-the-p-values-when-all-h_0-are-true" class="slide level2">
+<h2>Distribution of the p-values when All <span class="math inline">\(H_0\)</span> Are True</h2>
+<ul>
+<li>In Experiment 1, the response variable <span class="math inline">\(y\)</span> is <strong>independently</strong> simulated of <span class="math inline">\(X\)</span>. No gene is related to the response variable, i.e., all <span class="math inline">\(H_0\)</span> are true.<br>
+</li>
+<li>In theory, when all <span class="math inline">\(H_0\)</span> are true, the distribution of p-values should follow a uniform distribution.</li>
+<li>The histrogram is very close to uniform.</li>
+</ul>
 </section>
 <section id="experiment-one-number-of-significant-genes-at-level-0.05" class="slide level2">
 <h2>Experiment One: Number of Significant Genes at level 0.05</h2>
@@ -514,19 +514,18 @@ when All $H_0$ Are True
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">sum</span>(exp1.pvalues<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 59</code></pre>
+<pre><code>[1] 56</code></pre>
 </div>
 </div>
 </section>
 <section id="experiment-one-false-positives" class="slide level2">
 <h2>Experiment One: False Positives</h2>
 <ul>
-<li>In the experiment, the trait (Y) is simulated <strong>independently</strong> from genes. <!--
--   There is no gene is correlated with the trait.
--   But we "detected" significant genes.
--   Why? When all $H_0$ are true, the p-values follow a **uniform** distribution on [0,1]. Just by chance, around 5% of genes will have p-values less than 0.05. 
--   This is known as multiple testing.
---></li>
+<li>In the experiment, the trait (Y) is simulated <strong>independently</strong> from genes.</li>
+<li>There is no gene is correlated with the trait.</li>
+<li>But we “detected” significant genes.</li>
+<li>Why? When all <span class="math inline">\(H_0\)</span> are true, the p-values follow a <strong>uniform</strong> distribution on [0,1]. Just by chance, around 5% of genes will have p-values less than 0.05.</li>
+<li>This is known as multiple testing.</li>
 </ul>
 </section>
 <section id="handling-multiple-testings" class="slide level2 scrollable">
@@ -621,7 +620,7 @@ when All $H_0$ Are True
 <h2>Example 2: Simulate Data and compute p-values</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co">#For simplicity, we make the first 200 genes correlated with y</span></span>
-<span id="cb17-2"><a href=""></a>X[,<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>] <span class="ot">=</span> y <span class="sc">+</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">35</span><span class="sc">*</span><span class="dv">200</span>, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="fl">1.2</span>), <span class="dv">35</span>, <span class="dv">200</span>)</span>
+<span id="cb17-2"><a href=""></a>X[,<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>] <span class="ot">=</span> y <span class="sc">+</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">35</span><span class="sc">*</span><span class="dv">200</span>, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span><span class="fu">sd</span>(y, <span class="at">na.rm=</span>T))<span class="sc">*</span><span class="fl">1.5</span>, <span class="dv">35</span>, <span class="dv">200</span>)</span>
 <span id="cb17-3"><a href=""></a></span>
 <span id="cb17-4"><a href=""></a>exp2.pvalues<span class="ot">=</span><span class="fu">apply</span>(X, <span class="dv">2</span>, cor.test.p, <span class="at">y=</span>y);</span>
 <span id="cb17-5"><a href=""></a>exp2.pvalues.bonf <span class="ot">=</span> <span class="fu">p.adjust</span>(exp2.pvalues, <span class="at">method=</span><span class="st">"bonferroni"</span>)</span>
@@ -640,7 +639,7 @@ when All $H_0$ Are True
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">sum</span>(exp2.pvalues<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 248</code></pre>
+<pre><code>[1] 237</code></pre>
 </div>
 </div>
 <ul>
@@ -652,7 +651,7 @@ when All $H_0$ Are True
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">sum</span>(exp2.pvalues.bonf<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 75</code></pre>
+<pre><code>[1] 55</code></pre>
 </div>
 </div>
 <ul>
@@ -664,7 +663,7 @@ when All $H_0$ Are True
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">sum</span>(exp2.pvalues.fdr<span class="sc">&lt;</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 203</code></pre>
+<pre><code>[1] 180</code></pre>
 </div>
 </div>
 </div>
@@ -682,8 +681,8 @@ when All $H_0$ Are True
 <div class="cell-output cell-output-stdout">
 <pre><code>           test.status
 true.status FALSE TRUE
-      FALSE   750   50
-      TRUE      2  198</code></pre>
+      FALSE   753   47
+      TRUE     10  190</code></pre>
 </div>
 </div>
 </section>
@@ -701,7 +700,7 @@ true.status FALSE TRUE
 <pre><code>           test.status
 true.status FALSE TRUE
       FALSE   800    0
-      TRUE    125   75</code></pre>
+      TRUE    145   55</code></pre>
 </div>
 </div>
 </section>
@@ -718,8 +717,8 @@ true.status FALSE TRUE
 <div class="cell-output cell-output-stdout">
 <pre><code>           test.status
 true.status FALSE TRUE
-      FALSE   788   12
-      TRUE      9  191</code></pre>
+      FALSE   794    6
+      TRUE     26  174</code></pre>
 </div>
 </div>
 <ul>
@@ -741,9 +740,10 @@ true.status FALSE TRUE
 <section id="take-home-messages" class="slide level2">
 <h2>Take Home Messages</h2>
 <ul>
-<li>One needs to think about the issue of multiple testing when conducting multiple tests.</li>
-<li>When the number of tests is not too large, Bonferroni works well. - When the number of tests is large, FDR is more widely used.</li>
-<li>The function <code>p.adjust</code> in R offers several options to compute adjusted p-values.</li>
+<li><p>One needs to think about the issue of multiple testing when conducting multiple tests.</p></li>
+<li><p>When the number of tests is not too large, Bonferroni works well.</p></li>
+<li><p>When the number of tests is large, FDR is more widely used.</p></li>
+<li><p>The function <code>p.adjust</code> in R offers several options to compute adjusted p-values.</p></li>
 </ul>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">

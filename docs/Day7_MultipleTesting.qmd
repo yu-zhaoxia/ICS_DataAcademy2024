@@ -28,8 +28,8 @@ library(googlesheets4) # the package to read google sheets
 - Consider $H_0 \mbox{ vs } H_1$
 ```{r}
 # Define the table with row and column labels
-confusion_matrix <- matrix(c("True Positive (TP)", "False Positive (FP)", 
-                             "False Negative (FN)", "True Negative (TN)"),
+confusion_matrix <- matrix(c("True Positive (TP)", "False Negative (FN)", 
+                             "False Positive (FP)", "True Negative (TN)"),
                            nrow = 2, byrow = TRUE,
                            dimnames = list("Truth" = c("Positive", "Negative"),
                                            "Tested" = c("Positive", "Negative")))
@@ -64,14 +64,15 @@ X=matrix(rnorm(35*1000), 35, 1000)
 colnames(X) = paste("g", sep="", 1:1000)
 
 #simulate 
-#mydata=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")
-#y=mydata$randnumber_day7[1:35]
-y=rnorm(35)
+mydata=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")
+y=mydata$randnumber_day7[1:35]
+#y=rnorm(35)
 
 cor.test.p=function(x,y){
   return(cor.test(x,y)$p.value)
 }
 exp1.pvalues=apply(X, 2, cor.test.p, y=y);
+
 ```
 
 ## Experiment One: histogram of p-values
@@ -81,14 +82,10 @@ exp1.pvalues=apply(X, 2, cor.test.p, y=y);
 hist(exp1.pvalues, xlab="p-values, all H_0 are true")
 ```
 
-## Distribution of the p-values 
-
-<!-- 
-when All $H_0$ Are True
+## Distribution of the p-values when All $H_0$ Are True
 - In Experiment 1, the response variable $y$ is **independently** simulated of $X$. No gene is related to the response variable, i.e., all $H_0$ are true.   
 -   In theory, when all $H_0$ are true, the distribution of p-values should follow a uniform distribution.
 -   The histrogram is very close to uniform.
--->
 
 ## Experiment One: Number of Significant Genes at level 0.05
 
@@ -101,12 +98,10 @@ sum(exp1.pvalues<0.05)
 ## Experiment One: False Positives
 
 -   In the experiment, the trait (Y) is simulated **independently** from genes.
-<!--
 -   There is no gene is correlated with the trait.
 -   But we "detected" significant genes.
 -   Why? When all $H_0$ are true, the p-values follow a **uniform** distribution on [0,1]. Just by chance, around 5% of genes will have p-values less than 0.05. 
 -   This is known as multiple testing.
--->
 
 ## Handling Multiple Testings: 
 -   Broadly speaking, there are two types of methods to address this multiple testing issue
@@ -176,7 +171,7 @@ plot(exp1.pvalues, exp1.pvalues.fdr)
 ```{r}
 #| code-fold: false
 #For simplicity, we make the first 200 genes correlated with y
-X[,1:200] = y + matrix(rnorm(35*200, mean=0, sd=1.2), 35, 200)
+X[,1:200] = y + matrix(rnorm(35*200, mean=0, sd=sd(y, na.rm=T))*1.5, 35, 200)
 
 exp2.pvalues=apply(X, 2, cor.test.p, y=y);
 exp2.pvalues.bonf = p.adjust(exp2.pvalues, method="bonferroni")
@@ -240,5 +235,9 @@ table(true.status, test.status)
 # Conclusion 
 ## Take Home Messages
 - One needs to think about the issue of multiple testing when conducting multiple tests.
-- When the number of tests is not too large, Bonferroni works well. - When the number of tests is large, FDR is more widely used. 
+
+- When the number of tests is not too large, Bonferroni works well. 
+
+- When the number of tests is large, FDR is more widely used. 
+
 - The function ``p.adjust`` in R offers several options to compute adjusted p-values. 
