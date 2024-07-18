@@ -412,7 +412,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-2"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href=""></a><span class="fu">library</span>(googlesheets4) <span class="co"># the package to read google sheets</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href=""></a><span class="fu">library</span>(googlesheets4) <span class="co"># the package to read google sheets. I used this package in class when reading data from a google sheet</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -433,8 +433,11 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <span id="cb2-3"><a href=""></a>X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">40</span><span class="sc">*</span><span class="dv">34</span>), <span class="dv">40</span>, <span class="dv">34</span>)</span>
 <span id="cb2-4"><a href=""></a><span class="fu">colnames</span>(X) <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"V"</span>, <span class="at">sep=</span><span class="st">""</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">34</span>)</span>
 <span id="cb2-5"><a href=""></a></span>
-<span id="cb2-6"><a href=""></a><span class="co"># Read the data entered by students and the teaching team</span></span>
-<span id="cb2-7"><a href=""></a>y<span class="ot">=</span><span class="fu">read_sheet</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing"</span>)<span class="sc">$</span>randnumber_day8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href=""></a><span class="co">#the code used in class</span></span>
+<span id="cb2-7"><a href=""></a><span class="co">#y=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")$randnumber_day8</span></span>
+<span id="cb2-8"><a href=""></a></span>
+<span id="cb2-9"><a href=""></a><span class="co">#read the downloaded data</span></span>
+<span id="cb2-10"><a href=""></a>y<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"data/randnumber_from_students_ICSSummerDA2024.csv"</span>)<span class="sc">$</span>randnumber_day8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="training-vs-testing-data" class="slide level2">

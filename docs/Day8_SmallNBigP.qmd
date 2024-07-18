@@ -21,7 +21,7 @@ format:
 ```{r}
 library(ggplot2)
 library(tidyverse)
-library(googlesheets4) # the package to read google sheets
+library(googlesheets4) # the package to read google sheets. I used this package in class when reading data from a google sheet
 ```
 
 ## Experiment: I can predict your number
@@ -39,8 +39,11 @@ set.seed(17)
 X=matrix(rnorm(40*34), 40, 34)
 colnames(X) = paste("V", sep="", 1:34)
 
-# Read the data entered by students and the teaching team
-y=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")$randnumber_day8
+#the code used in class
+#y=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")$randnumber_day8
+
+#read the downloaded data
+y=read.csv("data/randnumber_from_students_ICSSummerDA2024.csv")$randnumber_day8
 ```
 
 ## Training vs Testing Data

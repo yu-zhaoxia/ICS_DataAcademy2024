@@ -21,7 +21,7 @@ format:
 ```{r}
 library(ggplot2)
 library(tidyverse)
-library(googlesheets4) # the package to read google sheets
+#library(googlesheets4) # the package to read google sheets. I used this package in class when reading data from a google sheet
 ```
 
 ## Definitions: FP, FN, TP, TN
@@ -63,16 +63,17 @@ set.seed(7)
 X=matrix(rnorm(35*1000), 35, 1000)
 colnames(X) = paste("g", sep="", 1:1000)
 
-#simulate 
-mydata=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")
-y=mydata$randnumber_day7[1:35]
-#y=rnorm(35)
+#the code used in class
+#mydata=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")
+#y=mydata$randnumber_day7[1:35]
+
+#read the downloaded data
+y=read.csv("data/randnumber_from_students_ICSSummerDA2024.csv")$randnumber_day7[1:35]
 
 cor.test.p=function(x,y){
   return(cor.test(x,y)$p.value)
 }
 exp1.pvalues=apply(X, 2, cor.test.p, y=y);
-
 ```
 
 ## Experiment One: histogram of p-values

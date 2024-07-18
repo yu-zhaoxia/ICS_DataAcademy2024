@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-16">
+  <meta name="dcterms.date" content="2024-07-17">
   <title>Day 7 - Multiple Testing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-16</p>
+  <p class="date">2024-07-17</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -412,7 +412,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-2"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href=""></a><span class="fu">library</span>(googlesheets4) <span class="co"># the package to read google sheets</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href=""></a><span class="co">#library(googlesheets4) # the package to read google sheets. I used this package in class when reading data from a google sheet</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -475,15 +475,17 @@ Truth      Positive              Negative
 <span id="cb5-3"><a href=""></a>X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">35</span><span class="sc">*</span><span class="dv">1000</span>), <span class="dv">35</span>, <span class="dv">1000</span>)</span>
 <span id="cb5-4"><a href=""></a><span class="fu">colnames</span>(X) <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"g"</span>, <span class="at">sep=</span><span class="st">""</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>)</span>
 <span id="cb5-5"><a href=""></a></span>
-<span id="cb5-6"><a href=""></a><span class="co">#simulate </span></span>
-<span id="cb5-7"><a href=""></a>mydata<span class="ot">=</span><span class="fu">read_sheet</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing"</span>)</span>
-<span id="cb5-8"><a href=""></a>y<span class="ot">=</span>mydata<span class="sc">$</span>randnumber_day7[<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>]</span>
-<span id="cb5-9"><a href=""></a><span class="co">#y=rnorm(35)</span></span>
-<span id="cb5-10"><a href=""></a></span>
-<span id="cb5-11"><a href=""></a>cor.test.p<span class="ot">=</span><span class="cf">function</span>(x,y){</span>
-<span id="cb5-12"><a href=""></a>  <span class="fu">return</span>(<span class="fu">cor.test</span>(x,y)<span class="sc">$</span>p.value)</span>
-<span id="cb5-13"><a href=""></a>}</span>
-<span id="cb5-14"><a href=""></a>exp1.pvalues<span class="ot">=</span><span class="fu">apply</span>(X, <span class="dv">2</span>, cor.test.p, <span class="at">y=</span>y);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-6"><a href=""></a><span class="co">#the code used in class</span></span>
+<span id="cb5-7"><a href=""></a><span class="co">#mydata=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")</span></span>
+<span id="cb5-8"><a href=""></a><span class="co">#y=mydata$randnumber_day7[1:35]</span></span>
+<span id="cb5-9"><a href=""></a></span>
+<span id="cb5-10"><a href=""></a><span class="co">#read the downloaded data</span></span>
+<span id="cb5-11"><a href=""></a>y<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"data/randnumber_from_students_ICSSummerDA2024.csv"</span>)<span class="sc">$</span>randnumber_day7[<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>]</span>
+<span id="cb5-12"><a href=""></a></span>
+<span id="cb5-13"><a href=""></a>cor.test.p<span class="ot">=</span><span class="cf">function</span>(x,y){</span>
+<span id="cb5-14"><a href=""></a>  <span class="fu">return</span>(<span class="fu">cor.test</span>(x,y)<span class="sc">$</span>p.value)</span>
+<span id="cb5-15"><a href=""></a>}</span>
+<span id="cb5-16"><a href=""></a>exp1.pvalues<span class="ot">=</span><span class="fu">apply</span>(X, <span class="dv">2</span>, cor.test.p, <span class="at">y=</span>y);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="experiment-one-histogram-of-p-values" class="slide level2">
