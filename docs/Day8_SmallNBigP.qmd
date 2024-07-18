@@ -58,7 +58,7 @@ data.testing=data.frame(y=y[-c(1:35)], X=X[-c(1:35),])
 
 - Training data: the data to be used to build a predictive model.
   - In our experiment, the response variable consists of the numbers entered by the 35 students. 
-- Testing: the data to be used to test a model. 
+- Testing data: the data to be used to test a model. 
   - In our experiment, the response variable consists of the numbers entered by the teaching team (myself and four assistants).  
 
 ## Fit a Linear model using the training datat and check its performance
