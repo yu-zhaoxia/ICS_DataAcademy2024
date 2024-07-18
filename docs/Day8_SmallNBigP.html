@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-15">
+  <meta name="dcterms.date" content="2024-07-17">
   <title>Day 8 - A Gentle Intro To Small n Big P</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-15</p>
+  <p class="date">2024-07-17</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -411,57 +411,174 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href=""></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href=""></a><span class="fu">library</span>(googlesheets4) <span class="co"># the package to read google sheets</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 <section id="experiment-i-can-predict-your-number" class="slide level2">
 <h2>Experiment: I can predict your number</h2>
 <ul>
-<li>Please enter a number between 1 and 100 (inclusively).</li>
+<li>Please enter a number (any number you prefer to enter).</li>
 <li>Please use this link: <a href="https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing">google sheet</a></li>
-<li>I claim that I can use a model to predict the numbers you entered perfectly!</li>
+<li>Meanwhile, I generate a data matrix <span class="math inline">\(X\)</span> consisting of variables generated randomly from a normal distribution without knowing the number you enter.</li>
+<li>I claim that I can use a model to predict the number you enter perfectly using my <span class="math inline">\(X\)</span>!</li>
 </ul>
 </section>
-<section id="definitions" class="slide level2">
-<h2>Definitions</h2>
+<section id="read-data" class="slide level2">
+<h2>Read Data</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">17</span>)</span>
+<span id="cb2-2"><a href=""></a><span class="co"># Generate an X matrix randomly from the standard normal distribution</span></span>
+<span id="cb2-3"><a href=""></a>X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">40</span><span class="sc">*</span><span class="dv">34</span>), <span class="dv">40</span>, <span class="dv">34</span>)</span>
+<span id="cb2-4"><a href=""></a><span class="fu">colnames</span>(X) <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"V"</span>, <span class="at">sep=</span><span class="st">""</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">34</span>)</span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a><span class="co"># Read the data entered by students and the teaching team</span></span>
+<span id="cb2-7"><a href=""></a>y<span class="ot">=</span><span class="fu">read_sheet</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing"</span>)<span class="sc">$</span>randnumber_day8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="training-vs-testing-data" class="slide level2">
+<h2>Training vs Testing Data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co">#split the data into training and testing</span></span>
+<span id="cb3-2"><a href=""></a><span class="co">#training: students 1:35 </span></span>
+<span id="cb3-3"><a href=""></a><span class="co">#testing: the teaching team 36-40</span></span>
+<span id="cb3-4"><a href=""></a>data.training<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">y=</span>y[<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>], <span class="at">X=</span>X[<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>,])</span>
+<span id="cb3-5"><a href=""></a>data.testing<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">y=</span>y[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>)], <span class="at">X=</span>X[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>),])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Training data: the data to be used to build a predictive model.
+<ul>
+<li>In our experiment, the response variable consists of the numbers entered by the 35 students.</li>
+</ul></li>
+<li>Testing: the data to be used to test a model.
+<ul>
+<li>In our experiment, the response variable consists of the numbers entered by the teaching team (myself and four assistants).</li>
+</ul></li>
+</ul>
+</section>
+<section id="fit-a-linear-model-using-the-training-datat-and-check-its-performance" class="slide level2">
+<h2>Fit a Linear model using the training datat and check its performance</h2>
+<ul>
+<li><p>Next, we fit a linear model using the training data</p></li>
+<li><p>Then, test its performance for the training data</p></li>
+</ul>
+</section>
+<section id="fit-a-linear-model-using-the-training-datat-and-check-its-performance-1" class="slide level2">
+<h2>Fit a Linear model using the training datat and check its performance</h2>
+<div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>X<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">35</span><span class="sc">*</span><span class="dv">34</span>), <span class="dv">35</span>, <span class="dv">34</span>)</span>
-<span id="cb2-2"><a href=""></a><span class="fu">colnames</span>(X) <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">"V"</span>, <span class="at">sep=</span><span class="st">""</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">34</span>)</span>
-<span id="cb2-3"><a href=""></a><span class="co">#y=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")$randnumber_day8</span></span>
-<span id="cb2-4"><a href=""></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">40</span>)</span>
-<span id="cb2-5"><a href=""></a></span>
-<span id="cb2-6"><a href=""></a><span class="co">#split the data into training and testing</span></span>
-<span id="cb2-7"><a href=""></a><span class="co">#training: students 1:35 </span></span>
-<span id="cb2-8"><a href=""></a><span class="co">#testing: students 36-40</span></span>
-<span id="cb2-9"><a href=""></a>data.training<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">y=</span>y[<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>], <span class="at">X=</span>X[<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>,])</span>
-<span id="cb2-10"><a href=""></a>data.testing<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">y=</span>y[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>)], <span class="at">X=</span>X[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>), ])</span>
-<span id="cb2-11"><a href=""></a></span>
-<span id="cb2-12"><a href=""></a><span class="co">#fit a model using the training model and predict for the training data</span></span>
-<span id="cb2-13"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb2-14"><a href=""></a>obj.lm<span class="ot">=</span><span class="fu">lm</span>(y<span class="sc">~</span> ., <span class="at">data=</span>data.training)</span>
-<span id="cb2-15"><a href=""></a><span class="fu">plot</span>(data.training<span class="sc">$</span>y, <span class="fu">predict</span>(obj.lm), <span class="at">xlab=</span><span class="st">"observed"</span>, <span class="at">ylab=</span><span class="st">"predicted"</span>,</span>
-<span id="cb2-16"><a href=""></a>     <span class="at">main=</span><span class="st">"predict the training data"</span>)</span>
-<span id="cb2-17"><a href=""></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span>
-<span id="cb2-18"><a href=""></a></span>
-<span id="cb2-19"><a href=""></a><span class="co">#predict the testing data</span></span>
-<span id="cb2-20"><a href=""></a><span class="fu">plot</span>(data.testing<span class="sc">$</span>y, <span class="fu">predict</span>(obj.lm, <span class="at">new=</span>data.testing[,<span class="sc">-</span><span class="dv">1</span>]), </span>
-<span id="cb2-21"><a href=""></a>     <span class="at">xlab=</span><span class="st">"observed"</span>, <span class="at">ylab=</span><span class="st">"predicted"</span>,</span>
-<span id="cb2-22"><a href=""></a>     <span class="at">main=</span><span class="st">"predict the testing data"</span>)</span>
-<span id="cb2-23"><a href=""></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co">#fit a model using the training model and predict for the training data</span></span>
+<span id="cb4-2"><a href=""></a>obj.lm<span class="ot">=</span><span class="fu">lm</span>(y<span class="sc">~</span> ., <span class="at">data=</span>data.training)</span>
+<span id="cb4-3"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb4-4"><a href=""></a><span class="fu">plot</span>(data.training<span class="sc">$</span>y, <span class="fu">predict</span>(obj.lm), <span class="at">xlab=</span><span class="st">"observed"</span>, <span class="at">ylab=</span><span class="st">"predicted"</span>,</span>
+<span id="cb4-5"><a href=""></a>     <span class="at">main=</span><span class="st">"predict the training data"</span>, <span class="at">type=</span><span class="st">"b"</span>)</span>
+<span id="cb4-6"><a href=""></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb4-7"><a href=""></a></span>
+<span id="cb4-8"><a href=""></a><span class="fu">plot</span>(data.training<span class="sc">$</span>y, <span class="fu">predict</span>(obj.lm, <span class="at">new=</span>data.training[,<span class="sc">-</span><span class="dv">1</span>]), </span>
+<span id="cb4-9"><a href=""></a>     <span class="at">xlab=</span><span class="st">"observed"</span>, <span class="at">ylab=</span><span class="st">"predicted"</span>,</span>
+<span id="cb4-10"><a href=""></a>     <span class="at">main=</span><span class="st">"predict the testing data"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">999</span>, <span class="dv">500</span>),  <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">999</span>, <span class="dv">500</span>))</span>
+<span id="cb4-11"><a href=""></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+
 </div>
+<img data-src="Day8_SmallNBigP_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="the-performance-of-the-model-for-the-training-data" class="slide level2">
+<h2>The performance of the model for the training data</h2>
+<ul>
+<li><p>I am able to predict the number you entered perfectly! Surprised?</p></li>
+<li><p>Note: the left figure is not easy to read because of the outlier so we look at the plot without the outlier (the right figure).</p></li>
+</ul>
+</section>
+<section id="the-performance-of-the-model-for-the-testing-data" class="slide level2">
+<h2>The performance of the model for the testing data</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="co">#predict the testing data</span></span>
+<span id="cb5-2"><a href=""></a><span class="fu">plot</span>(data.testing<span class="sc">$</span>y, <span class="fu">predict</span>(obj.lm, <span class="at">new=</span>data.testing[,<span class="sc">-</span><span class="dv">1</span>]), </span>
+<span id="cb5-3"><a href=""></a>     <span class="at">xlab=</span><span class="st">"observed"</span>, <span class="at">ylab=</span><span class="st">"predicted"</span>,</span>
+<span id="cb5-4"><a href=""></a>     <span class="at">main=</span><span class="st">"predict the testing data"</span>)</span>
+<span id="cb5-5"><a href=""></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="Day8_SmallNBigP_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><ul>
+<li>The model we built using the students / training data does not work for the testing data.</li>
+</ul>
 </section>
 <section id="overfitting" class="slide level2">
 <h2>Overfitting</h2>
 <ul>
-<li>In this experiment, <span class="math inline">\(n=35\)</span> and <span class="math inline">\(p=35\)</span> (including the intercept).</li>
+<li>In this experiment, the training data has <span class="math inline">\(n=35\)</span> and <span class="math inline">\(p=35\)</span> (including the intercept).</li>
 <li>When <span class="math inline">\(n\le p\)</span>, we can obtain a “perfect” model for the data.</li>
 <li>But this model has poor generalizabition, i.e., it is not able to predict well for new data.</li>
 </ul>
 </section>
+<section id="more-examples-of-overfitting" class="title-slide slide level1 center">
+<h1>More Examples of Overfitting</h1>
+<ul>
+<li>Two data points (n=2), two parameters (<span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>): <span class="math inline">\(y_i=\beta_0 + \beta_1 x_i + \epsilon_i\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>x<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">2</span>)</span>
+<span id="cb6-2"><a href=""></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">2</span>) <span class="co"># has no relationship with x</span></span>
+<span id="cb6-3"><a href=""></a><span class="fu">plot</span>(y, <span class="fu">predict</span>(<span class="fu">lm</span>(y<span class="sc">~</span>x)), <span class="at">xlab=</span><span class="st">"observed"</span>, <span class="at">ylab=</span><span class="st">"predicted"</span>, <span class="at">type=</span><span class="st">"b"</span>, <span class="at">pch=</span><span class="dv">14</span>)</span>
+<span id="cb6-4"><a href=""></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="Day8_SmallNBigP_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+
+<section id="more-examples-of-overfitting-1" class="title-slide slide level1 center">
+<h1>More Examples of Overfitting</h1>
+<ul>
+<li><p>Three data points (n=3), three parameters (<span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\beta_2\)</span>): <span class="math inline">\(y_i=\beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \epsilon_i\)</span></p></li>
+<li><p>Note: this is a 2nd order polynomial</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>x<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">3</span>)</span>
+<span id="cb7-2"><a href=""></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">3</span>) <span class="co"># has no relationship with x</span></span>
+<span id="cb7-3"><a href=""></a>y.pred<span class="ot">=</span><span class="fu">predict</span>(<span class="fu">lm</span>(y<span class="sc">~</span>x<span class="sc">+</span>x<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb7-4"><a href=""></a>my.dataframe<span class="ot">=</span><span class="fu">data.frame</span>(x, y, y.pred)</span>
+<span id="cb7-5"><a href=""></a><span class="fu">ggplot</span>(my.dataframe) <span class="sc">+</span></span>
+<span id="cb7-6"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(x,y), <span class="at">size=</span><span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href=""></a>  <span class="fu">stat_smooth</span>(<span class="fu">aes</span>(x,y), <span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, </span>
+<span id="cb7-8"><a href=""></a>              <span class="at">formula =</span> y<span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>, <span class="at">raw=</span><span class="cn">TRUE</span>), <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="Day8_SmallNBigP_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+
+<section>
+<section id="more-examples-of-overfitting-2" class="title-slide slide level1 center">
+<h1>More Examples of Overfitting</h1>
+<ul>
+<li><p>Four data points (n=4), four parameters (<span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, and <span class="math inline">\(\beta_3\)</span>): <span class="math inline">\(y_i=\beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \beta_3 x_i^3 + \epsilon_i\)</span></p></li>
+<li><p>Note: this is a 3rd order polynomial</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>x<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">4</span>)</span>
+<span id="cb8-2"><a href=""></a>y<span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">4</span>) <span class="co"># has no relationship with x</span></span>
+<span id="cb8-3"><a href=""></a></span>
+<span id="cb8-4"><a href=""></a><span class="co"># a 3rd order polynomial</span></span>
+<span id="cb8-5"><a href=""></a>y.pred<span class="ot">=</span><span class="fu">predict</span>(<span class="fu">lm</span>(y<span class="sc">~</span>x<span class="sc">+</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>x<span class="sc">^</span><span class="dv">3</span>))</span>
+<span id="cb8-6"><a href=""></a>my.dataframe<span class="ot">=</span><span class="fu">data.frame</span>(x, y, y.pred)</span>
+<span id="cb8-7"><a href=""></a><span class="fu">ggplot</span>(my.dataframe) <span class="sc">+</span></span>
+<span id="cb8-8"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(x,y), <span class="at">size=</span><span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href=""></a>  <span class="fu">stat_smooth</span>(<span class="fu">aes</span>(x,y), <span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, </span>
+<span id="cb8-10"><a href=""></a>              <span class="at">formula =</span> y<span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">3</span>, <span class="at">raw=</span><span class="cn">TRUE</span>), <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="Day8_SmallNBigP_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="how-to-avoid-overfitting" class="slide level2">
 <h2>How to avoid overfitting</h2>
 <div style="font-size: 75%; color: lightgray">
@@ -486,7 +603,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 
 </div>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 

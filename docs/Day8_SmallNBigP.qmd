@@ -21,34 +21,77 @@ format:
 ```{r}
 library(ggplot2)
 library(tidyverse)
+library(googlesheets4) # the package to read google sheets
 ```
 
 ## Experiment: I can predict your number
-- Please enter a number between 1 and 100 (inclusively).
+- Please enter a number (any number you prefer to enter). 
 - Please use this link: [google sheet](https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing)
-- I claim that I can use a model to predict the numbers you entered perfectly!
+- Meanwhile, I generate a data matrix $X$ consisting of variables generated randomly from a normal distribution without knowing the number you enter. 
+- I claim that I can use a model to predict the number you enter perfectly using my $X$!
 
 
-## Definitions
+## Read Data
 ```{r}
-#| eval: false
-X=matrix(rnorm(35*34), 35, 34)
+#| code-fold: false
+set.seed(17)
+# Generate an X matrix randomly from the standard normal distribution
+X=matrix(rnorm(40*34), 40, 34)
 colnames(X) = paste("V", sep="", 1:34)
-#y=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")$randnumber_day8
-y=rnorm(40)
 
+# Read the data entered by students and the teaching team
+y=read_sheet("https://docs.google.com/spreadsheets/d/1tsBz8WUSEHwU3lYAXedtvD-pk4IebusAv2XaRyF_nXg/edit?usp=sharing")$randnumber_day8
+```
+
+## Training vs Testing Data
+```{r}
+#| code-fold: false
 #split the data into training and testing
 #training: students 1:35 
-#testing: students 36-40
+#testing: the teaching team 36-40
 data.training=data.frame(y=y[1:35], X=X[1:35,])
-data.testing=data.frame(y=y[-c(1:35)], X=X[-c(1:35), ])
+data.testing=data.frame(y=y[-c(1:35)], X=X[-c(1:35),])
+```
 
+- Training data: the data to be used to build a predictive model.
+  - In our experiment, the response variable consists of the numbers entered by the 35 students. 
+- Testing: the data to be used to test a model. 
+  - In our experiment, the response variable consists of the numbers entered by the teaching team (myself and four assistants).  
+
+## Fit a Linear model using the training datat and check its performance
+- Next, we fit a linear model using the training data 
+
+- Then, test its performance for the training data
+
+## Fit a Linear model using the training datat and check its performance
+
+```{r}
+#| fig-align: center
 #fit a model using the training model and predict for the training data
-par(mfrow=c(1,2))
 obj.lm=lm(y~ ., data=data.training)
+par(mfrow=c(1,2))
 plot(data.training$y, predict(obj.lm), xlab="observed", ylab="predicted",
-     main="predict the training data")
+     main="predict the training data", type="b")
 abline(0,1)
+
+plot(data.training$y, predict(obj.lm, new=data.training[,-1]), 
+     xlab="observed", ylab="predicted",
+     main="predict the testing data", xlim=c(-999, 500),  ylim=c(-999, 500))
+abline(0,1)
+```
+
+## The performance of the model for the training data
+
+- I am able to predict the number you entered perfectly! Surprised?
+
+- Note: the left figure is not easy to read because of the outlier so we look at the plot without the outlier (the right figure).
+
+
+
+## The performance of the model for the testing data
+
+```{r}
+#| fig-align: center
 
 #predict the testing data
 plot(data.testing$y, predict(obj.lm, new=data.testing[,-1]), 
@@ -56,11 +99,60 @@ plot(data.testing$y, predict(obj.lm, new=data.testing[,-1]),
      main="predict the testing data")
 abline(0,1)
 ```
+- The model we built using the students / training data does not work for the testing data. 
 
 ## Overfitting
-- In this experiment, $n=35$ and $p=35$ (including the intercept). 
+- In this experiment, the training data has $n=35$ and $p=35$ (including the intercept). 
 - When $n\le p$, we can obtain a "perfect" model for the data.
 - But this model has poor generalizabition, i.e., it is not able to predict well for new data. 
+
+# More Examples of Overfitting
+- Two data points (n=2), two parameters ($\beta_0$ and $\beta_1$): $y_i=\beta_0 + \beta_1 x_i + \epsilon_i$
+
+```{r}
+#| fig-align: center
+
+x=rnorm(2)
+y=rnorm(2) # has no relationship with x
+plot(y, predict(lm(y~x)), xlab="observed", ylab="predicted", type="b", pch=14)
+abline(0,1)
+```
+
+# More Examples of Overfitting
+- Three data points (n=3), three parameters ($\beta_0$, $\beta_1$, and $\beta_2$): $y_i=\beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \epsilon_i$
+
+- Note: this is a 2nd order polynomial
+
+```{r}
+#| fig-align: center
+x=rnorm(3)
+y=rnorm(3) # has no relationship with x
+y.pred=predict(lm(y~x+x^2))
+my.dataframe=data.frame(x, y, y.pred)
+ggplot(my.dataframe) +
+  geom_point(aes(x,y), size=4) +
+  stat_smooth(aes(x,y), method="lm", se=FALSE, 
+              formula = y~ poly(x, 2, raw=TRUE), color="red")
+```
+
+# More Examples of Overfitting
+- Four data points (n=4), four parameters ($\beta_0$, $\beta_1$, $\beta_2$, and $\beta_3$): $y_i=\beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \beta_3 x_i^3 + \epsilon_i$
+
+
+- Note: this is a 3rd order polynomial
+```{r}
+#| fig-align: center
+x=rnorm(4)
+y=rnorm(4) # has no relationship with x
+
+# a 3rd order polynomial
+y.pred=predict(lm(y~x+x^2+x^3))
+my.dataframe=data.frame(x, y, y.pred)
+ggplot(my.dataframe) +
+  geom_point(aes(x,y), size=4) +
+  stat_smooth(aes(x,y), method="lm", se=FALSE, 
+              formula = y~ poly(x, 3, raw=TRUE), color="red")
+```
 
 ## How to avoid overfitting
 
@@ -77,3 +169,5 @@ abline(0,1)
 Check the following link if you would like to learn more:
 [Example](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/#google_vignette)
 :::
+
+
