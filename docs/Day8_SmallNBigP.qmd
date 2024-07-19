@@ -157,6 +157,27 @@ ggplot(my.dataframe) +
               formula = y~ poly(x, 3, raw=TRUE), color="red")
 ```
 
+
+# More Examples of Overfitting
+- Four data points (n=6), 6 parameters ($\beta_0$, $\beta_1$, $\beta_2$, $\cdots$, $\beta_5$): $y_i=\beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \cdots + \beta_5 x_i^{5} + \epsilon_i$
+
+
+- Note: this is a 5rd order polynomial
+```{r}
+#| fig-align: center
+n=6
+x=1:n
+y=rnorm(n, mean=rep(c(1,10), n/2)) # has no relationship with x
+
+# a 3rd order polynomial
+my.dataframe=data.frame(x, y)
+ggplot(my.dataframe) +
+  geom_point(aes(x,y), size=4) +
+  stat_smooth(aes(x,y), method="lm", se=FALSE, 
+              formula = y~ poly(x, n-1, raw=TRUE), color="red")
+```
+
+
 ## How to avoid overfitting
 
 ::: {style="font-size: 75%; color: lightgray"}

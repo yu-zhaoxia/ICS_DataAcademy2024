@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-17">
+  <meta name="dcterms.date" content="2024-07-19">
   <title>Day 8 - A Gentle Intro To Small n Big P</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-17</p>
+  <p class="date">2024-07-19</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -558,7 +558,6 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 <img data-src="Day8_SmallNBigP_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 
-<section>
 <section id="more-examples-of-overfitting-2" class="title-slide slide level1 center">
 <h1>More Examples of Overfitting</h1>
 <ul>
@@ -582,6 +581,31 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 
 </div>
 <img data-src="Day8_SmallNBigP_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+
+<section>
+<section id="more-examples-of-overfitting-3" class="title-slide slide level1 center">
+<h1>More Examples of Overfitting</h1>
+<ul>
+<li><p>Four data points (n=6), 6 parameters (<span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, <span class="math inline">\(\beta_2\)</span>, <span class="math inline">\(\cdots\)</span>, <span class="math inline">\(\beta_5\)</span>): <span class="math inline">\(y_i=\beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \cdots + \beta_5 x_i^{5} + \epsilon_i\)</span></p></li>
+<li><p>Note: this is a 5rd order polynomial</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>n<span class="ot">=</span><span class="dv">6</span></span>
+<span id="cb9-2"><a href=""></a>x<span class="ot">=</span><span class="dv">1</span><span class="sc">:</span>n</span>
+<span id="cb9-3"><a href=""></a>y<span class="ot">=</span><span class="fu">rnorm</span>(n, <span class="at">mean=</span><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">10</span>), n<span class="sc">/</span><span class="dv">2</span>)) <span class="co"># has no relationship with x</span></span>
+<span id="cb9-4"><a href=""></a></span>
+<span id="cb9-5"><a href=""></a><span class="co"># a 3rd order polynomial</span></span>
+<span id="cb9-6"><a href=""></a>my.dataframe<span class="ot">=</span><span class="fu">data.frame</span>(x, y)</span>
+<span id="cb9-7"><a href=""></a><span class="fu">ggplot</span>(my.dataframe) <span class="sc">+</span></span>
+<span id="cb9-8"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(x,y), <span class="at">size=</span><span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb9-9"><a href=""></a>  <span class="fu">stat_smooth</span>(<span class="fu">aes</span>(x,y), <span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, </span>
+<span id="cb9-10"><a href=""></a>              <span class="at">formula =</span> y<span class="sc">~</span> <span class="fu">poly</span>(x, n<span class="dv">-1</span>, <span class="at">raw=</span><span class="cn">TRUE</span>), <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="Day8_SmallNBigP_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="how-to-avoid-overfitting" class="slide level2">
 <h2>How to avoid overfitting</h2>
 <div style="font-size: 75%; color: lightgray">
