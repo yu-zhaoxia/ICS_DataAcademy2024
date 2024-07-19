@@ -169,7 +169,7 @@ $$y_i=\beta_0 + \beta_1 x_i + \epsilon_i, i=1, \cdots, n$$
 - Other notations: 
 $$b_0=\hat \beta_0, b_1=\hat\beta_1$$
 
-::: {style="font-size: 100%; color: lightgray"}
+::: {style="font-size: 100%; color: gray"}
 - The process of finding $(b_0, b_1)$ involves solving two linear equations jointly. 
 
     -   $b_0=\hat\beta_0=\bar{y}-b_1\bar{x}$
@@ -210,7 +210,7 @@ coef(obj.age.hippo) #alternatively: obj$coefficients
 
 ## Residuals
 
-::: {style="font-size: 100%; color: lightgray"}
+::: {style="font-size: 100%; color: gray"}
 -   $e_i = y_i - \hat y_i$ where $\hat y_i = \hat\beta_0 + \hat \beta_1 x_i$
 -   Residual sum of squares (RSS): $RSS=\sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i -\hat y_i)^2$
 -   An unbiased estimate of $\sigma^2$ is $s^2$: $$s^2= \frac{RSS}{n-2}$$
@@ -218,7 +218,7 @@ coef(obj.age.hippo) #alternatively: obj$coefficients
 
 ## Standard Error and Confidence Interval
 
-::: {style="font-size: 100%; color: lightgray"}
+::: {style="font-size: 100%; color: gray"}
 -   The standard error of $\hat\beta_1$ is $$se(\hat \beta_1)=\frac{\sqrt{s^2}}{\sqrt{\sum (x_i - \bar{x})^2}}$$
 :::
 -   A $100(1-\alpha)\%$ confidence interval for $\beta_1$ is $$\hat\beta_1 \pm t_{\alpha / 2, n - 2} se(\hat\beta_1)$$
@@ -345,8 +345,9 @@ anova(lm(lhippo~diagnosis, data=alzheimer_data))
 
 # Advanced Topics
 
+# Outliers
 ## Outliers
-::: {style="font-size: 85%; color: lightgray"}
+::: {style="font-size: 85%; color: gray"}
 **Outliers** are points that do not follow the general pattern of the majority of the data.
 
 -   **Leverage points** are also called x-outliers.
@@ -366,17 +367,31 @@ anova(lm(lhippo~diagnosis, data=alzheimer_data))
 
 ## Model Diagnostics
 
-::: {style="font-size: 85%; color: lightgray"}
+::: {style="font-size: 85%; color: gray"}
 -   **Linearity**: The relationship between predictors and response is linear. Violation seen when residuals display a systematic pattern.
 -   **Independence**: The residuals are independent. Violation seen when residuals display trends over time or space.
 -   **Homoscedasticity**: The variance of the residuals is constant. Violation seen when residuals show a "funnel" shape pattern.
 -   **Normality**: The residuals are normally distributed. Violation seen when residuals don't follow a bell-shaped pattern in a histogram or a straight line on a Q-Q plot.
 :::
 
-## Interpret Interactions
 
-::: {style="font-size: 100%; color: lightgray"}
--   Do men and women shrink brain in the same speed?
+# Interactions
+
+## A Model with Interactions
+
+::: {style="font-size: 100%; color: gray"}
+
+- Example: 
+$$y=\beta_0 + \beta_{age} age + \beta_f f + \beta_{age_f} age\times f + \epsilon$$
+where $f$ means female. 
+
+:::
+
+```{r}
+summary(lm(lhippo~ age*female, data=alzheimer_healthy_old))$coefficients
+```
+
+## Data Visualization
 
 ```{r}
 #| fig-align: center
@@ -384,6 +399,31 @@ ggplot(alzheimer_healthy_old, aes(x=age, y=hippo, color=female))+
   geom_point()+
   geom_smooth(method=lm, se=F)
 ```
+
+## The fitted lines
+
+::: {style="font-size: 100%; color: gray"}
+
+- What are the two fitted lines?
+
+- Female: $\hat \beta_0 + \hat \beta_{age} age + \hat \beta_f \times 1 +  \hat\beta_{age\times f} (age\times 1)$, which can be rewritten to:
+
+$$(\hat \beta_0  + \hat \beta_f) + (\hat \beta_{age} age +  \hat\beta_{age\times f}) age.$$
+
+- Male, similarly, the fitted line is
+$$\hat \beta_0 + \hat \beta_{age} age $$
+:::
+
+## The interaction coefficient
+::: {style="font-size: 100%; color: gray"}
+
+- The two groups have different slopes if and only if $\hat\beta_{age\times f} \not = 0$. 
+
+- In other words, $\hat\beta_{age\times f}$ is the estimated difference in the slope of age for females vs for males. 
+
+
+- Back to the problem, do men and women shrink brain in the same speed?
+
 :::
 
 ## Interpret Interactions
@@ -392,15 +432,16 @@ ggplot(alzheimer_healthy_old, aes(x=age, y=hippo, color=female))+
 summary(lm(lhippo~ age*female, data=alzheimer_healthy_old))$coefficients
 ```
 
-::: {style="font-size: 90%; color: lightgray"}
--   The estimated brain shrinking speed for men is 0.017cc per year
--   The estimated brain shrinking speed for women is 0.013cc per year
--   The result about the interaction item indicates that the difference in brain shrinking speed between men and women is 0.005cc per year and it is statistically significant
+::: {style="font-size: 90%; color: gray"}
+-   The estimated brain shrinking speed for men is 0.017cc per year.
+-   The estimated brain shrinking speed for women is $|-0.0172+0.0047|\approx 0.013$cc per year. 
+-   The result about the interaction item indicates that the difference in brain shrinking speed between men and women is 0.005cc per year and it is statistically significant. 
 :::
 
+# Transform $X$ and $Y$
 ## Interpret transformed data
 
-::: {style="font-size: 100%; color: lightgray"}
+::: {style="font-size: 100%; color: gray"}
 -   Weight is a little bit skewed. Regress hippocampus volume on log(weight). How to interpret the results?
 
 ```{r}
@@ -408,13 +449,24 @@ summary(lm(lhippo~ age*female, data=alzheimer_healthy_old))$coefficients
 #plot(log(alzheimer_healthy_old$weight), alzheimer_healthy_old$hippo, xlab="weight", ylab="log(weight)")
 summary(lm(hippo~log(weight), data=alzheimer_healthy_old))$coefficients
 ```
-- $b_1=1.013243$: when weight increases by $(e^{1.013243}-1)*100=175.45%$. 
+:::
+
+
+## Transformation $y=\beta_0 + \beta_1 log(x) + \epsilon$
+::: {style="font-size: 70%; color: gray"}
+- The estimated change in $y$ is $b_1=1.013243$ when $log(x)$ increases by 1, i.e., from $log(x)$ to $log(x)+1=log(x)+log(e)=log(ex)$.
+
+- Converting it to changes in $x$, $b_1=1.013243$ is the estimated change in $y$ (hippo volume) when $x$ (weight) increases **to** $ex$, i.e, when $x$ increases **by** $\frac{ex-x}{x}=e-1 \approx 1.72 = 172\%$. 
+
+- It depends on the context, we might be interested in calculating the estimated change in $y$ with $1%$ increase in $x$: $b_1 \times (log(1.01)-log(1)) \approx 0.1 * b_1$. 
+
+- Similarly, we can calculate the estimated change in $y$ with $10%$ increase in $x$: $b_1 \times (log(1.10)- log(1)) \approx =0.95 b_1$. 
 :::
 
 
 ## Interpret transformed data
 
-::: {style="font-size: 100%; color: lightgray"}
+::: {style="font-size: 100%; color: gray"}
 -   Regress log(weight) on height. How to interpret the results?
 
 ```{r}

@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-14">
+  <meta name="dcterms.date" content="2024-07-18">
   <title>Day 4 - Linear Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-14</p>
+  <p class="date">2024-07-18</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -614,7 +614,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 <li><p>Least Squares Estimate: looking for <span class="math inline">\(\hat\beta_0\)</span> and <span class="math inline">\(\hat\beta_1\)</span> that minimizes <span class="math inline">\(\sum_{i=1}^n (y_i - \beta_0 -\beta_1 x_i)^2\)</span>.</p></li>
 <li><p>Other notations: <span class="math display">\[b_0=\hat \beta_0, b_1=\hat\beta_1\]</span></p></li>
 </ul>
-<div style="font-size: 100%; color: lightgray">
+<div style="font-size: 100%; color: gray">
 <ul>
 <li><p>The process of finding <span class="math inline">\((b_0, b_1)\)</span> involves solving two linear equations jointly.</p>
 <ul>
@@ -675,7 +675,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </section>
 <section id="residuals" class="slide level2">
 <h2>Residuals</h2>
-<div style="font-size: 100%; color: lightgray">
+<div style="font-size: 100%; color: gray">
 <ul>
 <li><span class="math inline">\(e_i = y_i - \hat y_i\)</span> where <span class="math inline">\(\hat y_i = \hat\beta_0 + \hat \beta_1 x_i\)</span></li>
 <li>Residual sum of squares (RSS): <span class="math inline">\(RSS=\sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i -\hat y_i)^2\)</span></li>
@@ -685,7 +685,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </section>
 <section id="standard-error-and-confidence-interval" class="slide level2">
 <h2>Standard Error and Confidence Interval</h2>
-<div style="font-size: 100%; color: lightgray">
+<div style="font-size: 100%; color: gray">
 <ul>
 <li>The standard error of <span class="math inline">\(\hat\beta_1\)</span> is <span class="math display">\[se(\hat \beta_1)=\frac{\sqrt{s^2}}{\sqrt{\sum (x_i - \bar{x})^2}}\]</span></li>
 </ul>
@@ -954,14 +954,19 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section></section>
-<section>
 <section id="advanced-topics" class="title-slide slide level1 center">
 <h1>Advanced Topics</h1>
 
 </section>
-<section id="outliers" class="slide level2">
+
+<section>
+<section id="outliers" class="title-slide slide level1 center">
+<h1>Outliers</h1>
+
+</section>
+<section id="outliers-1" class="slide level2">
 <h2>Outliers</h2>
-<div style="font-size: 85%; color: lightgray">
+<div style="font-size: 85%; color: gray">
 <p><strong>Outliers</strong> are points that do not follow the general pattern of the majority of the data.</p>
 <ul>
 <li><p><strong>Leverage points</strong> are also called x-outliers.</p></li>
@@ -980,7 +985,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 <section id="model-diagnostics" class="slide level2">
 <h2>Model Diagnostics</h2>
-<div style="font-size: 85%; color: lightgray">
+<div style="font-size: 85%; color: gray">
 <ul>
 <li><strong>Linearity</strong>: The relationship between predictors and response is linear. Violation seen when residuals display a systematic pattern.</li>
 <li><strong>Independence</strong>: The residuals are independent. Violation seen when residuals display trends over time or space.</li>
@@ -988,36 +993,23 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li><strong>Normality</strong>: The residuals are normally distributed. Violation seen when residuals don’t follow a bell-shaped pattern in a histogram or a straight line on a Q-Q plot.</li>
 </ul>
 </div>
+</section></section>
+<section>
+<section id="interactions" class="title-slide slide level1 center">
+<h1>Interactions</h1>
+
 </section>
-<section id="interpret-interactions" class="slide level2">
-<h2>Interpret Interactions</h2>
-<div style="font-size: 100%; color: lightgray">
+<section id="a-model-with-interactions" class="slide level2">
+<h2>A Model with Interactions</h2>
+<div style="font-size: 100%; color: gray">
 <ul>
-<li>Do men and women shrink brain in the same speed?</li>
+<li>Example: <span class="math display">\[y=\beta_0 + \beta_{age} age + \beta_f f + \beta_{age_f} age\times f + \epsilon\]</span> where <span class="math inline">\(f\)</span> means female.</li>
 </ul>
-<div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="fu">ggplot</span>(alzheimer_healthy_old, <span class="fu">aes</span>(<span class="at">x=</span>age, <span class="at">y=</span>hippo, <span class="at">color=</span>female))<span class="sc">+</span></span>
-<span id="cb42-2"><a href=""></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb42-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm, <span class="at">se=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="Day4_LinearRegression_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
-</figure>
 </div>
-</div>
-</div>
-</div>
-</section>
-<section id="interpret-interactions-1" class="slide level2">
-<h2>Interpret Interactions</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a><span class="fu">summary</span>(<span class="fu">lm</span>(lhippo<span class="sc">~</span> age<span class="sc">*</span>female, <span class="at">data=</span>alzheimer_healthy_old))<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="fu">summary</span>(<span class="fu">lm</span>(lhippo<span class="sc">~</span> age<span class="sc">*</span>female, <span class="at">data=</span>alzheimer_healthy_old))<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                Estimate  Std. Error    t value      Pr(&gt;|t|)
@@ -1027,25 +1019,81 @@ female1     -0.587112896 0.125420697  -4.681148  3.109245e-06
 age:female1  0.004712371 0.001807027   2.607803  9.202664e-03</code></pre>
 </div>
 </div>
-<div style="font-size: 90%; color: lightgray">
+</section>
+<section id="data-visualization" class="slide level2">
+<h2>Data Visualization</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="fu">ggplot</span>(alzheimer_healthy_old, <span class="fu">aes</span>(<span class="at">x=</span>age, <span class="at">y=</span>hippo, <span class="at">color=</span>female))<span class="sc">+</span></span>
+<span id="cb44-2"><a href=""></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb44-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm, <span class="at">se=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="Day4_LinearRegression_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="the-fitted-lines" class="slide level2">
+<h2>The fitted lines</h2>
+<div style="font-size: 100%; color: gray">
 <ul>
-<li>The estimated brain shrinking speed for men is 0.017cc per year</li>
-<li>The estimated brain shrinking speed for women is 0.013cc per year</li>
-<li>The result about the interaction item indicates that the difference in brain shrinking speed between men and women is 0.005cc per year and it is statistically significant</li>
+<li><p>What are the two fitted lines?</p></li>
+<li><p>Female: <span class="math inline">\(\hat \beta_0 + \hat \beta_{age} age + \hat \beta_f \times 1 +  \hat\beta_{age\times f} (age\times 1)\)</span>, which can be rewritten to:</p></li>
+</ul>
+<p><span class="math display">\[(\hat \beta_0  + \hat \beta_f) + (\hat \beta_{age} age +  \hat\beta_{age\times f}) age.\]</span></p>
+<ul>
+<li>Male, similarly, the fitted line is <span class="math display">\[\hat \beta_0 + \hat \beta_{age} age \]</span></li>
 </ul>
 </div>
 </section>
+<section id="the-interaction-coefficient" class="slide level2">
+<h2>The interaction coefficient</h2>
+<div style="font-size: 100%; color: gray">
+<ul>
+<li><p>The two groups have different slopes if and only if <span class="math inline">\(\hat\beta_{age\times f} \not = 0\)</span>.</p></li>
+<li><p>In other words, <span class="math inline">\(\hat\beta_{age\times f}\)</span> is the estimated difference in the slope of age for females vs for males.</p></li>
+<li><p>Back to the problem, do men and women shrink brain in the same speed?</p></li>
+</ul>
+</div>
+</section>
+<section id="interpret-interactions" class="slide level2">
+<h2>Interpret Interactions</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a><span class="fu">summary</span>(<span class="fu">lm</span>(lhippo<span class="sc">~</span> age<span class="sc">*</span>female, <span class="at">data=</span>alzheimer_healthy_old))<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                Estimate  Std. Error    t value      Pr(&gt;|t|)
+(Intercept)  4.532690854 0.103765046  43.682252 6.870408e-270
+age         -0.017258406 0.001489018 -11.590461  8.150250e-30
+female1     -0.587112896 0.125420697  -4.681148  3.109245e-06
+age:female1  0.004712371 0.001807027   2.607803  9.202664e-03</code></pre>
+</div>
+</div>
+<div style="font-size: 90%; color: gray">
+<ul>
+<li>The estimated brain shrinking speed for men is 0.017cc per year.</li>
+<li>The estimated brain shrinking speed for women is <span class="math inline">\(|-0.0172+0.0047|\approx 0.013\)</span>cc per year.</li>
+<li>The result about the interaction item indicates that the difference in brain shrinking speed between men and women is 0.005cc per year and it is statistically significant.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="transform-x-and-y" class="title-slide slide level1 center">
+<h1>Transform <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span></h1>
+
+</section>
 <section id="interpret-transformed-data" class="slide level2">
 <h2>Interpret transformed data</h2>
-<div style="font-size: 100%; color: lightgray">
+<div style="font-size: 100%; color: gray">
 <ul>
 <li>Weight is a little bit skewed. Regress hippocampus volume on log(weight). How to interpret the results?</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a><span class="co">#plot(log(alzheimer_healthy_old$weight), alzheimer_healthy_old$hippo, xlab="weight", ylab="log(weight)")</span></span>
-<span id="cb45-2"><a href=""></a><span class="fu">summary</span>(<span class="fu">lm</span>(hippo<span class="sc">~</span><span class="fu">log</span>(weight), <span class="at">data=</span>alzheimer_healthy_old))<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="co">#plot(log(alzheimer_healthy_old$weight), alzheimer_healthy_old$hippo, xlab="weight", ylab="log(weight)")</span></span>
+<span id="cb47-2"><a href=""></a><span class="fu">summary</span>(<span class="fu">lm</span>(hippo<span class="sc">~</span><span class="fu">log</span>(weight), <span class="at">data=</span>alzheimer_healthy_old))<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Estimate Std. Error   t value     Pr(&gt;|t|)
@@ -1053,22 +1101,30 @@ age:female1  0.004712371 0.001807027   2.607803  9.202664e-03</code></pre>
 log(weight) 1.013243 0.09066951 11.175126 6.524856e-28</code></pre>
 </div>
 </div>
+</div>
+</section>
+<section id="transformation-ybeta_0-beta_1-logx-epsilon" class="slide level2">
+<h2>Transformation <span class="math inline">\(y=\beta_0 + \beta_1 log(x) + \epsilon\)</span></h2>
+<div style="font-size: 70%; color: gray">
 <ul>
-<li><span class="math inline">\(b_1=1.013243\)</span>: when weight increases by <span class="math inline">\((e^{1.013243}-1)*100=175.45%\)</span>.</li>
+<li><p>The estimated change in <span class="math inline">\(y\)</span> is <span class="math inline">\(b_1=1.013243\)</span> when <span class="math inline">\(log(x)\)</span> increases by 1, i.e., from <span class="math inline">\(log(x)\)</span> to <span class="math inline">\(log(x)+1=log(x)+log(e)=log(ex)\)</span>.</p></li>
+<li><p>Converting it to changes in <span class="math inline">\(x\)</span>, <span class="math inline">\(b_1=1.013243\)</span> is the estimated change in <span class="math inline">\(y\)</span> (hippo volume) when <span class="math inline">\(x\)</span> (weight) increases <strong>to</strong> <span class="math inline">\(ex\)</span>, i.e, when <span class="math inline">\(x\)</span> increases <strong>by</strong> <span class="math inline">\(\frac{ex-x}{x}=e-1 \approx 1.72 = 172\%\)</span>.</p></li>
+<li><p>It depends on the context, we might be interested in calculating the estimated change in <span class="math inline">\(y\)</span> with <span class="math inline">\(1%\)</span> increase in <span class="math inline">\(x\)</span>: <span class="math inline">\(b_1 \times (log(1.01)-log(1)) \approx 0.1 * b_1\)</span>.</p></li>
+<li><p>Similarly, we can calculate the estimated change in <span class="math inline">\(y\)</span> with <span class="math inline">\(10%\)</span> increase in <span class="math inline">\(x\)</span>: <span class="math inline">\(b_1 \times (log(1.10)- log(1)) \approx =0.95 b_1\)</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="interpret-transformed-data-1" class="slide level2">
 <h2>Interpret transformed data</h2>
-<div style="font-size: 100%; color: lightgray">
+<div style="font-size: 100%; color: gray">
 <ul>
 <li>Regress log(weight) on height. How to interpret the results?</li>
 </ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="co">#plot(alzheimer_healthy_old$height, log(alzheimer_healthy_old$weight), xlab="height", ylab="log(weight)")</span></span>
-<span id="cb47-2"><a href=""></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">log</span>(weight)<span class="sc">~</span>height, <span class="at">data=</span>alzheimer_healthy_old))<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="co">#plot(alzheimer_healthy_old$height, log(alzheimer_healthy_old$weight), xlab="height", ylab="log(weight)")</span></span>
+<span id="cb49-2"><a href=""></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">log</span>(weight)<span class="sc">~</span>height, <span class="at">data=</span>alzheimer_healthy_old))<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Estimate  Std. Error  t value      Pr(&gt;|t|)

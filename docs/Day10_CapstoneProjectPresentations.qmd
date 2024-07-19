@@ -1,0 +1,99 @@
+---
+title: "Data Analytics Summer Camp 2024: Capstone Project Presentations"
+author: 
+  - name: "Zhaoxia Yu"
+    affiliation: "Professor, Department of Statistics"
+    
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    scrollable: true
+    theme: "sky"
+    slideNumber: true
+    transition: "fade"
+    progress: true
+    controls: true
+    code-fold: true
+    echo: true
+    fig-align: center
+css: custom.css
+---
+
+```{r}
+```
+
+## Welcome to the Capstone Project Presentations of UCI ICS Summer Academy - Data Analytics 2024!
+
+![](images/clipboard-1045273716.png){fig-align="center"}
+
+## Instruction Team
+
+-   Instructor: Zhaoxia Yu
+
+![](images/clipboard-3740061059.png){fig-align="center"}
+
+## What We advertised
+
+![](images/clipboard-493202362.png){fig-align="center"}
+
+## What We Covered
+
+![](images/clipboard-709077326.png){fig-align="center"}
+
+## 
+
+![](images/clipboard-842169705.png){fig-align="center"}
+
+## Capstone Project Topics
+
+List of project topics:
+
+-   Poverty and academic performance
+-   Colorectal cancer and metabolite markers
+-   COVID severity and cell types
+-   The trend of normal body temperature
+
+## The Presentations
+
+-   Six excellent teams.
+
+-   Each team has 12 minutes to present and 2-3 minutes to answer 1- 2 questions before the next presentation.
+
+-   Parents and guests:
+
+    -   Please feel free to ask questions and interact with the students after their presentations.
+
+    -   Your support and interest mean a lot to them and to us.
+
+
+## 
+
+![](images/clipboard-1848337189.png){fig-align="center"}
+
+## Presentation Schedule
+
+::: {style="font-size: 80%"}
+-   [Team 1](https://www.canva.com/design/DAGLDZ3FV68/ztN1l8k8kGD_oT9-0bvPZw/view?utm_content=DAGLDZ3FV68&utm_campaign=designshare&utm_medium=link&utm_source=editor): Dylan Hong, Max Woo, Manusvath Gurudahta, Seher Subedara, Sahana Ananth, Anaika Nagireddy
+
+-   [Team 2](): Evan Oshima, Jiwon Chung, Reese Zhong, Alexander Wong, Troy Yeh, Ceidy Hernandez
+
+-   [Team 3](https://docs.google.com/presentation/d/135epUDa3w-AEaGUaAD5DOUTWcpXXq5BwKWyy0Xvoz68/edit?usp=sharing): Chloe Goodman, Hector Jessen, Kaiwen Yao, Pablo Silva Lizarraga, Bryan Chipahua, Prayag Sameth
+
+-   [Team 4](https://docs.google.com/presentation/d/1_mYEPd4jQflwc2ZnFiigdftF6noUvtKkBxyBcgP9Dq8/edit?usp=drive_link): Kenneth Coats, Samantha Wang, Quan Ho, David Wong, Khushi Jain
+
+-   [Team 5](https://docs.google.com/presentation/d/1GJFzOPDyU0KV4R5XXnsgnQ2_AhUg42wq0Du7b2yYRFw/edit?usp=drive_link): Joshua Virgen, Avery Seaman, Tyler Nguyen, Lauren Sunkin, Laura Zimmy, Manu Golozari
+
+-   [Team 6](https://docs.google.com/presentation/d/1LDwaIwLH2hPvkcee4EU3j2qCgzi78B_FOgSacDJpKvg/edit?usp=drive_link): Jules Mykheal, Mason Neurator, Wei-Cheng Tseng, Pragnya Ramkumar, Alvin Chen, Jason Sun
+:::
+
+## Closing Remarks
+
+-   We are incredibly proud of the hard work and dedication each student.
+
+-   Your curiosity and determination have impressed us and we encourage you to keep exploring.
+
+-   "All models are wrong, but some are useful." — George E. P. Box
+
+-   "It’s easy to lie with statistics. It’s hard to tell the truth without statistics.” — Andrejs Dunkels
+
+-   "If someone reports close to a 100% accuracy, they are either lying to you, made a mistake, forecasting the future with the future, predicting something with the same thing, or rigged the problem." — Matthew Schneider

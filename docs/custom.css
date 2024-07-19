@@ -8,3 +8,12 @@
   padding: 5px 10px;
   border-radius: 5px;
 }
+
+.quarto-title-block .quarto-title-banner {
+  background-image: url(images/clipboard-1045273716.png);
+  background-size: 300px;
+  background-position: left;
+  background-repeat: no-repeat;
+  padding-left: 10px;
+  background-origin: content-box;
+}
