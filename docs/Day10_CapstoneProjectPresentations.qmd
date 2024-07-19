@@ -61,10 +61,7 @@ List of project topics:
 
 -   Parents and guests:
 
-    -   Please feel free to ask questions and interact with the students after their presentations.
-
-    -   Your support and interest mean a lot to them and to us.
-
+    -   Please feel free to ask more questions and interact with the students after their presentations.
 
 ## 
 
@@ -75,7 +72,7 @@ List of project topics:
 ::: {style="font-size: 80%"}
 -   [Team 1](https://www.canva.com/design/DAGLDZ3FV68/ztN1l8k8kGD_oT9-0bvPZw/view?utm_content=DAGLDZ3FV68&utm_campaign=designshare&utm_medium=link&utm_source=editor): Dylan Hong, Max Woo, Manusvath Gurudahta, Seher Subedara, Sahana Ananth, Anaika Nagireddy
 
--   [Team 2](): Evan Oshima, Jiwon Chung, Reese Zhong, Alexander Wong, Troy Yeh, Ceidy Hernandez
+-   [Team 2](https://docs.google.com/presentation/d/1URhPcGfycI3EU4RfrmZCk_GuKIFDQBizleZjLdIreJg/edit?usp=drive_link): Evan Oshima, Jiwon Chung, Reese Zhong, Alexander Wong, Troy Yeh, Ceidy Hernandez
 
 -   [Team 3](https://docs.google.com/presentation/d/135epUDa3w-AEaGUaAD5DOUTWcpXXq5BwKWyy0Xvoz68/edit?usp=sharing): Chloe Goodman, Hector Jessen, Kaiwen Yao, Pablo Silva Lizarraga, Bryan Chipahua, Prayag Sameth
 
@@ -97,3 +94,15 @@ List of project topics:
 -   "It’s easy to lie with statistics. It’s hard to tell the truth without statistics.” — Andrejs Dunkels
 
 -   "If someone reports close to a 100% accuracy, they are either lying to you, made a mistake, forecasting the future with the future, predicting something with the same thing, or rigged the problem." — Matthew Schneider
+
+## Acknowledgements
+
+- Teaching assistants: Sara Tyo, Ananya Jajoo, Grace Jong, Kenzo Lobo, Anatascio Ruiz
+
+- ICS Summer Academy team: Dr. Magda El Zarki, Julie Lindo
+
+- Parents: your support and interest mean a lot the students and to us.
+
+- Students
+
+    ![](images/clipboard-2248133345.png){fig-align="center"}

@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-18">
+  <meta name="dcterms.date" content="2024-07-19">
   <title>Day 4 - Linear Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-18</p>
+  <p class="date">2024-07-19</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -1003,7 +1003,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <h2>A Model with Interactions</h2>
 <div style="font-size: 100%; color: gray">
 <ul>
-<li>Example: <span class="math display">\[y=\beta_0 + \beta_{age} age + \beta_f f + \beta_{age_f} age\times f + \epsilon\]</span> where <span class="math inline">\(f\)</span> means female.</li>
+<li>Example: <span class="math display">\[y=\beta_0 + \beta_{age} age + \beta_f f + \beta_{age\times f} age\times f + \epsilon\]</span> where <span class="math inline">\(f\)</span> means female.</li>
 </ul>
 </div>
 <div class="cell">
@@ -1039,7 +1039,7 @@ age:female1  0.004712371 0.001807027   2.607803  9.202664e-03</code></pre>
 <li><p>What are the two fitted lines?</p></li>
 <li><p>Female: <span class="math inline">\(\hat \beta_0 + \hat \beta_{age} age + \hat \beta_f \times 1 +  \hat\beta_{age\times f} (age\times 1)\)</span>, which can be rewritten to:</p></li>
 </ul>
-<p><span class="math display">\[(\hat \beta_0  + \hat \beta_f) + (\hat \beta_{age} age +  \hat\beta_{age\times f}) age.\]</span></p>
+<p><span class="math display">\[(\hat \beta_0  + \hat \beta_f) + (\hat \beta_{age}  +  \hat\beta_{age\times f}) age.\]</span></p>
 <ul>
 <li>Male, similarly, the fitted line is <span class="math display">\[\hat \beta_0 + \hat \beta_{age} age \]</span></li>
 </ul>

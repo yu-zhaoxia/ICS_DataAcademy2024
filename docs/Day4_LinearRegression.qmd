@@ -382,7 +382,7 @@ anova(lm(lhippo~diagnosis, data=alzheimer_data))
 ::: {style="font-size: 100%; color: gray"}
 
 - Example: 
-$$y=\beta_0 + \beta_{age} age + \beta_f f + \beta_{age_f} age\times f + \epsilon$$
+$$y=\beta_0 + \beta_{age} age + \beta_f f + \beta_{age\times f} age\times f + \epsilon$$
 where $f$ means female. 
 
 :::
@@ -408,7 +408,7 @@ ggplot(alzheimer_healthy_old, aes(x=age, y=hippo, color=female))+
 
 - Female: $\hat \beta_0 + \hat \beta_{age} age + \hat \beta_f \times 1 +  \hat\beta_{age\times f} (age\times 1)$, which can be rewritten to:
 
-$$(\hat \beta_0  + \hat \beta_f) + (\hat \beta_{age} age +  \hat\beta_{age\times f}) age.$$
+$$(\hat \beta_0  + \hat \beta_f) + (\hat \beta_{age}  +  \hat\beta_{age\times f}) age.$$
 
 - Male, similarly, the fitted line is
 $$\hat \beta_0 + \hat \beta_{age} age $$
