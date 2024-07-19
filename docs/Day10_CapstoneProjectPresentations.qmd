@@ -26,15 +26,22 @@ css: custom.css
 
 ![](images/clipboard-1045273716.png){fig-align="center"}
 
+
 ## Instruction Team
 
 -   Instructor: Zhaoxia Yu
 
 ![](images/clipboard-3740061059.png){fig-align="center"}
 
+
 ## What We advertised
 
 ![](images/clipboard-493202362.png){fig-align="center"}
+
+- In God We Trust. All Others Bring Data. — Edward Deming.
+
+<!-- Widely attributed to Deming.
+He was referring to the use of data to improve manufacturing quality back to the eighties.-->
 
 ## What We Covered
 
@@ -85,9 +92,9 @@ List of project topics:
 
 ## Closing Remarks
 
--   We are incredibly proud of the hard work and dedication each student.
+-   We are incredibly proud of the hard work and dedication of each student.
 
--   Your curiosity and determination have impressed us and we encourage you to keep exploring.
+-   Your curiosity and determination have impressed us, and we encourage you to keep exploring.
 
 -   "All models are wrong, but some are useful." — George E. P. Box
 
@@ -101,7 +108,7 @@ List of project topics:
 
 - ICS Summer Academy team: Dr. Magda El Zarki, Julie Lindo
 
-- Parents: your support and interest mean a lot the students and to us.
+- Parents: your support and interest mean a lot to the students and to us.
 
 - Students
 
