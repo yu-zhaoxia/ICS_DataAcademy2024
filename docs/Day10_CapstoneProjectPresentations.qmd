@@ -40,8 +40,12 @@ css: custom.css
 
 - In God We Trust. All Others Bring Data. — Edward Deming.
 
-<!-- Widely attributed to Deming.
-He was referring to the use of data to improve manufacturing quality back to the eighties.-->
+<!-- This quote is widely attributed to Deming.
+He was referring to the use of data to improve manufacturing quality back to the eighties.
+The quote has new interpretations in the big data era. 
+Data are important. But they are not useful unless we know how to interpret it and get scientific insights from it using appropriate statisitcal and computational methods. 
+Of course we care a lot about students' experiences. 
+-->
 
 ## What We Covered
 
@@ -77,17 +81,24 @@ List of project topics:
 ## Presentation Schedule
 
 ::: {style="font-size: 80%"}
--   [Team 1](https://www.canva.com/design/DAGLDZ3FV68/ztN1l8k8kGD_oT9-0bvPZw/view?utm_content=DAGLDZ3FV68&utm_campaign=designshare&utm_medium=link&utm_source=editor): Dylan Hong, Max Woo, Manusvath Gurudahta, Seher Subedara, Sahana Ananth, Anaika Nagireddy
+-   [Team 1](https://www.canva.com/design/DAGLDZ3FV68/ztN1l8k8kGD_oT9-0bvPZw/view?utm_content=DAGLDZ3FV68&utm_campaign=designshare&utm_medium=link&utm_source=editor): D H, M W, M G, S S, S A, A N. 
+<!--Dylan Hong, Max Woo, Manusvath Gurudahta, Seher Subedara, Sahana Ananth, Anaika Nagireddy-->
 
--   [Team 2](https://docs.google.com/presentation/d/1URhPcGfycI3EU4RfrmZCk_GuKIFDQBizleZjLdIreJg/edit?usp=drive_link): Evan Oshima, Jiwon Chung, Reese Zhong, Alexander Wong, Troy Yeh, Ceidy Hernandez
+-   [Team 2](https://docs.google.com/presentation/d/1URhPcGfycI3EU4RfrmZCk_GuKIFDQBizleZjLdIreJg/edit?usp=drive_link): E O, J C, R Z, A W, T Y, C H.
+<!--Evan Oshima, Jiwon Chung, Reese Zhong, Alexander Wong, Troy Yeh, Ceidy Hernandez-->
 
--   [Team 3](https://docs.google.com/presentation/d/135epUDa3w-AEaGUaAD5DOUTWcpXXq5BwKWyy0Xvoz68/edit?usp=sharing): Chloe Goodman, Hector Jessen, Kaiwen Yao, Pablo Silva Lizarraga, Bryan Chipahua, Prayag Sameth
+-   [Team 3](https://docs.google.com/presentation/d/135epUDa3w-AEaGUaAD5DOUTWcpXXq5BwKWyy0Xvoz68/edit?usp=sharing): C G, H J, K Y, P S L, B C, P S.  
+<!-- Chloe Goodman, Hector Jessen, Kaiwen Yao, Pablo Silva Lizarraga, Bryan Chipahua, Prayag Sameth -->
 
--   [Team 4](https://docs.google.com/presentation/d/1_mYEPd4jQflwc2ZnFiigdftF6noUvtKkBxyBcgP9Dq8/edit?usp=drive_link): Kenneth Coats, Samantha Wang, Quan Ho, David Wong, Khushi Jain
 
--   [Team 5](https://docs.google.com/presentation/d/1GJFzOPDyU0KV4R5XXnsgnQ2_AhUg42wq0Du7b2yYRFw/edit?usp=drive_link): Joshua Virgen, Avery Seaman, Tyler Nguyen, Lauren Sunkin, Laura Zimmy, Manu Golozari
+-   [Team 4](https://docs.google.com/presentation/d/1_mYEPd4jQflwc2ZnFiigdftF6noUvtKkBxyBcgP9Dq8/edit?usp=drive_link): K C, S W, Q H, D W, K J.
+<!-- Kenneth Coats, Samantha Wang, Quan Ho, David Wong, Khushi Jain-->
 
--   [Team 6](https://docs.google.com/presentation/d/1LDwaIwLH2hPvkcee4EU3j2qCgzi78B_FOgSacDJpKvg/edit?usp=drive_link): Jules Mykheal, Mason Neurator, Wei-Cheng Tseng, Pragnya Ramkumar, Alvin Chen, Jason Sun
+-   [Team 5](https://docs.google.com/presentation/d/1GJFzOPDyU0KV4R5XXnsgnQ2_AhUg42wq0Du7b2yYRFw/edit?usp=drive_link): J V, A S, T N, L S, L Z, M G. 
+<!--Joshua Virgen, Avery Seaman, Tyler Nguyen, Lauren Sunkin, Laura Zimmy, Manu Golozari-->
+
+-   [Team 6](https://docs.google.com/presentation/d/1LDwaIwLH2hPvkcee4EU3j2qCgzi78B_FOgSacDJpKvg/edit?usp=drive_link): J M, M N, WC T, P R, A C, J S.
+<!--Jules Mykheal, Mason Neurator, Wei-Cheng Tseng, Pragnya Ramkumar, Alvin Chen, Jason Sun-->
 :::
 
 ## Closing Remarks
@@ -111,5 +122,5 @@ List of project topics:
 - Parents: your support and interest mean a lot to the students and to us.
 
 - Students
-
-    ![](images/clipboard-2248133345.png){fig-align="center"}
+<!--
+    ![](images/clipboard-2248133345.png){fig-align="center"}-->
