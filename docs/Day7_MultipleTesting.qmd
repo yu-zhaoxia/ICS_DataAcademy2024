@@ -84,8 +84,8 @@ hist(exp1.pvalues, xlab="p-values, all H_0 are true")
 ```
 
 ## Distribution of the p-values when All $H_0$ Are True
-- In Experiment 1, the response variable $y$ is **independently** simulated of $X$. No gene is related to the response variable, i.e., all $H_0$ are true.   
--   In theory, when all $H_0$ are true, the distribution of p-values should follow a uniform distribution.
+- In Experiment 1, the response variable $y$ is **independently** generated of $X$. No gene is related to the response variable, i.e., all $H_0$ are true.   
+-   In theory, when a $H_0$ is true, the p-value follows a uniform distribution. 
 -   The histrogram is very close to uniform.
 
 ## Experiment One: Number of Significant Genes at level 0.05
@@ -98,8 +98,8 @@ sum(exp1.pvalues<0.05)
 
 ## Experiment One: False Positives
 
--   In the experiment, the trait (Y) is simulated **independently** from genes.
--   There is no gene is correlated with the trait.
+-   In the experiment, the trait (Y) is generated **independently** from genes.
+-   There is no gene correlated with the trait.
 -   But we "detected" significant genes.
 -   Why? When all $H_0$ are true, the p-values follow a **uniform** distribution on [0,1]. Just by chance, around 5% of genes will have p-values less than 0.05. 
 -   This is known as multiple testing.
@@ -109,7 +109,7 @@ sum(exp1.pvalues<0.05)
 
 1. Control the family-wise error rate, which is defined as the probability of at least one false positive: $Pr(FP>0).$ A common method is Bonferroni's correction.
   
-2. Control the false discovery rate, which is defined as the probability false positives among the claimed positives, i.e.,$\frac{FP}{FP+TP}.$
+2. Control the false discovery rate, which is defined as the probability of false positives among the claimed positives, i.e.,$\frac{FP}{FP+TP}.$
 
 ## Control Family-wise Erro Rate (FWER)
 
@@ -131,6 +131,7 @@ $$p.adjusted=min(1, p.original *M)$$ - This approach can be conservative when $M
 exp1.pvalues.bonf = p.adjust(exp1.pvalues, method="bonferroni")
 sum(exp1.pvalues.bonf<0.05)
 ```
+
 
 ## Original vs Bonferroni Adjusted p-values
 ```{r}
@@ -158,7 +159,7 @@ sum(exp1.pvalues.fdr<0.05)
 ```{r}
 plot(exp1.pvalues, exp1.pvalues.fdr)
 ```
--   Both approaches seem to work well when all $H_0$ are true.
+-   Recall that in this example, all $H_0$'s are true. The results indicate that both approaches were able to reduce false positives.
 
 # Example 2
 
@@ -242,3 +243,5 @@ table(true.status, test.status)
 - When the number of tests is large, FDR is more widely used. 
 
 - The function ``p.adjust`` in R offers several options to compute adjusted p-values. 
+
+- **IMPORTANT**: 

@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-17">
+  <meta name="dcterms.date" content="2024-07-20">
   <title>Day 7 - Multiple Testing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-17</p>
+  <p class="date">2024-07-20</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -501,9 +501,9 @@ Truth      Positive              Negative
 <section id="distribution-of-the-p-values-when-all-h_0-are-true" class="slide level2">
 <h2>Distribution of the p-values when All <span class="math inline">\(H_0\)</span> Are True</h2>
 <ul>
-<li>In Experiment 1, the response variable <span class="math inline">\(y\)</span> is <strong>independently</strong> simulated of <span class="math inline">\(X\)</span>. No gene is related to the response variable, i.e., all <span class="math inline">\(H_0\)</span> are true.<br>
+<li>In Experiment 1, the response variable <span class="math inline">\(y\)</span> is <strong>independently</strong> generated of <span class="math inline">\(X\)</span>. No gene is related to the response variable, i.e., all <span class="math inline">\(H_0\)</span> are true.<br>
 </li>
-<li>In theory, when all <span class="math inline">\(H_0\)</span> are true, the distribution of p-values should follow a uniform distribution.</li>
+<li>In theory, when a <span class="math inline">\(H_0\)</span> is true, the p-value follows a uniform distribution.</li>
 <li>The histrogram is very close to uniform.</li>
 </ul>
 </section>
@@ -523,8 +523,8 @@ Truth      Positive              Negative
 <section id="experiment-one-false-positives" class="slide level2">
 <h2>Experiment One: False Positives</h2>
 <ul>
-<li>In the experiment, the trait (Y) is simulated <strong>independently</strong> from genes.</li>
-<li>There is no gene is correlated with the trait.</li>
+<li>In the experiment, the trait (Y) is generated <strong>independently</strong> from genes.</li>
+<li>There is no gene correlated with the trait.</li>
 <li>But we “detected” significant genes.</li>
 <li>Why? When all <span class="math inline">\(H_0\)</span> are true, the p-values follow a <strong>uniform</strong> distribution on [0,1]. Just by chance, around 5% of genes will have p-values less than 0.05.</li>
 <li>This is known as multiple testing.</li>
@@ -537,7 +537,7 @@ Truth      Positive              Negative
 </ul>
 <ol type="1">
 <li><p>Control the family-wise error rate, which is defined as the probability of at least one false positive: <span class="math inline">\(Pr(FP&gt;0).\)</span> A common method is Bonferroni’s correction.</p></li>
-<li><p>Control the false discovery rate, which is defined as the probability false positives among the claimed positives, i.e.,<span class="math inline">\(\frac{FP}{FP+TP}.\)</span></p></li>
+<li><p>Control the false discovery rate, which is defined as the probability of false positives among the claimed positives, i.e.,<span class="math inline">\(\frac{FP}{FP+TP}.\)</span></p></li>
 </ol>
 </section>
 <section id="control-family-wise-erro-rate-fwer" class="slide level2 scrollable">
@@ -603,7 +603,7 @@ Truth      Positive              Negative
 
 </div>
 <img data-src="Day7_MultipleTesting_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><ul>
-<li>Both approaches seem to work well when all <span class="math inline">\(H_0\)</span> are true.</li>
+<li>Recall that in this example, all <span class="math inline">\(H_0\)</span>’s are true. The results indicate that both approaches were able to reduce false positives.</li>
 </ul>
 </section></section>
 <section>
@@ -746,6 +746,7 @@ true.status FALSE TRUE
 <li><p>When the number of tests is not too large, Bonferroni works well.</p></li>
 <li><p>When the number of tests is large, FDR is more widely used.</p></li>
 <li><p>The function <code>p.adjust</code> in R offers several options to compute adjusted p-values.</p></li>
+<li><p><strong>IMPORTANT</strong>:</p></li>
 </ul>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
