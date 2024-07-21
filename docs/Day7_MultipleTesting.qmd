@@ -234,14 +234,57 @@ table(true.status, test.status)
 - Note, when using FDR, 0.05 is not always the preferred threshold for adjusted p-values. 
 - 0.1 is often used; 0.2 has been used as well
 
+# Cautionary Notes About p-values
+
+## P-hacking
+- There are many miscoduncts that lead to p-hacking. 
+
+- Example, try different tests/methods until seeing a small p-value; test many variables and only report the ones with p-value below a threshold. 
+
+- P-hacking Leads to false positives and irreproducible results.
+
+- P-hacking undermines the credibility of scientific findings.
+
+## Prevent P-hacking
+- Pre-register hypotheses and analysis plans.
+
+- Use appropriate statistical methods to account for multiple testing.
+
+- Report all conducted analyses, not just the significant ones.
+
+## Statistical Significance
+
+- Statistical significance does not necessarily imply practical or scientific importance.
+
+- A low p-value only indicates that the observed data is unlikely under the null hypothesis.
+
+- Report p-values alongside effect sizes and confidence intervals.
+
+- Discuss the practical implications of the findings, not just their statistical significance.
+
+
+## Statistical vs Scientific Significance 
+
+**Case Study**
+
+- Consider a new treatment that can improve systolic blood pressure by 0.01 mmHg. 
+
+- Because the sample size of a study is very large, the p-value is quite significant. 
+
+- Comments?
+
 # Conclusion 
 ## Take Home Messages
-- One needs to think about the issue of multiple testing when conducting multiple tests.
 
-- When the number of tests is not too large, Bonferroni works well. 
+::: {style="font-size: 85%;"}
 
-- When the number of tests is large, FDR is more widely used. 
+- One needs to consider the issue of multiple testing when conducting multiple tests.
 
-- The function ``p.adjust`` in R offers several options to compute adjusted p-values. 
+  - For a small number of tests, the Bonferroni correction works well.
+  - For a large number of tests, the False Discovery Rate (FDR) is more widely used.
 
-- **IMPORTANT**: 
+- The function ``p.adjust`` in R provides several options to compute adjusted p-values. 
+
+- **IMPORTANT**: the goal of data analysis should never be to simply find more significant p-values. P-hacking causes irreducible results. Statistically significance can not replace scientific significance.
+
+:::

@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Zhaoxia Yu, Department of Statistics, University of California, Irvine">
-  <meta name="dcterms.date" content="2024-07-20">
+  <meta name="dcterms.date" content="2024-07-21">
   <title>Day 7 - Multiple Testing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -403,7 +403,7 @@ Zhaoxia Yu, Department of Statistics, University of California, Irvine
 </div>
 </div>
 
-  <p class="date">2024-07-20</p>
+  <p class="date">2024-07-21</p>
 </section>
 <section id="load-libraries" class="slide level2">
 <h2>Load Libraries</h2>
@@ -735,19 +735,63 @@ true.status FALSE TRUE
 </ul>
 </section></section>
 <section>
+<section id="cautionary-notes-about-p-values" class="title-slide slide level1 center">
+<h1>Cautionary Notes About p-values</h1>
+
+</section>
+<section id="p-hacking" class="slide level2">
+<h2>P-hacking</h2>
+<ul>
+<li><p>There are many miscoduncts that lead to p-hacking.</p></li>
+<li><p>Example, try different tests/methods until seeing a small p-value; test many variables and only report the ones with p-value below a threshold.</p></li>
+<li><p>P-hacking Leads to false positives and irreproducible results.</p></li>
+<li><p>P-hacking undermines the credibility of scientific findings.</p></li>
+</ul>
+</section>
+<section id="prevent-p-hacking" class="slide level2">
+<h2>Prevent P-hacking</h2>
+<ul>
+<li><p>Pre-register hypotheses and analysis plans.</p></li>
+<li><p>Use appropriate statistical methods to account for multiple testing.</p></li>
+<li><p>Report all conducted analyses, not just the significant ones.</p></li>
+</ul>
+</section>
+<section id="statistical-significance" class="slide level2">
+<h2>Statistical Significance</h2>
+<ul>
+<li><p>Statistical significance does not necessarily imply practical or scientific importance.</p></li>
+<li><p>A low p-value only indicates that the observed data is unlikely under the null hypothesis.</p></li>
+<li><p>Report p-values alongside effect sizes and confidence intervals.</p></li>
+<li><p>Discuss the practical implications of the findings, not just their statistical significance.</p></li>
+</ul>
+</section>
+<section id="statistical-vs-scientific-significance" class="slide level2">
+<h2>Statistical vs Scientific Significance</h2>
+<p><strong>Case Study</strong></p>
+<ul>
+<li><p>Consider a new treatment that can improve systolic blood pressure by 0.01 mmHg.</p></li>
+<li><p>Because the sample size of a study is very large, the p-value is quite significant.</p></li>
+<li><p>Comments?</p></li>
+</ul>
+</section></section>
+<section>
 <section id="conclusion" class="title-slide slide level1 center">
 <h1>Conclusion</h1>
 
 </section>
 <section id="take-home-messages" class="slide level2">
 <h2>Take Home Messages</h2>
+<div style="font-size: 85%;">
 <ul>
-<li><p>One needs to think about the issue of multiple testing when conducting multiple tests.</p></li>
-<li><p>When the number of tests is not too large, Bonferroni works well.</p></li>
-<li><p>When the number of tests is large, FDR is more widely used.</p></li>
-<li><p>The function <code>p.adjust</code> in R offers several options to compute adjusted p-values.</p></li>
-<li><p><strong>IMPORTANT</strong>:</p></li>
+<li><p>One needs to consider the issue of multiple testing when conducting multiple tests.</p>
+<ul>
+<li>For a small number of tests, the Bonferroni correction works well.</li>
+<li>For a large number of tests, the False Discovery Rate (FDR) is more widely used.</li>
+</ul></li>
+<li><p>The function <code>p.adjust</code> in R provides several options to compute adjusted p-values.</p></li>
+<li><p><strong>IMPORTANT</strong>: the goal of data analysis should never be to simply find more significant p-values. P-hacking causes irreducible results. Statistically significance can not replace scientific significance.</p></li>
 </ul>
+</div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
